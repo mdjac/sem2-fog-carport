@@ -4,6 +4,7 @@ import business.entities.User;
 import business.persistence.Database;
 import business.persistence.UserMapper;
 import business.exceptions.UserException;
+import business.utilities.Encryption;
 
 public class UserFacade
 {
@@ -16,13 +17,15 @@ public class UserFacade
 
     public User login(String email, String password) throws UserException
     {
-        return userMapper.login(email, password);
+        String encryptedPassword = Encryption.encryptThisString(password);
+        return userMapper.login(email, encryptedPassword);
     }
 
     public User createUser(String email, String password) throws UserException
     {
-        User user = new User(email, password, "customer");
-        userMapper.createUser(user);
+        User user = new User(email, "customer");
+        String encryptedPassword = Encryption.encryptThisString(password);
+        userMapper.createUser(user,encryptedPassword);
         return user;
     }
 
