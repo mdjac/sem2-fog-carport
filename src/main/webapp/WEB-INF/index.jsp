@@ -13,27 +13,39 @@
     </jsp:attribute>
 
     <jsp:body>
-
-        <div>
-            <h2>Our Cool Site</h2>
-
-            <div style="margin-top: 3em;margin-bottom: 3em;">
-                Main page for this 2. semester start project used at cphbusiness.dk
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-3">
+                <form class="" action="${pageContext.request.contextPath}/fc/addtoshoppingcart" method="post">
+                    <div class="card text-center" style="width: 18rem;">
+                        <img class="card-img-top" src="${pageContext.request.contextPath}/images/carport-std-enkelt.png"
+                             alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Standard carport</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of
+                                the card's content.</p>
+                            <input class="btn btn-primary" type="submit" value="Send forespørgsel">
+                        </div>
+                    </div>
+                </form>
             </div>
-
-            <c:if test="${sessionScope.role == 'employee' }">
-                <p style="font-size: larger">This is what you can do,
-                    since your are logged in as an employee</p>
-                 <p><a href="fc/employeepage">Employee Page</a>
-             </c:if>
-
-             <c:if test="${sessionScope.role == 'customer' }">
-                <p style="font-size: larger">This is what you can do, since your
-                    are logged in as a customer</p>
-                <p><a href="fc/customerpage">Customer Page</a>
-            </c:if>
-
+            <div class="col-lg-3">
+                <form class="" action="${pageContext.request.contextPath}/fc/customizedcarportorder" method="post">
+                    <div class="card text-center" style="width: 18rem;">
+                        <img class="card-img-top" src="${pageContext.request.contextPath}/images/carport-custom.png"
+                             alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Special bygget carport</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of
+                                the card's content.</p>
+                            <input class="btn btn-primary" type="submit" value="Byg selv">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-3"></div>
         </div>
-
     </jsp:body>
 </t:genericpage>
