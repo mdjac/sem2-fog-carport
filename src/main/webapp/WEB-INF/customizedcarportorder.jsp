@@ -96,8 +96,10 @@
                 <div class="col-lg-2 mt-2"></div>
 
 
+
                 <div class="col-lg-2"></div>
-                <div class="col-lg-8 mt-5">
+                <div class="col-lg-8 mt-4">
+                    <hr class="solid">
                     <div class="form-group">
                         <label for="name">Navn</label>
                         <input type="text" class="form-control" id="name" aria-describedby="name" name="name" required>
