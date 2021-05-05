@@ -2,6 +2,7 @@ package business.persistence;
 
 import business.entities.User;
 import business.exceptions.UserException;
+import business.utilities.Encryption;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,11 +12,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UserMapperTest {
 
-    private final static String DATABASE = "startcode";  // Change this to your own database
+    private final static String DATABASE = "carport";  // Change this to your own database
     private final static String TESTDATABASE = DATABASE + "_test";
     private final static String USER = "dev";
-    private final static String PASSWORD = "ax2";
-    private final static String URL = "jdbc:mysql://localhost:3306/" + TESTDATABASE + "?serverTimezone=CET&useSSL=false";
+    private final static String PASSWORD = "DevUser21!";
+    private final static String URL = "jdbc:mysql://167.172.176.18:3306/" + TESTDATABASE + "?serverTimezone=CET&useSSL=false";
 
     private static Database database;
     private static UserMapper userMapper;
@@ -79,9 +80,22 @@ public class UserMapperTest {
     public void testCreateUser01() throws UserException {
         // Can we create a new user - Notice, if login fails, this will fail
         // but so would login01, so this is OK
-        User original = new User( "king@kong.com", "uhahvorhemmeligt", "konge" );
-        userMapper.createUser( original );
+        User original = new User( "king@kong.com","konge" );
+        String password = "uhahvorhemmeligt";
+        userMapper.createUser(original,password);
         User retrieved = userMapper.login( "king@kong.com", "uhahvorhemmeligt" );
         assertEquals( "konge", retrieved.getRole() );
+    }
+    @Test
+    public void testCreateUser02() throws UserException {
+        // Can we create a new user - Notice, if login fails, this will fail
+        // but so would login01, so this is OK
+        //With encryption
+        User original = new User( "king@kong.com","konge" );
+        String password = "uhahvorhemmeligt";
+        String encryptedPassword = Encryption.encryptThisString(password);
+        userMapper.createUser(original,encryptedPassword);
+        User retrieved = userMapper.login( "king@kong.com", Encryption.encryptThisString(password));
+        assertEquals( "konge", retrieved.getRole());
     }
 }
