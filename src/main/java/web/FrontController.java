@@ -1,11 +1,14 @@
 package web;
 
+import business.entities.Option;
 import business.exceptions.UserException;
 import business.persistence.Database;
+import business.persistence.OptionMapper;
 import web.commands.*;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -40,6 +43,16 @@ public class FrontController extends HttpServlet
         }
 
         // Initialize whatever global datastructures needed here:
+        OptionMapper optionMapper = new OptionMapper(database);
+        try {
+            System.out.println("we are here");
+            TreeMap<Integer, Option> getAllOptions = optionMapper.getAllOptions();
+            System.out.println(getAllOptions.get(1).getValues());
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
+
+
 
     }
 
