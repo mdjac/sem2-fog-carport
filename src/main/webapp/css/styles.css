@@ -7,3 +7,31 @@
 {
     font-size: smaller;
 }
+
+.navBackGround{
+    background: #0B2069;
+    max-width: 1300px;
+    width: 1300px;
+    margin: 0 auto;
+}
+.alignMiddleOnPage{
+    position: absolute;
+    left: 50%;
+    margin-left: -650px;
+    top: 0;
+}
+.topNavigation{
+    position: absolute;
+    top: 0;
+    left: 20%;
+}
+.bottomNavigation{
+    position: absolute;
+    top: 75%;
+    left:10%;
+}
+
+.Shadow{
+    -webkit-box-shadow: 0px 3px 21px 1px rgba(0,0,0,0.91);
+    box-shadow: 0px 3px 21px 1px rgba(0,0,0,0.91);
+}

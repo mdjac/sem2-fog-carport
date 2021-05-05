@@ -1,5 +1,5 @@
 <%@tag description="Overall Page template" pageEncoding="UTF-8" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <%@attribute name="header" fragment="true" %>
@@ -22,44 +22,60 @@
         This header is inspired by this bootstrap
         example: https://getbootstrap.com/docs/5.0/examples/pricing/
     -->
+    <div>
+        <img class="img-fluid" src="${pageContext.request.contextPath}/images/forside-carport.jpg">
+
+        <div class="alignMiddleOnPage">
+        <div class="navBackGround img-fluid">
+
+            <nav class="my-2 my-md-0 me-md-3">
+
+                <img class="img-fluid " src="${pageContext.request.contextPath}/images/logo-2.png">
+                <div class="topNavigation">
+
+                    <c:if test="${sessionScope.user != null }">
+                        ${sessionScope.user.email}
+                    </c:if>
+
+                    <c:set var="thisPage" value="${pageContext.request.servletPath}"/>
+                    <c:set var="isNotLoginPage" value="${!fn:endsWith(thisPage,'loginpage.jsp')}"/>
+                    <c:set var="isNotRegisterPage" value="${!fn:endsWith(thisPage,'registerpage.jsp')}"/>
+
+                    <c:if test="${isNotLoginPage && isNotRegisterPage}">
+                    <c:if test="${sessionScope.user != null }">
+                        <a type="button" class="btn btn-sm  btn-outline-light text-light"
+                           href="${pageContext.request.contextPath}/fc/logoutcommand">Logout</a>
+                    </c:if>
+                    <c:if test="${sessionScope.user == null }">
+                        <a type="button" class="btn btn-sm  btn-outline-light text-light"
+                           href="${pageContext.request.contextPath}/fc/loginpage">Login</a>
+                        <a type="button" class="btn btn-sm  btn-outline-light text-light"
+                           href="${pageContext.request.contextPath}/fc/registerpage">Sign up</a>
+                    </c:if>
+
+                </div>
+                <div class="bottomNavigation">
+                    <c:if test="${addHomeLink == null }">
+                    <a class="three p-2 text-light" href="<%=request.getContextPath()%>">Home</a>
+                </c:if>
+                    <a class="four p-2 text-light" href="#">Cart</a></div>
+                </div>
+            </nav>
+        </div>
+        </div>
+    </div>
+
+
 <header class="d-flex flex-column flex-md-row align-items-center p-3 pb-0 px-md-4 mb-4 bg-white border-bottom shadow-sm">
-    <div class="h5 my-0 me-md-auto fw-normal">
-        <p>Demo Project for DAT 2. semester</p>
-        <p style="font-size: larger">
+    <div class="h5 mb-0 mt-3 me-md-auto fw-normal">
+        <p style="font-size: larger; margin-left: 250px">
             <jsp:invoke fragment="header"/>
         </p>
     </div>
-    <nav class="my-2 my-md-0 me-md-3">
-        <c:if test="${addHomeLink == null }">
-            <a class="p-2 text-dark" href="<%=request.getContextPath()%>">Home</a>
-        </c:if>
-        <a class="p-2 text-dark" href="#">Orders</a>
-        <a class="p-2 text-dark" href="#">Profile</a>
-        <a class="p-2 text-dark" href="#">About</a>
-    </nav>
 
-    <div>
 
-        <c:if test="${sessionScope.user != null }">
-            ${sessionScope.user.email}
-        </c:if>
 
-        <c:set var="thisPage" value="${pageContext.request.servletPath}"/>
-        <c:set var="isNotLoginPage" value="${!fn:endsWith(thisPage,'loginpage.jsp')}"/>
-        <c:set var="isNotRegisterPage" value="${!fn:endsWith(thisPage,'registerpage.jsp')}"/>
 
-        <c:if test="${isNotLoginPage && isNotRegisterPage}">
-            <c:if test="${sessionScope.user != null }">
-                <a type="button" class="btn btn-sm  btn-outline-secondary"
-                href="${pageContext.request.contextPath}/fc/logoutcommand">Logout</a>
-            </c:if>
-            <c:if test="${sessionScope.user == null }">
-                <a type="button" class="btn btn-sm  btn-outline-secondary"
-                   href="${pageContext.request.contextPath}/fc/loginpage">Login</a>
-                <a type="button" class="btn btn-sm  btn-outline-secondary"
-                   href="${pageContext.request.contextPath}/fc/registerpage">Sign up</a>
-            </c:if>
-    </div>
     </c:if>
 </header>
 
