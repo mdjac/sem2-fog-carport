@@ -22,9 +22,7 @@
                              alt="Card image cap">
                         <div class="card-body">
                             <h5 class="card-title">Standard carport</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
-                                of
-                                the card's content.</p>
+                            <p class="card-text">CARPORT ENKELT 3,60X9,10M CRXL1HR MED REDSKABSRUM 3,20X3,55M</p>
                             <input class="btn btn-primary" type="submit" value="Send forespørgsel">
                         </div>
                     </div>
