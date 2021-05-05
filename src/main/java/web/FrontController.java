@@ -4,6 +4,7 @@ import business.entities.Option;
 import business.exceptions.UserException;
 import business.persistence.Database;
 import business.persistence.OptionMapper;
+import business.services.OptionFacade;
 import web.commands.*;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ public class FrontController extends HttpServlet
 
 
     public static Database database;
+    public static TreeMap<Integer, Option> options;
 
     public void init() throws ServletException
     {
@@ -43,17 +45,13 @@ public class FrontController extends HttpServlet
         }
 
         // Initialize whatever global datastructures needed here:
-        OptionMapper optionMapper = new OptionMapper(database);
+        OptionFacade optionFacade = new OptionFacade(database);
         try {
-            System.out.println("we are here");
-            TreeMap<Integer, Option> getAllOptions = optionMapper.getAllOptions();
-            System.out.println(getAllOptions.get(1).getValues());
+            options = optionFacade.getAllOptions();
+            getServletContext().setAttribute("options",options);
         } catch (UserException e) {
-            e.printStackTrace();
+            Logger.getLogger("web").log(Level.SEVERE, e.getMessage(), e);
         }
-
-
-
     }
 
     protected void processRequest(

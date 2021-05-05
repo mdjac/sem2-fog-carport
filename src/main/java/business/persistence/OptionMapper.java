@@ -36,19 +36,20 @@ public class OptionMapper {
                     int variantId = rs.getInt("variant_id");
                     String variantName = rs.getString("variant_name");
 
-                    //Check if option is already in map
+                    //Create the option
                     Option option = new Option(optionId,optionName);
-                    //add to map if not
-                    if(!options.containsKey(optionId)){
-                       option.addValue(variantId,variantName);
-                       options.put(optionId,option);
-                    }
-                    //Check if variant is already options map
-                    //add to map if not
-                    if (!options.get(optionId).getValues().containsKey(variantId)){
-                        options.get(optionId).addValue(variantId,variantName);
-                    }
 
+                    //Check if option is already in Map
+                    if(options.containsKey(option.getId())){
+                        //If option already exists, then set new option to existing option and add the variant.
+                        option = options.get(option.getId());
+                        option.addValue(variantId,variantName);
+                    }
+                    else{
+                        option.addValue(variantId,variantName);
+                        options.put(option.getId(),option);
+
+                    }
                 }
                 return options;
             }
