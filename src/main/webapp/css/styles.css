@@ -2,7 +2,7 @@
     CSS styles for the whole website
     The file is included in the genericpage.tag template
  */
-
+@media (min-width: 1101px){
 #topmenu_login_dialogue
 {
     font-size: smaller;
@@ -22,8 +22,19 @@
 }
 .topNavigation{
     position: absolute;
-    top: 0;
-    left: 20%;
+    top:0;
+    left: 11%;
+    border-bottom: 1px solid white;
+    height: 63px;
+    min-height: 1px;
+    max-width: 1140px;
+    margin-left: 10px;
+    padding: 10px 0;
+}
+.image-responsive{
+    display: block;
+    max-width: 100%;
+    height: auto;
 }
 .bottomNavigation{
     position: absolute;
@@ -31,7 +42,110 @@
     left:10%;
 }
 
-.Shadow{
-    -webkit-box-shadow: 0px 3px 21px 1px rgba(0,0,0,0.91);
-    box-shadow: 0px 3px 21px 1px rgba(0,0,0,0.91);
+
 }
+
+    @media (max-width: 1100px) {
+        .navBackGround {
+            background: #0B2069;
+            max-width: 900px;
+            width: 900px;
+        }
+        .alignMiddleOnPage{
+            position: absolute;
+            left: 50%;
+            margin-left: -450px;
+            top: 0;
+        }
+        .topNavigation{
+            position: absolute;
+            top:0;
+            left: 15%;
+            border-bottom: 1px solid white;
+            height: 63px;
+            min-height: 1px;
+            max-width: 900px;
+            margin-left: 10px;
+            padding: 10px 0;
+        }
+        .image-responsive{
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+        .bottomNavigation{
+            position: absolute;
+            top: 75%;
+            left:10%;
+        }
+    }
+        @media (max-width: 790px) {
+            .navBackGround {
+                background: #0B2069;
+                max-width: 650px;
+                width: 650px;
+            }
+            .alignMiddleOnPage{
+                position: absolute;
+                left: 50%;
+                margin-left: -325px;
+                top: -2%;
+            }
+            .topNavigation{
+                position: absolute;
+                top:0;
+                left: 11%;
+                border-bottom: 1px solid white;
+                height: 63px;
+                min-height: 1px;
+                max-width: 650px;
+                margin-left: 10px;
+                padding: 10px 0;
+            }
+            .image-responsive{
+                display: block;
+                max-width: 100%;
+                height: auto;
+            }
+            .bottomNavigation{
+                position: absolute;
+                top: 75%;
+                left:10%;
+            }
+        }
+@media (max-width: 600px) {
+    .navBackGround {
+        background: #0B2069;
+        max-width: 600px;
+        width: 600px;
+    }
+    .alignMiddleOnPage{
+        position: absolute;
+        left: 50%;
+        margin-left: -300px;
+        top: -2%;
+    }
+    .topNavigation{
+        position: absolute;
+        top:0;
+        left: 11%;
+        border-bottom: 1px solid white;
+        height: 63px;
+        min-height: 1px;
+        max-width: 600px;
+        margin-left: 10px;
+        padding: 10px 0;
+    }
+    .image-responsive{
+        display: block;
+        max-width: 100%;
+        height: auto;
+    }
+    .bottomNavigation{
+        position: absolute;
+        top: 75%;
+        left:10%;
+    }
+}
+
+

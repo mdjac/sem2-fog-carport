@@ -11,19 +11,19 @@
     </jsp:attribute>
 
     <jsp:body>
-        <div style="margin-top: 5em; background: white;" class="container p-3 Shadow">
+        <div style="margin-top: 5em; background: white;" class="container">
             <form name="login" action="${pageContext.request.contextPath}/fc/logincommand"  method="POST">
                 <h2>Log Ind</h2>
                 <div class="row mb-3 mt-3">
-                    <label class="col-sm-3 col-form-label" for="email">Email</label>
-                    <div class="col-sm-9">
-                        <input class="form-control" type="text" name="email" placeholder="someone@nowhere.com">
+                    <label class="col-sm-1 col-form-label" for="email">Email</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" name="email" placeholder="Skriv din e-mail">
                     </div>
                 </div>
                 <div class="row mb-3">
-                    <label class="col-sm-3 col-form-label" for="password">Password</label>
-                    <div class="col-sm-9">
-                        <input class="form-control" type="password" name="password" placeholder="sesam">
+                    <label class="col-sm-1 col-form-label" for="password">Password</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="password" name="password" placeholder="Skriv din adgangskode">
                     </div>
                 </div>
                 <c:if test="${requestScope.error != null }">
