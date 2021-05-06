@@ -1,5 +1,6 @@
 package web;
 
+import business.entities.Carport;
 import business.entities.Option;
 import business.exceptions.UserException;
 import business.persistence.Database;
@@ -28,6 +29,7 @@ public class FrontController extends HttpServlet
 
     public static Database database;
     public static TreeMap<Integer, Option> options;
+    public static TreeMap<Integer, Carport> standardCarports = new TreeMap<>();
 
     public void init() throws ServletException
     {
@@ -52,6 +54,21 @@ public class FrontController extends HttpServlet
         } catch (UserException e) {
             Logger.getLogger("web").log(Level.SEVERE, e.getMessage(), e);
         }
+
+        //Create standard carports
+        Carport carport = new Carport(
+                "Sort Træ",
+                "300 cm",
+                "320 cm",
+                "400 cm",
+                "brunt træ",
+                "100 cm",
+                "100 cm",
+                "20 grader",
+                "Plastik",
+                "Fladt tag");
+        carport.setId(1);
+        standardCarports.put(carport.getId(), carport);
     }
 
     protected void processRequest(
