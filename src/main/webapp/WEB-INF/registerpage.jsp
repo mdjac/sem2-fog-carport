@@ -4,7 +4,7 @@
 
 <t:genericpage>
     <jsp:attribute name="header">
-         Register as new User
+         Registrer dig som ny bruger
     </jsp:attribute>
     <jsp:attribute name="footer">
     </jsp:attribute>
@@ -14,22 +14,39 @@
                 <div class="row mb-3">
                     <label class="col-sm-1 col-form-label" for="email">Email</label>
                     <div class="col-sm-4">
-                        <input id="email" class="form-control" type="text" name="email" value="${param.email}" placeholder="Enter a valid email">
+                        <input id="email" class="form-control" type="email" name="email" value="${param.email}" placeholder="Indtast din email" required>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label class="col-sm-1 col-form-label" for="password1">Password</label>
                     <div class="col-sm-4">
-                        <input id="password1" class="form-control" type="password" name="password1"  value="${param.password1}"  placeholder="Enter your password">
+                        <input id="password1" class="form-control" type="password" name="password1"  value="${param.password1}"  placeholder="Indtast dit password" required>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label class="col-sm-1 col-form-label" for="password2">Password</label>
                     <div class="col-sm-4">
-                        <input id="password2" class="form-control" type="password" name="password2" value="${param.password2}"  placeholder="Repeat the password">
+                        <input id="password2" class="form-control" type="password" name="password2" value="${param.password2}"  placeholder="Gentag dit password" required>
                     </div>
                 </div>
-
+                <div class="row mb-3">
+                    <label class="col-sm-1 col-form-label" for="address">Adresse</label>
+                    <div class="col-sm-4">
+                        <input id="address" class="form-control" type="text" name="address" placeholder="Indtast din adresse" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-sm-1 col-form-label" for="zip">Postnummer</label>
+                    <div class="col-sm-4">
+                        <input id="zip" class="form-control" type="number" name="zip" placeholder="Indtast dit postnummer" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-sm-1 col-form-label" for="telephone">Telefon</label>
+                    <div class="col-sm-4">
+                        <input id="telephone" class="form-control" type="text" name="telephone" placeholder="Indtast dit telefonnummer" required>
+                    </div>
+                </div>
                 <input class="btn btn-primary" type="submit" type="submit" value="Submit">
             </form>
 
