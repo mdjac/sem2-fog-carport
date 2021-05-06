@@ -82,25 +82,25 @@
         @media (max-width: 790px) {
             .navBackGround {
                 background: #0B2069;
-                max-width: 650px;
-                width: 650px;
+                max-width: 500px;
+                width: 500px;
             }
             .alignMiddleOnPage{
                 position: absolute;
                 left: 50%;
-                margin-left: -325px;
+                margin-left: -250px;
                 top: -2%;
             }
             .topNavigation{
                 position: absolute;
                 top:0;
-                left: 11%;
+                left: 22%;
                 border-bottom: 1px solid white;
                 height: 63px;
                 min-height: 1px;
-                max-width: 650px;
+                max-width: 350px;
                 margin-left: 10px;
-                padding: 10px 0;
+                padding: 25px 0;
             }
             .image-responsive{
                 display: block;
@@ -110,41 +110,45 @@
             .bottomNavigation{
                 position: absolute;
                 top: 75%;
-                left:10%;
+                left:21%;
+                max-width: 350px;
             }
         }
 @media (max-width: 600px) {
     .navBackGround {
         background: #0B2069;
-        max-width: 600px;
-        width: 600px;
+        max-width: 500px;
+        width: 500px;
+        height: 97px;
     }
     .alignMiddleOnPage{
         position: absolute;
         left: 50%;
-        margin-left: -300px;
+        margin-left: -250px;
         top: -2%;
     }
     .topNavigation{
         position: absolute;
         top:0;
-        left: 11%;
+        left: 17%;
         border-bottom: 1px solid white;
-        height: 63px;
+        height: 55px;
         min-height: 1px;
-        max-width: 600px;
+        max-width: 380px;
         margin-left: 10px;
-        padding: 10px 0;
+        padding: 25px 0;
     }
     .image-responsive{
         display: block;
         max-width: 100%;
-        height: auto;
+        width: auto;
+        height: 90px;
     }
     .bottomNavigation{
         position: absolute;
         top: 75%;
-        left:10%;
+        left:16%;
+        max-width: 350px;
     }
 }
 

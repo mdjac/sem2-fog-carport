@@ -29,11 +29,12 @@
     <img class="img-fluid" src="${pageContext.request.contextPath}/images/forside-carport.jpg">
 </div>
     <div class="alignMiddleOnPage container container-fluid py-0 px-0">
-        <div class="navBackGround row ">
+        <div class="row">
+        <div class="navBackGround">
             <nav class="my-2 my-md-0 me-md-3">
                 <img class="img-fluid image-responsive" src="${pageContext.request.contextPath}/images/logo-2.png">
                 <div class="row">
-                <div class="topNavigation col-xs-12">
+                <div class="topNavigation col-xs-6 col-md-9 col-lg-12">
 
                     <c:if test="${sessionScope.user != null }">
                         ${sessionScope.user.email}
@@ -59,18 +60,19 @@
                     </c:if>
                 </div>
                 </div>
+
                 <div class="row">
                 <div class="bottomNavigation col-md-6">
                     <c:if test="${addHomeLink == null }">
                         <a class="three p-2 text-light" href="<%=request.getContextPath()%>">Home</a>
                     </c:if>
-                    
+
                 </div>
                 </div>
             </nav>
         </div>
     </div>
-
+    </div>
 
 
 <header class="d-flex flex-column flex-md-row align-items-center p-3 pb-0 px-md-4 mb-4 bg-white border-bottom shadow-sm">
@@ -94,6 +96,5 @@
     <br>
     <jsp:invoke fragment="footer"/>
 </div>
-
 </body>
 </html>
