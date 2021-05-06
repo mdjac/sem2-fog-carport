@@ -1,11 +1,8 @@
 package web;
 
 import business.entities.Carport;
-import business.entities.Option;
 import business.exceptions.UserException;
 import business.persistence.Database;
-import business.persistence.OptionMapper;
-import business.services.OptionFacade;
 import web.commands.*;
 
 import java.io.IOException;
@@ -28,7 +25,6 @@ public class FrontController extends HttpServlet
 
 
     public static Database database;
-    public static TreeMap<Integer, Option> options;
     public static TreeMap<Integer, Carport> standardCarports = new TreeMap<>();
 
     public void init() throws ServletException
@@ -47,13 +43,7 @@ public class FrontController extends HttpServlet
         }
 
         // Initialize whatever global datastructures needed here:
-        OptionFacade optionFacade = new OptionFacade(database);
-        try {
-            options = optionFacade.getAllOptions();
-            getServletContext().setAttribute("options",options);
-        } catch (UserException e) {
-            Logger.getLogger("web").log(Level.SEVERE, e.getMessage(), e);
-        }
+
 
         //Create standard carports
         Carport carport = new Carport(

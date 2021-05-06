@@ -42,6 +42,12 @@
                     </div>
                 </div>
                 <div class="row mb-3">
+                    <label class="col-sm-1 col-form-label" for="city">By</label>
+                    <div class="col-sm-4">
+                        <input id="city" class="form-control" type="text" name="city" placeholder="Indtast din hjemby" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
                     <label class="col-sm-1 col-form-label" for="telephone">Telefon</label>
                     <div class="col-sm-4">
                         <input id="telephone" class="form-control" type="text" name="telephone" placeholder="Indtast dit telefonnummer" required>

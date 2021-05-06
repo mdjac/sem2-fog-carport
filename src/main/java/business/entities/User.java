@@ -3,12 +3,13 @@ package business.entities;
 public class User
 {
 
-    public User(String email, String role, String address, String telephone, int zip) {
+    public User(String email, String role, String address, String telephone, int zip, String city) {
         this.email = email;
         this.role = role;
         this.address = address;
         this.telephone = telephone;
         this.zip = zip;
+        this.city = city;
     }
 
     private int id; // just used to demo retrieval of autogen keys in UserMapper
@@ -17,6 +18,7 @@ public class User
     private String address;
     private String telephone;
     private int zip;
+    private String city;
 
     public String getEmail()
     {
@@ -41,6 +43,10 @@ public class User
     public int getId()
     {
         return id;
+    }
+
+    public String getCity() {
+        return city;
     }
 
     public void setId(int id)
