@@ -21,18 +21,41 @@
         <div class="row">
             <div class="col-lg-3"></div>
             <div class="col-lg-3">
+                <c:forEach var="standardcarport" items="${applicationScope.standardCarports}">
                 <form class="" action="${pageContext.request.contextPath}${link}" method="post">
                     <div class="card text-center" style="width: 18rem;">
                         <img class="card-img-top" src="${pageContext.request.contextPath}/images/carport-std-enkelt.png"
                              alt="Card image cap">
                         <div class="card-body">
-                            <h5 class="card-title">Standard carport</h5>
-                            <p class="card-text">CARPORT ENKELT 3,60X9,10M CRXL1HR MED REDSKABSRUM 3,20X3,55M</p>
-                            <input type="hidden" id="standardCarportId" name="standardCarportId" value="1">
-                            <input class="btn btn-primary" type="submit" value="Send forespørgsel">
+                            <h5 class="card-title">Standard carport #${standardcarport.value.id} </h5>
+
+                            <div class="card-text">
+                                <div>
+                                    <b>Carport:</b><br>
+                            Beklædning: ${standardcarport.value.carportBeklædning}<br>
+                                B${standardcarport.value.carportBredde}/
+                                    L${standardcarport.value.carportLængde}/
+                                    H${standardcarport.value.carportHøjde}
+                                </div>
+                                <div class="mt-1">
+                                    <b>Redskabsskur:</b><br>
+                                Beklædning: ${standardcarport.value.redskabsskurBeklædning}<br>
+                                B${standardcarport.value.redskabsskurBredde}/
+                                L${standardcarport.value.redskabsskurLængde}
+                                </div>
+                                <div class="mt-1">
+                                    <b>Tag:</b><br>
+                                Type: ${standardcarport.value.tagType}<br>
+                                  Materiale:  ${standardcarport.value.tagMateriale}<br>
+                                  Tag hældning:  ${standardcarport.value.tagHældning}
+                                </div>
+                            </div>
+                            <input type="hidden" id="standardCarportId" name="standardCarportId" value="${standardcarport.value.id}">
+                            <input class="btn btn-primary mt-2" type="submit" value="Send forespørgsel">
                         </div>
                     </div>
                 </form>
+                </c:forEach>
             </div>
             <div class="col-lg-3">
                 <form class="" action="${pageContext.request.contextPath}/fc/customizedcarportorderpage" method="post">

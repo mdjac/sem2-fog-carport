@@ -59,6 +59,22 @@ public class FrontController extends HttpServlet
                 "Fladt tag");
         carport.setId(1);
         standardCarports.put(carport.getId(), carport);
+
+        Carport carport2 = new Carport(
+                "Sort Træ",
+                "300 cm",
+                "320 cm",
+                "400 cm",
+                "brunt træ",
+                "100 cm",
+                "100 cm",
+                "20 grader",
+                "Tegl",
+                "Fladt tag");
+        carport2.setId(2);
+        standardCarports.put(carport2.getId(), carport2);
+        //Add standard carports to app scope
+        getServletContext().setAttribute("standardCarports",standardCarports);
     }
 
     protected void processRequest(

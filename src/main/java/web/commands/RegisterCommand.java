@@ -29,10 +29,11 @@ public class RegisterCommand extends CommandUnprotectedPage
         int zip = Integer.parseInt(request.getParameter("zip"));
         String telephone = request.getParameter("telephone");
         String city = request.getParameter("city");
+        String name = request.getParameter("name");
 
         if (password1.equals(password2))
         {
-            User user = userFacade.createUser(email, password1,address,telephone,zip,city);
+            User user = userFacade.createUser(email, password1,address,telephone,zip,city,name);
             HttpSession session = request.getSession();
 
             session.setAttribute("email", email);
