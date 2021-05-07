@@ -26,12 +26,14 @@
     This header is inspired by this bootstrap
     example: https://getbootstrap.com/docs/5.0/examples/pricing/
 -->
-    <div>
-        <img class="img-fluid headerPictureSizeOnScreen"
-             src="${pageContext.request.contextPath}/images/forside-carport.jpg">
-    </div>
-<div class="alignMiddleOnPage container container-fluid py-0 px-0">
-    <div class="row">
+
+<div class="headerPictureSizeOnScreen">
+<div>
+    <img class="img-fluid " src="${pageContext.request.contextPath}/images/forside-carport.jpg">
+</div>
+</div>
+    <div class="alignMiddleOnPage container container-fluid py-0 px-0">
+        <div class="row">
         <div class="navBackGround">
             <nav class="my-2 my-md-0 me-md-3 logo">
                 <img class="img-fluid image-responsive" src="${pageContext.request.contextPath}/images/logo-2.png">
