@@ -13,7 +13,13 @@
 
     <jsp:body>
 
+        <div class="text-center">
+            <p>Kære ${sessionScope.user.name}</p>
 
-        You are here
+            <p>Tusind tak for din forespørgsel. Dit ordre nummer er: ${requestScope.order.id}</p>
+            <p>Vi sender dig en email så snart en af vores medarbejdere har kigget din forspørgsel igennem.</p>
+
+            <p>Her kan du se en genereret tegning af din forespørgsel.</p>
+        </div>
     </jsp:body>
 </t:genericpage>

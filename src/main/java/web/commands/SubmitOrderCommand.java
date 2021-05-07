@@ -28,7 +28,10 @@ public class SubmitOrderCommand extends CommandProtectedPage{
         //til standard carport
         if (request.getParameter("standardCarportId") != null){
          carport =  FrontController.standardCarports.get(Integer.parseInt(request.getParameter("standardCarportId")));
-
+        }
+        //In case the previous page was loginpage, standardCarportId is located in getAttribute instead of getParameter
+        else if (request.getAttribute("standardCarportId") != null){
+            carport =  FrontController.standardCarports.get((int)request.getAttribute("standardCarportId"));
         }
         //Til custom carport
         else{
@@ -42,7 +45,8 @@ public class SubmitOrderCommand extends CommandProtectedPage{
         //Skriv ordre til DB
         OrderFacade orderFacade = new OrderFacade(database);
         try {
-            orderFacade.insertOrder(order,carport);
+            order = orderFacade.insertOrder(order,carport);
+            request.setAttribute("order",order);
         } catch (UserException e) {
             //Something went wrong when inserting to DB!
             request.setAttribute("error", e.getMessage());

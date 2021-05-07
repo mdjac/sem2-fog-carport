@@ -21,9 +21,9 @@ public class UserFacade
         return userMapper.login(email, encryptedPassword);
     }
 
-    public User createUser(String email, String password, String address, String telephone, int zip, String city) throws UserException
+    public User createUser(String email, String password, String address, String telephone, int zip, String city, String name) throws UserException
     {
-        User user = new User(email,"customer",address,telephone,zip,city);
+        User user = new User(email,"customer",address,telephone,zip,city,name);
         String encryptedPassword = Encryption.encryptThisString(password);
         userMapper.createUser(user,encryptedPassword);
         return user;

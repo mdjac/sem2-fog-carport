@@ -30,6 +30,12 @@
                     </div>
                 </div>
                 <div class="row mb-3">
+                    <label class="col-sm-1 col-form-label" for="name">Navn</label>
+                    <div class="col-sm-4">
+                        <input id="name" class="form-control" type="text" name="name" placeholder="Indtast dit fulde navn" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
                     <label class="col-sm-1 col-form-label" for="address">Adresse</label>
                     <div class="col-sm-4">
                         <input id="address" class="form-control" type="text" name="address" placeholder="Indtast din adresse" required>

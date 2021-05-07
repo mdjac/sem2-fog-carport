@@ -31,7 +31,6 @@ public class OrderMapper {
                     "shed_length," +
                     "orders_id) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            System.out.println(sql);
             try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setString(1,carport.getTagType());
                 ps.setString(2,carport.getTagMateriale());
@@ -45,7 +44,6 @@ public class OrderMapper {
                 ps.setString(10,carport.getRedskabsskurLængde());
                 ps.setInt(11,orderId);
                 int rowsAffected = ps.executeUpdate();
-                System.out.println(rowsAffected);
                 if (rowsAffected == 1) {
                     return true;
                 }
@@ -59,7 +57,7 @@ public class OrderMapper {
     }
 
 
-    public void insertOrder(Order order, Carport carport) throws UserException {
+    public Order insertOrder(Order order, Carport carport) throws UserException {
         try (Connection connection = database.connect()) {
             String sql = "INSERT INTO orders (status,totalprice,users_id) VALUES (?, ?, ?)";
 
@@ -75,7 +73,6 @@ public class OrderMapper {
                     throw new UserException("Error when inserting order");
                 }
                 order.setId(id);
-
                 try {
                     insertCarport(carport,order.getId());
                 } catch (Exception ex) {
@@ -85,10 +82,10 @@ public class OrderMapper {
                     //deleteOrder(orderId);
                     throw new UserException(ex.getMessage());
                 }
-
-
                 //TODO: Skal indsætte orderline
 
+
+                return order;
             } catch (SQLException ex) {
                 throw new UserException(ex.getMessage());
             }
