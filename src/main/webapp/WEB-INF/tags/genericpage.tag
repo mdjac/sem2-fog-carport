@@ -16,7 +16,9 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/css/styles.css">
+
     <meta name="theme-color" content="#7952b3">
 </head>
 <body>
@@ -26,15 +28,15 @@
 -->
 
 <div>
-    <img class="img-fluid" src="${pageContext.request.contextPath}/images/forside-carport.jpg">
+    <img class="img-fluid headerPictureSizeOnScreen" src="${pageContext.request.contextPath}/images/forside-carport.jpg">
 </div>
     <div class="alignMiddleOnPage container container-fluid py-0 px-0">
         <div class="row">
         <div class="navBackGround">
-            <nav class="my-2 my-md-0 me-md-3">
+            <nav class="my-2 my-md-0 me-md-3 logo">
                 <img class="img-fluid image-responsive" src="${pageContext.request.contextPath}/images/logo-2.png">
                 <div class="row">
-                <div class="topNavigation col-xs-6 col-md-9 col-lg-12">
+                <div class="topNavigation col-xs-6 col-sm-7 col-md-9 col-lg-12">
 
                     <c:if test="${sessionScope.user != null }">
                         ${sessionScope.user.email}
@@ -47,15 +49,15 @@
                     <c:if test="${isNotLoginPage && isNotRegisterPage}">
                         <c:if test="${sessionScope.user != null }">
                             <a
-                               href="${pageContext.request.contextPath}/fc/logoutcommand">Logout</a>
+                               href="${pageContext.request.contextPath}/fc/logoutcommand" style="color: white; text-decoration: none;">Logout</a>
+                        </c:if>
+                        <c:if test="${sessionScope.user == null }">
+                            <i class="fa fa-lock" style="font-size:20px;color:white"></i><a href="${pageContext.request.contextPath}/fc/loginpage" style="color: white; text-decoration: none;" >Login</a>
+
                         </c:if>
                         <c:if test="${sessionScope.user == null }">
                             <a
-                               href="${pageContext.request.contextPath}/fc/loginpage">Login</a>
-                        </c:if>
-                        <c:if test="${sessionScope.user == null }">
-                            <a
-                                    href="${pageContext.request.contextPath}/fc/registerpage">Sign up</a>
+                                    href="${pageContext.request.contextPath}/fc/registerpage" style="color: white; text-decoration: none;">Sign up</a>
                         </c:if>
                     </c:if>
                 </div>
