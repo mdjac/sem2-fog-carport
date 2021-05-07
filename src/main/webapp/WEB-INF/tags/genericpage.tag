@@ -26,9 +26,10 @@
     This header is inspired by this bootstrap
     example: https://getbootstrap.com/docs/5.0/examples/pricing/
 -->
-
+<div class="headerPictureSizeOnScreen">
 <div>
-    <img class="img-fluid headerPictureSizeOnScreen" src="${pageContext.request.contextPath}/images/forside-carport.jpg">
+    <img class="img-fluid " src="${pageContext.request.contextPath}/images/forside-carport.jpg">
+</div>
 </div>
     <div class="alignMiddleOnPage container container-fluid py-0 px-0">
         <div class="row">
