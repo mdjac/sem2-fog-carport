@@ -1,12 +1,16 @@
 package web;
 
 import business.entities.Carport;
+import business.entities.Material;
 import business.exceptions.UserException;
 import business.persistence.Database;
+import business.services.MaterialFacade;
 import web.commands.*;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,6 +30,7 @@ public class FrontController extends HttpServlet
 
     public static Database database;
     public static TreeMap<Integer, Carport> standardCarports = new TreeMap<>();
+    public static List<Material> materialList = new ArrayList<>();
 
     public void init() throws ServletException
     {
@@ -75,6 +80,17 @@ public class FrontController extends HttpServlet
         standardCarports.put(carport2.getId(), carport2);
         //Add standard carports to app scope
         getServletContext().setAttribute("standardCarports",standardCarports);
+
+        //TODO: TEST TO SEE IF MATERIALS ARE ADDED
+        MaterialFacade materialFacade = new MaterialFacade(database);
+        try {
+            materialList = materialFacade.getAllMaterials();
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
+        for (Material tmp:materialList ) {
+            System.out.println(tmp.toString());
+        }
     }
 
     protected void processRequest(

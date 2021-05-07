@@ -26,55 +26,59 @@
     This header is inspired by this bootstrap
     example: https://getbootstrap.com/docs/5.0/examples/pricing/
 -->
-
-<div>
-    <img class="img-fluid headerPictureSizeOnScreen" src="${pageContext.request.contextPath}/images/forside-carport.jpg">
-</div>
-    <div class="alignMiddleOnPage container container-fluid py-0 px-0">
-        <div class="row">
+    <div>
+        <img class="img-fluid headerPictureSizeOnScreen"
+             src="${pageContext.request.contextPath}/images/forside-carport.jpg">
+    </div>
+<div class="alignMiddleOnPage container container-fluid py-0 px-0">
+    <div class="row">
         <div class="navBackGround">
             <nav class="my-2 my-md-0 me-md-3 logo">
                 <img class="img-fluid image-responsive" src="${pageContext.request.contextPath}/images/logo-2.png">
                 <div class="row">
-                <div class="topNavigation col-xs-6 col-sm-7 col-md-9 col-lg-12">
+                    <div class="topNavigation col-xs-6 col-sm-7 col-md-9 col-lg-12">
 
-                    <c:if test="${sessionScope.user != null }">
-                        ${sessionScope.user.email}
-                    </c:if>
-
-                    <c:set var="thisPage" value="${pageContext.request.servletPath}"/>
-                    <c:set var="isNotLoginPage" value="${!fn:endsWith(thisPage,'loginpage.jsp')}"/>
-                    <c:set var="isNotRegisterPage" value="${!fn:endsWith(thisPage,'registerpage.jsp')}"/>
-
-                    <c:if test="${isNotLoginPage && isNotRegisterPage}">
                         <c:if test="${sessionScope.user != null }">
-                            <a
-                               href="${pageContext.request.contextPath}/fc/logoutcommand" style="color: white; text-decoration: none;">Logout</a>
+                            ${sessionScope.user.email}
                         </c:if>
-                        <c:if test="${sessionScope.user == null }">
-                            <i class="fa fa-lock" style="font-size:20px;color:white"></i><a href="${pageContext.request.contextPath}/fc/loginpage" style="color: white; text-decoration: none;" >Login</a>
 
+                        <c:set var="thisPage" value="${pageContext.request.servletPath}"/>
+                        <c:set var="isNotLoginPage" value="${!fn:endsWith(thisPage,'loginpage.jsp')}"/>
+                        <c:set var="isNotRegisterPage" value="${!fn:endsWith(thisPage,'registerpage.jsp')}"/>
+
+                        <c:if test="${isNotLoginPage && isNotRegisterPage}">
+                            <c:if test="${sessionScope.user != null }">
+                                <a
+                                        href="${pageContext.request.contextPath}/fc/logoutcommand"
+                                        style="color: white; text-decoration: none;">Logout</a>
+                            </c:if>
+                            <c:if test="${sessionScope.user == null }">
+                                <i class="fa fa-lock" style="font-size:20px;color:white"></i><a
+                                    href="${pageContext.request.contextPath}/fc/loginpage"
+                                    style="color: white; text-decoration: none;">Login</a>
+
+                            </c:if>
+                            <c:if test="${sessionScope.user == null }">
+                                <a
+                                        href="${pageContext.request.contextPath}/fc/registerpage"
+                                        style="color: white; text-decoration: none;">Sign up</a>
+                            </c:if>
                         </c:if>
-                        <c:if test="${sessionScope.user == null }">
-                            <a
-                                    href="${pageContext.request.contextPath}/fc/registerpage" style="color: white; text-decoration: none;">Sign up</a>
-                        </c:if>
-                    </c:if>
-                </div>
+                    </div>
                 </div>
 
                 <div class="row">
-                <div class="bottomNavigation col-md-6">
-                    <c:if test="${addHomeLink == null }">
-                        <a class="three p-2 text-light" href="<%=request.getContextPath()%>">Home</a>
-                    </c:if>
+                    <div class="bottomNavigation col-md-6">
+                        <c:if test="${addHomeLink == null }">
+                            <a class="three p-2 text-light" href="<%=request.getContextPath()%>">Home</a>
+                        </c:if>
 
-                </div>
+                    </div>
                 </div>
             </nav>
         </div>
     </div>
-    </div>
+</div>
 
 
 <header class="d-flex flex-column flex-md-row align-items-center p-3 pb-0 px-md-4 mb-4 bg-white border-bottom shadow-sm">
