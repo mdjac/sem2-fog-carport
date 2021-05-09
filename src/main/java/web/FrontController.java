@@ -9,10 +9,7 @@ import web.commands.*;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -32,6 +29,8 @@ public class FrontController extends HttpServlet
     public static Database database;
     public static TreeMap<Integer, Carport> standardCarports = new TreeMap<>();
     public static TreeMap<Integer,TreeMap<Integer,Material>> materialMap = new TreeMap<>();
+    public static TreeMap<Integer,TreeMap<Integer,Material>> categoryFormOptions = new TreeMap<>();
+
 
     public void init() throws ServletException
     {
@@ -49,19 +48,55 @@ public class FrontController extends HttpServlet
         }
 
         // Initialize whatever global datastructures needed here:
+        //Used to collect all material from the database
+        MaterialFacade materialFacade = new MaterialFacade(database);
+        try {
+            materialMap = materialFacade.getAllMaterials();
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
 
+        TreeMap<Integer, Material> formOption = new TreeMap<>();
+
+        for (Map.Entry<Integer,TreeMap<Integer,Material>> tmp: materialMap.entrySet() ) {
+            for (Material tmp1:  tmp.getValue().values()) {
+                if (!categoryFormOptions.containsKey(tmp.getKey())){
+                    formOption = new TreeMap<>();
+                    formOption.put(tmp1.getMaterialsId(), tmp1);
+                    categoryFormOptions.put(tmp1.getMaterialsCategoryId(),formOption);
+                } else {
+                    //If categori id exist then we add the material to the treeMap under the existing categoriID
+                    formOption = categoryFormOptions.get(tmp.getKey());
+                    //Check om materialeID eksistere i formoption listen, hvis ikke tilføj
+
+                    if (!formOption.containsKey(tmp1.getMaterialsId())) {
+                        formOption.put(tmp1.getMaterialsId(), tmp1);
+                    }
+                }
+            }
+        }
+
+        //TODO: Skal slettes
+        for (Map.Entry<Integer,TreeMap<Integer,Material>> tmp: categoryFormOptions.entrySet() ) {
+            System.out.println("");
+            for (Material tmp1:  tmp.getValue().values()) {
+                System.out.println(""+tmp.getKey()+" --- "+tmp1.getMaterialName());
+            }
+        }
+
+        getServletContext().setAttribute("categoryFormOptions",categoryFormOptions);
 
         //Create standard carports
         Carport carport = new Carport(
-                "Sort Træ",
+                categoryFormOptions.get(1).get(1).getMaterialName(),
                 "300 cm",
                 "320 cm",
                 "400 cm",
-                "brunt træ",
+                categoryFormOptions.get(3).get(2).getMaterialName(),
                 "100 cm",
                 "100 cm",
                 "20 grader",
-                "Plastik",
+                categoryFormOptions.get(2).get(3).getMaterialName(),
                 "Fladt tag");
         carport.setId(1);
         standardCarports.put(carport.getId(), carport);
@@ -81,18 +116,6 @@ public class FrontController extends HttpServlet
         standardCarports.put(carport2.getId(), carport2);
         //Add standard carports to app scope
         getServletContext().setAttribute("standardCarports",standardCarports);
-
-        MaterialFacade materialFacade = new MaterialFacade(database);
-        try {
-            materialMap = materialFacade.getAllMaterials();
-        } catch (UserException e) {
-            e.printStackTrace();
-        }
-        for (Map.Entry<Integer,TreeMap<Integer,Material>> tmp: materialMap.entrySet() ) {
-            for (Material tmp1:  tmp.getValue().values()) {
-                System.out.println(tmp.getKey()+" "+tmp1.toString());
-            }
-        }
     }
 
     protected void processRequest(
