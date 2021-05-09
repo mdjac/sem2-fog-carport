@@ -45,6 +45,7 @@ public class SubmitOrderCommand extends CommandProtectedPage{
         //Skriv ordre til DB
         OrderFacade orderFacade = new OrderFacade(database);
         try {
+            //Tilføj ordre så vi kan presentere ordrenummer for brugeren.
             order = orderFacade.insertOrder(order,carport);
             request.setAttribute("order",order);
         } catch (UserException e) {
@@ -57,7 +58,6 @@ public class SubmitOrderCommand extends CommandProtectedPage{
 
         //TODO: Skriv til order_line
 
-        //TODO: Giv kvittering med ordrenummer
 
         return pageToShow;
     }
