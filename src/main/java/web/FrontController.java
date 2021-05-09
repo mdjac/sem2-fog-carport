@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,7 +31,7 @@ public class FrontController extends HttpServlet
 
     public static Database database;
     public static TreeMap<Integer, Carport> standardCarports = new TreeMap<>();
-    public static List<Material> materialList = new ArrayList<>();
+    public static TreeMap<Integer,TreeMap<Integer,Material>> materialMap = new TreeMap<>();
 
     public void init() throws ServletException
     {
@@ -81,15 +82,16 @@ public class FrontController extends HttpServlet
         //Add standard carports to app scope
         getServletContext().setAttribute("standardCarports",standardCarports);
 
-        //TODO: TEST TO SEE IF MATERIALS ARE ADDED
         MaterialFacade materialFacade = new MaterialFacade(database);
         try {
-            materialList = materialFacade.getAllMaterials();
+            materialMap = materialFacade.getAllMaterials();
         } catch (UserException e) {
             e.printStackTrace();
         }
-        for (Material tmp:materialList ) {
-            System.out.println(tmp.toString());
+        for (Map.Entry<Integer,TreeMap<Integer,Material>> tmp: materialMap.entrySet() ) {
+            for (Material tmp1:  tmp.getValue().values()) {
+                System.out.println(tmp.getKey()+" "+tmp1.toString());
+            }
         }
     }
 

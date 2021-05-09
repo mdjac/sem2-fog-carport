@@ -21,8 +21,9 @@ public class MaterialMapper {
         this.database = database;
     }
 
-    public List<Material> getAllMaterials() throws UserException {
-        List<Material> materialList = new ArrayList<>();
+    public TreeMap<Integer,TreeMap<Integer,Material>> getAllMaterials() throws UserException {
+        TreeMap<Integer,TreeMap<Integer,Material>> materialCategoryMap = new TreeMap<>();
+        TreeMap<Integer, Material> materialMap;
         try (Connection connection = database.connect())
         {
             String sql = "SELECT \n" +
@@ -58,9 +59,19 @@ public class MaterialMapper {
                     material.setDepth(depth);
                     material.setLength(length);
                     material.setHeight(height);
-                    materialList.add(material);
+
+                    //Check if category id exist in map
+                    if (!materialCategoryMap.containsKey(materialsCategoryId)){
+                        materialMap = new TreeMap<>();
+                        materialMap.put(material.getVariantId(),material);
+                        materialCategoryMap.put(materialsCategoryId,materialMap);
+                    } else {
+                        //If categori id exist then we add the material to the treeMap under the existing categoriID
+                        materialMap = materialCategoryMap.get(material.getMaterialsCategoryId());
+                        materialMap.put(material.getVariantId(), material);
+                    }
                 }
-                return materialList;
+                return materialCategoryMap;
             }
             catch (SQLException ex)
             {

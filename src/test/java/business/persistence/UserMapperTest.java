@@ -3,7 +3,6 @@ package business.persistence;
 import business.entities.User;
 import business.exceptions.UserException;
 import business.utilities.Encryption;
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;

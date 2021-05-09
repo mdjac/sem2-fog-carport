@@ -6,6 +6,7 @@ import business.persistence.Database;
 import business.persistence.MaterialMapper;
 
 import java.util.List;
+import java.util.TreeMap;
 
 public class MaterialFacade {
     private MaterialMapper materialMapper;
@@ -14,7 +15,7 @@ public class MaterialFacade {
         this.materialMapper = new MaterialMapper(database);
     }
 
-    public List<Material> getAllMaterials() throws UserException {
+    public TreeMap<Integer, TreeMap<Integer,Material>> getAllMaterials() throws UserException {
         return materialMapper.getAllMaterials();
     }
 }
