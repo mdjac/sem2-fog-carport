@@ -5,6 +5,7 @@ import business.entities.Material;
 import business.exceptions.UserException;
 import business.persistence.Database;
 import business.services.MaterialFacade;
+import business.utilities.Calculator;
 import web.commands.*;
 
 import java.io.IOException;
@@ -89,13 +90,13 @@ public class FrontController extends HttpServlet
         //Create standard carports
         Carport carport = new Carport(
                 categoryFormOptions.get(1).get(1).getMaterialName(),
-                "300 cm",
-                "320 cm",
-                "400 cm",
+                "300",
+                "320",
+                "638",
                 categoryFormOptions.get(3).get(2).getMaterialName(),
-                "100 cm",
-                "100 cm",
-                "20 grader",
+                "100",
+                "100",
+                "20",
                 categoryFormOptions.get(2).get(3).getMaterialName(),
                 "Fladt tag");
         carport.setId(1);
@@ -114,8 +115,13 @@ public class FrontController extends HttpServlet
                 "Fladt tag");
         carport2.setId(2);
         standardCarports.put(carport2.getId(), carport2);
+
+
         //Add standard carports to app scope
         getServletContext().setAttribute("standardCarports",standardCarports);
+
+        //TODO skal slettes
+        Calculator.calculateSpær(carport);
     }
 
     protected void processRequest(
