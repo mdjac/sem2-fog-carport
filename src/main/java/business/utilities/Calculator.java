@@ -57,19 +57,24 @@ public abstract class Calculator {
 
         double carportLength = Double.parseDouble(carport.getCarportLængde());
         double result[];
-        double optimalDistanceBetween = 0;
+        double optimalDistanceBetween;
+        double remainder;
+        double acceptableMargin = 2;
         if (fladtTag == true) {
             result = calculateOptimalDistance(spærMinAfstandFladtTag, spærMaxAfstandFladtTag, spærBredde, carportLength);
             optimalDistanceBetween = result[0];
+            remainder = result[1];
+
             //Check if remainder is within or limits
-            if (result[1] > 2) {
+            if (remainder > acceptableMargin) {
 
             }
         } else {
             result = calculateOptimalDistance(spærMinAfstandTagMedRejsning, spærMaxAfstandTagMedRejsning, spærBredde, carportLength);
             optimalDistanceBetween = result[0];
+            remainder = result[1];
             //Check if remainder is within or limits
-            if (result[1] > 2) {
+            if (remainder > acceptableMargin) {
 
             }
         }
