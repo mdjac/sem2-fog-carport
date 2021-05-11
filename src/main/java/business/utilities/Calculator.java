@@ -17,12 +17,14 @@ public abstract class Calculator {
     //Max carport bredde 750cm
     //Max carport længde 780cm
     //Afstanden mellem spær skal måles fra midten af spærrets bredde
+    //Afstanden mellem stolpe skal måles fra midten af stolpens bredde
+    //Afstand fra Front til første stolpe er 100cm
+    //Afstand fra bagerste stolpe fra bag er 20cm
 
 
     public static ArrayList<OrderLine> calculateBOM(Carport carport, Order order){
         //The string in the treemap has to be category fx. Carport bygge materialer, Tag materialer
         ArrayList<OrderLine> bomItems = new ArrayList<>();
-        OrderLine orderLine;
 
         //calculate carport
 
@@ -85,5 +87,27 @@ public abstract class Calculator {
         return spærAntal;
     }
 
+    public static int calculateStolper(Carport carport) {
+        int stolpeAntal = 0;
+
+        int forresteStolpeAfstandFraFront = 100;
+        int bagersteStolpeAfstandFraBag = 20;
+        int maxAfstandMellemStolper = 310;
+        double stolpeBredde = 10;
+
+        int carportLængde = Integer.parseInt(carport.getCarportLængde());
+
+        int afstand = carportLængde-forresteStolpeAfstandFraFront-bagersteStolpeAfstandFraBag;
+
+        double result = calculateOptimalDistance(100, maxAfstandMellemStolper, stolpeBredde, afstand);
+        System.out.println("Linje 102 " + result);
+        stolpeAntal = (int) ((afstand - (stolpeBredde*2))/result);
+        //+1 fordi vi har regnet antal afstande ud og derfor lige skal plus 1 for at få antal stolper
+        stolpeAntal += 1;
+        //Vi ganger med 2 for at få total antal stolper fra begge sider
+        stolpeAntal = stolpeAntal*2;
+        System.out.println("stolpe antal: "+stolpeAntal);
+        return  stolpeAntal;
+    }
 
 }
