@@ -92,7 +92,7 @@ public class FrontController extends HttpServlet
                 categoryFormOptions.get(1).get(1).getMaterialName(),
                 "300",
                 "320",
-                "638",
+                "550",
                 categoryFormOptions.get(3).get(2).getMaterialName(),
                 "100",
                 "100",
@@ -120,8 +120,7 @@ public class FrontController extends HttpServlet
         //Add standard carports to app scope
         getServletContext().setAttribute("standardCarports",standardCarports);
 
-        //TODO skal slettes
-        Calculator.calculateSpær(carport);
+
     }
 
     protected void processRequest(

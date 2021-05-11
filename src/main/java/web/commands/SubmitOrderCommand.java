@@ -1,16 +1,17 @@
 package web.commands;
 
-import business.entities.Carport;
-import business.entities.Order;
-import business.entities.Status;
-import business.entities.User;
+import business.entities.*;
 import business.exceptions.UserException;
 import business.services.OrderFacade;
+import business.services.OrderLineFacade;
+import business.utilities.Calculator;
 import web.FrontController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class SubmitOrderCommand extends CommandProtectedPage{
     public SubmitOrderCommand(String pageToShow, String role) {
@@ -55,7 +56,17 @@ public class SubmitOrderCommand extends CommandProtectedPage{
         }
 
         //TODO:Beregn stykliste
-
+        OrderLineFacade orderLineFacade = new OrderLineFacade(database);
+        ArrayList<OrderLine> bom = Calculator.calculateBOM(carport,order);
+        bom.forEach(x -> {
+            try {
+                orderLineFacade.insertOrderLine(x);
+            } catch (UserException e) {
+                e.printStackTrace();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        });
         //TODO: Skriv til order_line
 
 
