@@ -28,10 +28,19 @@ public abstract class Calculator {
 
         //calculate carport
 
+
+        //TODO hen materialer ind og find den længde som er tættest på den ønskede længde
+        //fx længde på 600 lager har vi 580 så prøv at tjekke på 600/2 og hvis vi har noget der matcher og er mindre end 580 så vælg det.
         //calculate spær
         int spærAntal = calculateSpær(carport);
         bomItems.add(new OrderLine(spærAntal,order.getId(), "stk",19,"Spær, monteres på rem"));
 
+        //Calculate stolper
+        int stolpeAntal = calculateStolper(carport);
+        bomItems.add(new OrderLine(stolpeAntal, order.getId(), "stk", 20, "Stolper nedgraves 90 cm. i jord"));
+
+        //Calculate remme
+        bomItems.add(new OrderLine(2, order.getId(), "stk", 19, "Remme i sider, sadles ned i stolper"));
         //Calculate redskabsrum
 
 
@@ -39,6 +48,7 @@ public abstract class Calculator {
 
         return bomItems;
     }
+
 
     public static double calculateOptimalDistance(double minDist, double maxDist, double materialWidth, double totalDist){
         double result = 0;
