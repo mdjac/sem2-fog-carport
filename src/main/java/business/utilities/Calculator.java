@@ -36,7 +36,6 @@ public abstract class Calculator {
                 result = i;
             }
         }
-
         return new double[]{result,bestRemainder};
     }
 
