@@ -5,7 +5,7 @@
 
     .banner {
         background-size: cover!important;
-        height: 654px;
+        /*height: 654px;*/
         top: 0;
         position: absolute;
         width: 100%;
