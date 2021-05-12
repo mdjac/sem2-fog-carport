@@ -78,7 +78,7 @@
 
 
                     <c:if test="${addHomeLink == null }">
-                        <a class="p-2 text-light text-decoration-none" href="<%=request.getContextPath()%>">Home</a>
+                        <a class="p-2 text-light text-decoration-none" href="<%=request.getContextPath()%>">Forside</a>
                     </c:if>
                     <c:if test="${sessionScope.user != null }">
                         <a class="p-2 text-light text-decoration-none"
