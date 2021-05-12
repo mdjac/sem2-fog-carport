@@ -4,7 +4,7 @@
 
 <t:genericpage>
     <jsp:attribute name="header">
-         Home
+         Forside
     </jsp:attribute>
 
     <jsp:attribute name="footer">

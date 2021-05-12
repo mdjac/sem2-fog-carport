@@ -17,7 +17,7 @@
     }
     .test {
         height: 300px !important;
-        background: url("../images/forside-carport.jpg");
+
         background-position: center center;
         background-repeat: no-repeat no-repeat;
     }
@@ -86,9 +86,6 @@
     height: auto;
 }
 .bottomNavigation{
-
-}
-
 
 }
 /*
