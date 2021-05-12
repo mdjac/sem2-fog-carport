@@ -26,73 +26,91 @@
     This header is inspired by this bootstrap
     example: https://getbootstrap.com/docs/5.0/examples/pricing/
 -->
+<header class="d-flex flex-column align-items-center  pb-0  mb-4 bg-white border-bottom shadow-sm">
+    <%--<div class="headerPictureSizeOnScreen">
+        <div>
+            <img class="img-fluid " style="background-position: center center; background-repeat: no-repeat no-repeat;" src="${pageContext.request.contextPath}/images/forside-carport.jpg">
+        </div>
+    </div>--%>
 
-<div class="headerPictureSizeOnScreen">
-<div>
-    <img class="img-fluid " src="${pageContext.request.contextPath}/images/forside-carport.jpg">
-</div>
-</div>
-    <div class="alignMiddleOnPage container container-fluid py-0 px-0">
-        <div class="row">
-        <div class="navBackGround">
-            <nav class="my-2 my-md-0 me-md-3 logo">
-                <img class="img-fluid image-responsive" src="${pageContext.request.contextPath}/images/logo-2.png">
-                <div class="row">
-                    <div class="topNavigation col-xs-6 col-sm-7 col-md-9 col-lg-12">
 
+    <div class="container container-fluid py-0 px-0" style="z-index: 20; background-color: #0B2069;height: 126px;">
+
+        <div style="float: left;width: 126px; height: 100%">
+            <img class="img-fluid image-responsive" src="${pageContext.request.contextPath}/images/logo-2.png">
+        </div>
+
+        <div style="margin-left: 130px; height:100%;">
+            <nav>
+                <div class="p-2 d-flex align-items-center"
+                     style="height: 55px; color: white; border-bottom: 1px solid white;margin-right: 4px">
+
+
+                    <c:set var="thisPage" value="${pageContext.request.servletPath}"/>
+                    <c:set var="isNotLoginPage" value="${!fn:endsWith(thisPage,'loginpage.jsp')}"/>
+                    <c:set var="isNotRegisterPage" value="${!fn:endsWith(thisPage,'registerpage.jsp')}"/>
+
+                    <c:if test="${sessionScope.user != null }">
+                        ${sessionScope.user.email}
+                    </c:if>
+                    <c:if test="${isNotLoginPage && isNotRegisterPage}">
                         <c:if test="${sessionScope.user != null }">
-                            ${sessionScope.user.email}
+                            <a class="p-2"
+                               href="${pageContext.request.contextPath}/fc/logoutcommand"
+                               style="color: white; text-decoration: none;">Logout</a>
                         </c:if>
+                        <c:if test="${sessionScope.user == null }">
 
-                        <c:set var="thisPage" value="${pageContext.request.servletPath}"/>
-                        <c:set var="isNotLoginPage" value="${!fn:endsWith(thisPage,'loginpage.jsp')}"/>
-                        <c:set var="isNotRegisterPage" value="${!fn:endsWith(thisPage,'registerpage.jsp')}"/>
-
-                        <c:if test="${isNotLoginPage && isNotRegisterPage}">
-                            <c:if test="${sessionScope.user != null }">
-                                <a
-                                        href="${pageContext.request.contextPath}/fc/logoutcommand"
-                                        style="color: white; text-decoration: none;">Logout</a>
-                            </c:if>
-                            <c:if test="${sessionScope.user == null }">
-                                <i class="fa fa-lock" style="font-size:20px;color:white"></i><a
+                            <i class="fa fa-lock mr-3" style="font-size:20px;color:white"></i>
+                            <a
                                     href="${pageContext.request.contextPath}/fc/loginpage"
-                                    style="color: white; text-decoration: none;">Login</a>
+                                    style="color: white; text-decoration: none; margin-left: 4px">Login
+                            </a>
 
-                            </c:if>
-                            <c:if test="${sessionScope.user == null }">
-                                <a
-                                        href="${pageContext.request.contextPath}/fc/registerpage"
-                                        style="color: white; text-decoration: none;">Sign up</a>
-                            </c:if>
+
                         </c:if>
-                    </div>
+                    </c:if>
+
                 </div>
 
-                <div class="row">
-                    <div class="bottomNavigation col-md-6">
-                        <c:if test="${addHomeLink == null }">
-                            <a class="three p-2 text-light" href="<%=request.getContextPath()%>">Home</a>
-                        </c:if>
 
-                    </div>
+                <div class="d-flex align-items-center" style="height: 71px;">
+
+
+                    <c:if test="${addHomeLink == null }">
+                        <a class="p-2 text-light text-decoration-none" href="<%=request.getContextPath()%>">Home</a>
+                    </c:if>
+                    <c:if test="${sessionScope.user != null }">
+                        <a class="p-2 text-light text-decoration-none"
+                           href="${pageContext.request.contextPath}/fc/profilepage">Profile</a>
+                        <a class="p-2 text-light text-decoration-none"
+                           href="${pageContext.request.contextPath}/fc/showorders">Orders</a>
+
+
+                        <c:if test="${sessionScope.user.role.equals('employee')}">
+                            <a class="p-2 navtext" href="${pageContext.request.contextPath}/fc/employeepage">Admin</a>
+                        </c:if>
+                    </c:if>
+
+
                 </div>
+
             </nav>
         </div>
+
+
     </div>
-</div>
 
 
-<header class="d-flex flex-column flex-md-row align-items-center p-3 pb-0 px-md-4 mb-4 bg-white border-bottom shadow-sm">
-    <div class="h5 mb-0 mt-3 me-md-auto fw-normal">
-        <p style="font-size: larger; margin-left: 250px">
+    <div class="container h5 mb-0 me-md-auto fw-normal" style="margin-top: 200px;">
+        <p style="font-size: larger;">
             <jsp:invoke fragment="header"/>
         </p>
     </div>
 
 
 </header>
-
+<div class="show banner test" data-height="400"></div>
 <div id="body" class="container" style="min-height: 20vh;">
     <jsp:doBody/>
 </div>

@@ -2,7 +2,25 @@
     CSS styles for the whole website
     The file is included in the genericpage.tag template
  */
-@media (min-width: 1101px){
+
+    .banner {
+        background-size: cover!important;
+        height: 654px;
+        top: 0;
+        position: absolute;
+        width: 100%;
+        z-index: 1;
+    }
+    .show {
+        display: block!important;
+
+    }
+    .test {
+        height: 300px !important;
+        background: url("../images/forside-carport.jpg");
+        background-position: center center;
+        background-repeat: no-repeat no-repeat;
+    }
 #topmenu_login_dialogue
 {
     font-size: smaller;
@@ -13,24 +31,36 @@
     /*    max-height: 100%;*/
     /*    height: auto;*/
     /*}*/
-
+    header nav {
+        position: relative;
+        z-index: 20;
+        width: 100%;
+        top: 0;
+    }
     .headerPictureSizeOnScreen {
         display: flex;
         justify-content: center;
         align-items: center;
         overflow: hidden
+
     }
     .headerPictureSizeOnScreen img {
         flex-shrink: 0;
         min-width: 100%;
         min-height: 100%
+
     }
     .logo{
         object-fit: none;
         object-position: 50% 50%;
         margin-left: -13px;
     }
-
+    hr {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        border: 0;
+        border-top: 1px solid rgba(255, 255, 0, 1);
+    }
 
 .navBackGround{
     background: #0B2069;
@@ -44,17 +74,11 @@
     left: 50%;
     margin-left: -650px;
     top: 0;
+    background: #0B2069;
 }
 .topNavigation{
-    position: absolute;
-    top:0;
-    left: 11%;
-    border-bottom: 1px solid white;
-    height: 63px;
-    min-height: 1px;
-    max-width: 1140px;
-    margin-left: 10px;
-    padding: 10px 0;
+
+
 }
 .image-responsive{
     display: block;
@@ -62,13 +86,12 @@
     height: auto;
 }
 .bottomNavigation{
-    position: absolute;
-    top: 75%;
-    left:10%;
+
 }
 
 
 }
+/*
 
     @media (max-width: 1100px) {
         .navBackGround {
@@ -162,6 +185,7 @@
         object-fit: none;
         object-position: 50% 50%;
         margin-left: 3px;
+
     }
     .navBackGround {
         background: #0B2069;
@@ -204,3 +228,4 @@
 }
 
 
+*/
