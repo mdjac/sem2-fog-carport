@@ -12,65 +12,55 @@
     </jsp:attribute>
 
     <jsp:body>
-        <c:if test="${sessionScope.role == 'customer' }">
-            <c:set var="link" scope="session" value="/fc/submitorder"/>
-        </c:if>
-        <c:if test="${empty sessionScope.role}">
-            <c:set var="link" scope="session" value="/fc/loginpage"/>
-        </c:if>
         <div class="row">
             <div class="col-lg-3"></div>
-            <div class="col-lg-3">
-                <c:forEach var="standardcarport" items="${applicationScope.standardCarports}">
-                <form class="" action="${pageContext.request.contextPath}${link}" method="post">
-                    <div class="card text-center" style="width: 18rem;">
-                        <img class="card-img-top" src="${pageContext.request.contextPath}/images/carport-std-enkelt.png"
-                             alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Standard carport #${standardcarport.value.id} </h5>
-
-                            <div class="card-text">
-                                <div>
-                                    <b>Carport:</b><br>
-                            Beklædning: ${standardcarport.value.carportBeklædning}<br>
-                                B${standardcarport.value.carportBredde}/
-                                    L${standardcarport.value.carportLængde}/
-                                    H${standardcarport.value.carportHøjde}
-                                </div>
-                                <div class="mt-1">
-                                    <b>Redskabsskur:</b><br>
-                                Beklædning: ${standardcarport.value.redskabsskurBeklædning}<br>
-                                B${standardcarport.value.redskabsskurBredde}/
-                                L${standardcarport.value.redskabsskurLængde}
-                                </div>
-                                <div class="mt-1">
-                                    <b>Tag:</b><br>
-                                Type: ${standardcarport.value.tagType}<br>
-                                  Materiale:  ${standardcarport.value.tagMateriale}<br>
-                                  Tag hældning:  ${standardcarport.value.tagHældning}
+            <div class="col-lg-6">
+                <div class="text-center">
+                    <h2>Køb din nye carport hos Fog! </h2>
+                    <p>
+                        Vælg mellem vores standard modeller eller byg-selv model og lad os give dig et konkret tilbud på en carport i nøjagtig de mål du ønsker!
+                    </p>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-lg-6">
+                        <form class="" action="${pageContext.request.contextPath}/fc/standardcarportorderpage"
+                              method="post">
+                            <div class="card text-center" style="width: 18rem;">
+                                <img class="card-img-top"
+                                     src="${pageContext.request.contextPath}/images/carport-custom.png"
+                                     alt="Card image cap">
+                                <div class="card-body">
+                                    <h5 class="card-title">Standard carport</h5>
+                                    <p class="card-text">
+                                        Leveres som byg-selv sæt<br>
+                                        Byggevejledning medfølger<br>
+                                        Levering inden for 10 hverdage<br>
+                                    </p>
+                                    <input class="btn btn-primary" type="submit" value="Vælg">
                                 </div>
                             </div>
-                            <input type="hidden" id="standardCarportId" name="standardCarportId" value="${standardcarport.value.id}">
-                            <input class="btn btn-primary mt-2" type="submit" value="Send forespørgsel">
-                        </div>
+                        </form>
                     </div>
-                </form>
-                </c:forEach>
-            </div>
-            <div class="col-lg-3">
-                <form class="" action="${pageContext.request.contextPath}/fc/customizedcarportorderpage" method="post">
-                    <div class="card text-center" style="width: 18rem;">
-                        <img class="card-img-top" src="${pageContext.request.contextPath}/images/carport-custom.png"
-                             alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Special bygget carport</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
-                                of
-                                the card's content.</p>
-                            <input class="btn btn-primary" type="submit" value="Byg selv">
-                        </div>
+                    <div class="col-lg-6">
+                        <form class="" action="${pageContext.request.contextPath}/fc/customizedcarportorderpage"
+                              method="post">
+                            <div class="card text-center" style="width: 18rem;">
+                                <img class="card-img-top"
+                                     src="${pageContext.request.contextPath}/images/carport-custom.png"
+                                     alt="Card image cap">
+                                <div class="card-body">
+                                    <h5 class="card-title">Special bygget carport</h5>
+                                    <p class="card-text">
+                                        Leveres som byg-selv sæt<br>
+                                        Byggevejledning medfølger<br>
+                                        Tilbud fremsendes indenfor 10 hverdage<br>
+                                    </p>
+                                    <input class="btn btn-primary" type="submit" value="Vælg">
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                </form>
+                </div>
             </div>
             <div class="col-lg-3"></div>
 
