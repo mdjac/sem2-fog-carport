@@ -112,6 +112,9 @@ public class FrontController extends HttpServlet
                 roofTypes.add(type);
             }
             getServletContext().setAttribute("roofTypes",roofTypes);
+            //Rest of form options
+            getServletContext().setAttribute("categoryFormOptions",categoryFormOptions);
+
     }
 
     protected void processRequest(
