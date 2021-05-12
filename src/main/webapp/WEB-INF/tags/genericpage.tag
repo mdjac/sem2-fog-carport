@@ -88,7 +88,7 @@
 
 
                         <c:if test="${sessionScope.user.role.equals('employee')}">
-                            <a class="p-2 navtext" href="${pageContext.request.contextPath}/fc/employeepage">Admin</a>
+                            <a class="p-2 text-light text-decoration-none" href="${pageContext.request.contextPath}/fc/employeepage">Admin</a>
                         </c:if>
                     </c:if>
 

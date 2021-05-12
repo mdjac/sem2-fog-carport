@@ -3,17 +3,17 @@ package business.entities;
 public class Carport {
 private int id;
 private String carportBeklædning;
-private String CarportBredde;
-private String CarportHøjde;
-private String CarportLængde;
+private int CarportBredde;
+private int CarportHøjde;
+private int CarportLængde;
 private String RedskabsskurBeklædning;
-private String RedskabsskurBredde;
-private String RedskabsskurLængde;
-private String TagHældning;
+private int RedskabsskurBredde;
+private int RedskabsskurLængde;
+private int TagHældning;
 private String TagMateriale;
-private String TagType;
+private RoofType RoofType;
 
-    public Carport(String carportBeklædning, String carportBredde, String carportHøjde, String carportLængde, String redskabsskurBeklædning, String redskabsskurBredde, String redskabsskurLængde, String tagHældning, String tagMateriale, String tagType) {
+    public Carport(String carportBeklædning, int carportBredde, int carportHøjde, int carportLængde, String redskabsskurBeklædning, int redskabsskurBredde, int redskabsskurLængde, int tagHældning, String tagMateriale, RoofType roofType) {
         this.carportBeklædning = carportBeklædning;
         CarportBredde = carportBredde;
         CarportHøjde = carportHøjde;
@@ -23,7 +23,7 @@ private String TagType;
         RedskabsskurLængde = redskabsskurLængde;
         TagHældning = tagHældning;
         TagMateriale = tagMateriale;
-        TagType = tagType;
+        RoofType = roofType;
     }
 
     public void setId(int id) {
@@ -38,15 +38,15 @@ private String TagType;
         return carportBeklædning;
     }
 
-    public String getCarportBredde() {
+    public int getCarportBredde() {
         return CarportBredde;
     }
 
-    public String getCarportHøjde() {
+    public int getCarportHøjde() {
         return CarportHøjde;
     }
 
-    public String getCarportLængde() {
+    public int getCarportLængde() {
         return CarportLængde;
     }
 
@@ -54,15 +54,15 @@ private String TagType;
         return RedskabsskurBeklædning;
     }
 
-    public String getRedskabsskurBredde() {
+    public int getRedskabsskurBredde() {
         return RedskabsskurBredde;
     }
 
-    public String getRedskabsskurLængde() {
+    public int getRedskabsskurLængde() {
         return RedskabsskurLængde;
     }
 
-    public String getTagHældning() {
+    public int getTagHældning() {
         return TagHældning;
     }
 
@@ -70,7 +70,7 @@ private String TagType;
         return TagMateriale;
     }
 
-    public String getTagType() {
-        return TagType;
+    public String getRoofType() {
+        return RoofType.toString();
     }
 }

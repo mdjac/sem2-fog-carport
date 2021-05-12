@@ -47,7 +47,7 @@
                                             </div>
                                             <div class="mt-1">
                                                 <b>Tag:</b><br>
-                                                Type: ${standardcarport.value.tagType}<br>
+                                                Type: ${standardcarport.value.roofType.toString()}<br>
                                                 Materiale: ${standardcarport.value.tagMateriale}<br>
                                                 Tag hældning: ${standardcarport.value.tagHældning}
                                             </div>

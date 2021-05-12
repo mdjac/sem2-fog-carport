@@ -2,9 +2,11 @@ package web;
 
 import business.entities.Carport;
 import business.entities.Material;
+import business.entities.RoofType;
 import business.exceptions.UserException;
 import business.persistence.Database;
 import business.services.MaterialFacade;
+import business.services.StandardCarportFacade;
 import business.utilities.Calculator;
 import web.commands.*;
 
@@ -81,87 +83,35 @@ public class FrontController extends HttpServlet
         for (Map.Entry<Integer,TreeMap<Integer,Material>> tmp: categoryFormOptions.entrySet() ) {
             System.out.println("");
             for (Material tmp1:  tmp.getValue().values()) {
-                System.out.println(""+tmp.getKey()+" --- "+tmp1.getMaterialName());
+                System.out.println(""+tmp.getKey()+" --- "+tmp1.getMaterialName()+" --- "+tmp1.getMaterialsId());
             }
         }
 
         getServletContext().setAttribute("categoryFormOptions",categoryFormOptions);
 
-        //Create standard carports
-        Carport carport = new Carport(
-                categoryFormOptions.get(1).get(1).getMaterialName(),
-                "300",
-                "320",
-                "720",
-                categoryFormOptions.get(3).get(2).getMaterialName(),
-                "100",
-                "100",
-                "20",
-                categoryFormOptions.get(2).get(3).getMaterialName(),
-                "Fladt tag");
-        carport.setId(1);
-        standardCarports.put(carport.getId(), carport);
 
-        Carport carport2 = new Carport(
-                "Sort Træ",
-                "300",
-                "320",
-                "400",
-                "brunt træ",
-                "100",
-                "100",
-                "20",
-                "Tegl",
-                "Fladt tag");
-        carport2.setId(2);
-        standardCarports.put(carport2.getId(), carport2);
 
-        Carport carport3 = new Carport(
-                "Sort Træ",
-                "300",
-                "320",
-                "400",
-                "brunt træ",
-                "100",
-                "100",
-                "20",
-                "Tegl",
-                "Fladt tag");
-        carport3.setId(3);
-        standardCarports.put(carport3.getId(), carport3);
-
-        Carport carport4 = new Carport(
-                "Sort Træ",
-                "300",
-                "320",
-                "400",
-                "brunt træ",
-                "100",
-                "100",
-                "20",
-                "Tegl",
-                "Fladt tag");
-        carport4.setId(4);
-        standardCarports.put(carport4.getId(), carport4);
-
-        Carport carport5 = new Carport(
-                "Sort Træ",
-                "300",
-                "320",
-                "400",
-                "brunt træ",
-                "100",
-                "100",
-                "20",
-                "Tegl",
-                "Fladt tag");
-        carport5.setId(5);
-        standardCarports.put(carport5.getId(), carport5);
-
+        //Get standard carports
+        StandardCarportFacade standardCarportFacade = new StandardCarportFacade(database);
+        try {
+            standardCarports = standardCarportFacade.getStandardCarports();
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
         //Add standard carports to app scope
         getServletContext().setAttribute("standardCarports",standardCarports);
 
-        Calculator.calculateStolper(carport);
+
+        //TODO: Skal slettes
+        Calculator.calculateStolper(standardCarports.get(1));
+
+        //Sets options to appscopes
+            //Roof types
+            ArrayList<RoofType> roofTypes = new ArrayList<>();
+            for (RoofType type : RoofType.values()){
+                roofTypes.add(type);
+            }
+            getServletContext().setAttribute("roofTypes",roofTypes);
     }
 
     protected void processRequest(

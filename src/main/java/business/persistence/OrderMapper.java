@@ -6,7 +6,6 @@ import business.entities.Order;
 import business.exceptions.UserException;
 
 import java.sql.*;
-import java.util.TreeMap;
 
 public class OrderMapper {
     private Database database;
@@ -32,16 +31,16 @@ public class OrderMapper {
                     "orders_id) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-                ps.setString(1,carport.getTagType());
+                ps.setString(1,carport.getRoofType());
                 ps.setString(2,carport.getTagMateriale());
-                ps.setString(3,carport.getTagHældning());
+                ps.setInt(3,carport.getTagHældning());
                 ps.setString(4,carport.getCarportBeklædning());
-                ps.setString(5,carport.getCarportBredde());
-                ps.setString(6,carport.getCarportHøjde());
-                ps.setString(7,carport.getCarportLængde());
+                ps.setInt(5,carport.getCarportBredde());
+                ps.setInt(6,carport.getCarportHøjde());
+                ps.setInt(7,carport.getCarportLængde());
                 ps.setString(8,carport.getRedskabsskurBeklædning());
-                ps.setString(9,carport.getRedskabsskurBredde());
-                ps.setString(10,carport.getRedskabsskurLængde());
+                ps.setInt(9,carport.getRedskabsskurBredde());
+                ps.setInt(10,carport.getRedskabsskurLængde());
                 ps.setInt(11,orderId);
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected == 1) {

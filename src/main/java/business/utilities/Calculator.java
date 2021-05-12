@@ -5,7 +5,6 @@ import business.entities.Order;
 import business.entities.OrderLine;
 
 import java.util.ArrayList;
-import java.util.TreeMap;
 
 public abstract class Calculator {
 
@@ -77,13 +76,13 @@ public abstract class Calculator {
 
         boolean fladtTag;
 
-        if (carport.getTagType() == "Fladt tag"){
+        if (carport.getRoofType() == "Fladt tag"){
             fladtTag = true;
         } else {
             fladtTag = false;
         }
 
-        double carportLength = Double.parseDouble(carport.getCarportLængde());
+        double carportLength = carport.getCarportLængde();
         double spærMellemrum;
 
         if (fladtTag == true) {
@@ -106,7 +105,7 @@ public abstract class Calculator {
         int maxAfstandMellemStolper = 310;
         double stolpeBredde = 10;
 
-        int carportLængde = Integer.parseInt(carport.getCarportLængde());
+        int carportLængde = carport.getCarportLængde();
 
         int afstand = carportLængde-forresteStolpeAfstandFraFront-bagersteStolpeAfstandFraBag;
 
