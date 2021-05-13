@@ -1,5 +1,6 @@
 package web;
 
+import business.entities.AllowedMinMax;
 import business.entities.Carport;
 import business.entities.Material;
 import business.entities.RoofType;
@@ -22,8 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebServlet(name = "FrontController", urlPatterns = {"/fc/*"})
-public class FrontController extends HttpServlet
-{
+public class FrontController extends HttpServlet {
     private final static String USER = "dev";
     private final static String PASSWORD = "DevUser21!";
     private final static String URL = "jdbc:mysql://167.172.176.18:3306/carport?serverTimezone=CET";
@@ -31,21 +31,17 @@ public class FrontController extends HttpServlet
 
     public static Database database;
     public static TreeMap<Integer, Carport> standardCarports = new TreeMap<>();
-    public static TreeMap<Integer,TreeMap<Integer,Material>> materialMap = new TreeMap<>();
-    public static TreeMap<Integer,TreeMap<Integer,Material>> categoryFormOptions = new TreeMap<>();
+    public static TreeMap<Integer, TreeMap<Integer, Material>> materialMap = new TreeMap<>();
+    public static TreeMap<Integer, TreeMap<Integer, Material>> categoryFormOptions = new TreeMap<>();
+    public static TreeMap<String, AllowedMinMax> allowedMeasurements = new TreeMap<>();
 
 
-    public void init() throws ServletException
-    {
+    public void init() throws ServletException {
         // Initialize database connection
-        if (database == null)
-        {
-            try
-            {
+        if (database == null) {
+            try {
                 database = new Database(USER, PASSWORD, URL);
-            }
-            catch (ClassNotFoundException ex)
-            {
+            } catch (ClassNotFoundException ex) {
                 Logger.getLogger("web").log(Level.SEVERE, ex.getMessage(), ex);
             }
         }
@@ -61,12 +57,12 @@ public class FrontController extends HttpServlet
 
         TreeMap<Integer, Material> formOption = new TreeMap<>();
 
-        for (Map.Entry<Integer,TreeMap<Integer,Material>> tmp: materialMap.entrySet() ) {
-            for (Material tmp1:  tmp.getValue().values()) {
-                if (!categoryFormOptions.containsKey(tmp.getKey())){
+        for (Map.Entry<Integer, TreeMap<Integer, Material>> tmp : materialMap.entrySet()) {
+            for (Material tmp1 : tmp.getValue().values()) {
+                if (!categoryFormOptions.containsKey(tmp.getKey())) {
                     formOption = new TreeMap<>();
                     formOption.put(tmp1.getMaterialsId(), tmp1);
-                    categoryFormOptions.put(tmp1.getMaterialsCategoryId(),formOption);
+                    categoryFormOptions.put(tmp1.getMaterialsCategoryId(), formOption);
                 } else {
                     //If categori id exist then we add the material to the treeMap under the existing categoriID
                     formOption = categoryFormOptions.get(tmp.getKey());
@@ -80,15 +76,14 @@ public class FrontController extends HttpServlet
         }
 
         //TODO: Skal slettes
-        for (Map.Entry<Integer,TreeMap<Integer,Material>> tmp: categoryFormOptions.entrySet() ) {
+        for (Map.Entry<Integer, TreeMap<Integer, Material>> tmp : categoryFormOptions.entrySet()) {
             System.out.println("");
-            for (Material tmp1:  tmp.getValue().values()) {
-                System.out.println(""+tmp.getKey()+" --- "+tmp1.getMaterialName()+" --- "+tmp1.getMaterialsId());
+            for (Material tmp1 : tmp.getValue().values()) {
+                System.out.println("" + tmp.getKey() + " --- " + tmp1.getMaterialName() + " --- " + tmp1.getMaterialsId());
             }
         }
 
-        getServletContext().setAttribute("categoryFormOptions",categoryFormOptions);
-
+        getServletContext().setAttribute("categoryFormOptions", categoryFormOptions);
 
 
         //Get standard carports
@@ -99,31 +94,38 @@ public class FrontController extends HttpServlet
             e.printStackTrace();
         }
         //Add standard carports to app scope
-        getServletContext().setAttribute("standardCarports",standardCarports);
+        getServletContext().setAttribute("standardCarports", standardCarports);
 
 
         //TODO: Skal slettes
         Calculator.calculateStolper(standardCarports.get(1));
 
         //Sets options to appscopes
-            //Roof types
-            ArrayList<RoofType> roofTypes = new ArrayList<>();
-            for (RoofType type : RoofType.values()){
-                roofTypes.add(type);
-            }
-            getServletContext().setAttribute("roofTypes",roofTypes);
-            //Rest of form options
-            getServletContext().setAttribute("categoryFormOptions",categoryFormOptions);
+        //Roof types
+        ArrayList<RoofType> roofTypes = new ArrayList<>();
+        for (RoofType type : RoofType.values()) {
+            roofTypes.add(type);
+        }
+        getServletContext().setAttribute("roofTypes", roofTypes);
+        //Rest of form options
+        getServletContext().setAttribute("categoryFormOptions", categoryFormOptions);
 
+
+        //Sets allowedMeasurements
+        allowedMeasurements.put("roofTilt",new AllowedMinMax(3, 10));
+        allowedMeasurements.put("carportLength",new AllowedMinMax(200, 780));
+        allowedMeasurements.put("carportWidth",new AllowedMinMax(300, 500));
+        allowedMeasurements.put("carportHeight",new AllowedMinMax(150, 250));
+        allowedMeasurements.put("shedLength",new AllowedMinMax(100, 200));
+        allowedMeasurements.put("shedWidth",new AllowedMinMax(100, 200));
+        getServletContext().setAttribute("allowedMeasurements",allowedMeasurements);
     }
 
     protected void processRequest(
             HttpServletRequest request,
             HttpServletResponse response)
-            throws ServletException, IOException
-    {
-        try
-        {
+            throws ServletException, IOException {
+        try {
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
             Command action = Command.fromPath(request, database);
@@ -142,9 +144,7 @@ public class FrontController extends HttpServlet
             }
 
             request.getRequestDispatcher("/WEB-INF/" + view + ".jsp").forward(request, response);
-        }
-        catch (UnsupportedEncodingException | UserException ex)
-        {
+        } catch (UnsupportedEncodingException | UserException ex) {
             request.setAttribute("problem", ex.getMessage());
             Logger.getLogger("web").log(Level.SEVERE, ex.getMessage(), ex);
             request.getRequestDispatcher("/errorpage.jsp").forward(request, response);
@@ -155,8 +155,7 @@ public class FrontController extends HttpServlet
     protected void doGet(
             HttpServletRequest request,
             HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
@@ -164,14 +163,12 @@ public class FrontController extends HttpServlet
     protected void doPost(
             HttpServletRequest request,
             HttpServletResponse response)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
     @Override
-    public String getServletInfo()
-    {
+    public String getServletInfo() {
         return "FrontController for application";
     }
 
