@@ -33,14 +33,24 @@ public class OrderMapper {
             try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setString(1,carport.getRoofType());
                 ps.setString(2,carport.getTagMateriale());
-                ps.setInt(3,carport.getTagHældning());
+                if(carport.getTagHældning() != null){
+                    ps.setInt(3,carport.getTagHældning());
+                }else{
+                    ps.setNull(3,java.sql.Types.INTEGER);
+                }
                 ps.setString(4,carport.getCarportBeklædning());
                 ps.setInt(5,carport.getCarportBredde());
                 ps.setInt(6,carport.getCarportHøjde());
                 ps.setInt(7,carport.getCarportLængde());
-                ps.setString(8,carport.getRedskabsskurBeklædning());
-                ps.setInt(9,carport.getRedskabsskurBredde());
-                ps.setInt(10,carport.getRedskabsskurLængde());
+                if(carport.getRedskabsskurBeklædning() != null){
+                    ps.setString(8,carport.getRedskabsskurBeklædning());
+                    ps.setInt(9,carport.getRedskabsskurBredde());
+                    ps.setInt(10,carport.getRedskabsskurLængde());
+                }else{
+                    ps.setNull(8, Types.VARCHAR);
+                    ps.setNull(9,java.sql.Types.INTEGER);
+                    ps.setNull(10,java.sql.Types.INTEGER);
+                }
                 ps.setInt(11,orderId);
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected == 1) {
@@ -59,7 +69,6 @@ public class OrderMapper {
     public Order insertOrder(Order order, Carport carport) throws UserException {
         try (Connection connection = database.connect()) {
             String sql = "INSERT INTO orders (status,totalprice,users_id) VALUES (?, ?, ?)";
-
             try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setString(1,order.getStatus().toString());
                 ps.setDouble(2,order.getTotalPrice());
@@ -82,8 +91,6 @@ public class OrderMapper {
                     throw new UserException(ex.getMessage());
                 }
                 //TODO: Skal indsætte orderline
-
-
                 return order;
             } catch (SQLException ex) {
                 throw new UserException(ex.getMessage());
