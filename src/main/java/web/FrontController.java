@@ -97,9 +97,6 @@ public class FrontController extends HttpServlet {
         getServletContext().setAttribute("standardCarports", standardCarports);
 
 
-        //TODO: Skal slettes
-        Calculator.calculateStolper(standardCarports.get(1));
-
         //Sets options to appscopes
         //Roof types
         ArrayList<RoofType> roofTypes = new ArrayList<>();

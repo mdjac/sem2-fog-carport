@@ -14,6 +14,55 @@ public class StandardCarportMapper {
         this.database = database;
     }
 
+    public boolean insertStandardCarport (RoofType roofType, int roofMaterialId, int carportMaterialId, int carportLength, int carportWidth, int carportHeight, Integer roofTilt,  Integer shedMaterialId, Integer shedLength, Integer shedWidth) throws UserException{
+        try (Connection connection = database.connect()) {
+            String sql = "INSERT INTO `standard_carports` " +
+                    "(carport_beklædning," +
+                    "carport_bredde," +
+                    "carport_højde," +
+                    "carport_længde," +
+                    "redskabsskur_beklædning," +
+                    "redskabsskur_bredde," +
+                    "redskabsskur_længde," +
+                    "tag_hældning," +
+                    "tag_materiale," +
+                    "tag_type) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                ps.setInt(1,carportMaterialId);
+                ps.setInt(2,carportWidth);
+                ps.setInt(3,carportHeight);
+                ps.setInt(4,carportLength);
+                if(shedMaterialId != null){
+                    ps.setInt(5,shedMaterialId);
+                    ps.setInt(6,shedWidth);
+                    ps.setInt(7,shedLength);
+                }else{
+                    ps.setNull(5,java.sql.Types.INTEGER);
+                    ps.setNull(6,java.sql.Types.INTEGER);
+                    ps.setNull(7,java.sql.Types.INTEGER);
+                }
+                if(roofType.equals(RoofType.Tag_Med_Rejsning)){
+                    ps.setInt(8,roofTilt);
+                }else{
+                    ps.setNull(8,java.sql.Types.INTEGER);
+                }
+                ps.setInt(9,roofMaterialId);
+                ps.setString(10,roofType.toString());
+                int rowsAffected = ps.executeUpdate();
+                if (rowsAffected == 1) {
+                    return true;
+                }
+                throw new SQLException("Error while inserting into standard carport");
+            } catch (SQLException ex) {
+                throw new UserException(ex.getMessage());
+            }
+        } catch (SQLException ex) {
+            throw new UserException(ex.getMessage());
+        }
+    }
+
+
     public TreeMap<Integer, Carport> getStandardCarports() throws UserException {
         TreeMap<Integer, Carport> standardCarports = new TreeMap<>();
         try (Connection connection = database.connect())
@@ -33,7 +82,7 @@ public class StandardCarportMapper {
                     int redskabsskur_længde = rs.getInt("redskabsskur_længde");
                     int tag_hældning = rs.getInt("tag_hældning");
                     int tag_materialeId = rs.getInt("tag_materiale");
-                    RoofType tag_type = RoofType.valueOf(rs.getString("tag_type"));
+                    RoofType tag_type = RoofType.fromString(rs.getString("tag_type"));
                     int standardCarportID = rs.getInt("id");
 
 

@@ -14,4 +14,15 @@ public enum RoofType {
     public String toString() {
         return name;
     }
+
+
+    public static RoofType fromString(String input) {
+        for (RoofType roofType : RoofType.values()) {
+            if (roofType.name.equalsIgnoreCase(input)) {
+                return roofType;
+            }
+        }
+        return null;
+    }
+
 }

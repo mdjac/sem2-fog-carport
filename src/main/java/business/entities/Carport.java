@@ -1,6 +1,7 @@
 package business.entities;
 
 public class Carport {
+    //The reason for Integer at some of them, is to make them possible to be null for prettier print on site.
 private int id;
 private String carportBeklædning;
 private int CarportBredde;

@@ -17,6 +17,12 @@ public class AllowedMinMax {
         this.min = min;
         this.max = max;
     }
+    public boolean between(int i) {
+        if (i >= this.min && i <= this.max)
+            return true;
+        else
+            return false;
+    }
 
     @Override
     public String toString() {

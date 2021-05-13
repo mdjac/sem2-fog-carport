@@ -32,7 +32,7 @@ public abstract class Command
         commands.put("submitorder", new SubmitOrderCommand("receiptpage","customer"));
         commands.put("standardcarportorderpage", new CommandUnprotectedPage("standardcarportorderpage"));
         commands.put("addstandardcarportpage",new CommandProtectedPage("addstandardcarportpage","employee"));
-        commands.put("addstandardcarportcommand", new AddStandardCarportCommand("employeepage","employee"));
+        commands.put("addstandardcarportcommand", new AddStandardCarportCommand("addstandardcarportpage","employee"));
     }
 
     public static Command fromPath(

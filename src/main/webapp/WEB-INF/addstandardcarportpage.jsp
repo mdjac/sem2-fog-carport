@@ -16,6 +16,9 @@
             <div class="row">
                 <div class="col-lg-2"></div>
                 <div class="col-lg-8">
+                    <c:if test="${requestScope.status != null }">
+                        <h3 class="text-center text-success mb-4">${requestScope.status}</h3>
+                    </c:if>
                     <div class="row">
                         <div class="col-lg-6 mt-2">
                             <label for="rooftype">Vælg fladt tag eller tag med rejsning</label>
@@ -110,7 +113,7 @@
                             <select class="form-select" aria-label="shedmaterial" id="shedmaterial"
                                     name="shedmaterial" required>
                                 <option value="" selected disabled>Vælg her</option>
-                                <c:forEach var="option" items="${applicationScope.categoryFormOptions[(2).intValue()]}">
+                                <c:forEach var="option" items="${applicationScope.categoryFormOptions[(3).intValue()]}">
                                     <option value="${option.value.materialsId}">${option.value.materialName}</option>
                                 </c:forEach>
                             </select>

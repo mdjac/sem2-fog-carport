@@ -36,7 +36,7 @@ public class SubmitOrderCommand extends CommandProtectedPage{
         }
         //Til custom carport
         else{
-
+            //TODO:
         }
 
         //Opret ordre
@@ -60,6 +60,7 @@ public class SubmitOrderCommand extends CommandProtectedPage{
         ArrayList<OrderLine> bom = Calculator.calculateBOM(carport,order);
         bom.forEach(x -> {
             try {
+                //TODO: Skriv til order_line
                 orderLineFacade.insertOrderLine(x);
             } catch (UserException e) {
                 e.printStackTrace();
@@ -67,8 +68,6 @@ public class SubmitOrderCommand extends CommandProtectedPage{
                 throwables.printStackTrace();
             }
         });
-        //TODO: Skriv til order_line
-
 
         return pageToShow;
     }
