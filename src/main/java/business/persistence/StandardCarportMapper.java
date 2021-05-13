@@ -36,10 +36,22 @@ public class StandardCarportMapper {
                     RoofType tag_type = RoofType.valueOf(rs.getString("tag_type"));
                     int standardCarportID = rs.getInt("id");
 
-                    System.out.println("line 41"+tag_type.toString());
-                    //Find materiale navn ud fra materiale id
+
+                    //Find material name based on id
                     String carport_beklædning = FrontController.categoryFormOptions.get(1).get(carport_beklædningId).getMaterialName();
-                    String redskabsskur_beklædning = FrontController.categoryFormOptions.get(3).get(redskabsskur_beklædningId).getMaterialName();
+
+                    //Create carport
+                    Carport carport = new Carport(carport_beklædning, carport_bredde, carport_højde, carport_længde, tag_type);
+                    carport.setId(standardCarportID);
+
+                    //Checks which fields must be ignored
+                    if(redskabsskur_beklædningId != 0){
+                        String redskabsskur_beklædning = FrontController.categoryFormOptions.get(3).get(redskabsskur_beklædningId).getMaterialName();
+                        carport.setRedskabsskurBeklædning(redskabsskur_beklædning);
+                        carport.setRedskabsskurBredde(redskabsskur_bredde);
+                        carport.setRedskabsskurLængde(redskabsskur_længde);
+                    }
+
                     //Tag beklædning skal findes i forskelligt materiale ID efter om det er fladt eller skrå tag
                     String tag_materiale;
                     if(tag_type == RoofType.Fladt_Tag){
@@ -49,9 +61,10 @@ public class StandardCarportMapper {
                     {
                         //Tag med rejsning materiale category id == 4
                         tag_materiale = FrontController.categoryFormOptions.get(4).get(tag_materialeId).getMaterialName();
+                        carport.setTagHældning(tag_hældning);
                     }
-                    Carport carport = new Carport(carport_beklædning, carport_bredde, carport_højde, carport_længde, redskabsskur_beklædning, redskabsskur_bredde, redskabsskur_længde, tag_hældning, tag_materiale, tag_type);
-                    carport.setId(standardCarportID);
+                    carport.setTagMateriale(tag_materiale);
+                    System.out.println(carport);
                     standardCarports.put(carport.getId(),carport);
                 }
                 return standardCarports;

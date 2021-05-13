@@ -39,17 +39,21 @@
                                                 L${standardcarport.value.carportLængde}/
                                                 H${standardcarport.value.carportHøjde}
                                             </div>
-                                            <div class="mt-1">
-                                                <b>Redskabsskur:</b><br>
-                                                Beklædning: ${standardcarport.value.redskabsskurBeklædning}<br>
-                                                B${standardcarport.value.redskabsskurBredde}/
-                                                L${standardcarport.value.redskabsskurLængde}
-                                            </div>
+                                            <c:if test="${standardcarport.value.redskabsskurBeklædning != null }">
+                                                <div class="mt-1">
+                                                    <b>Redskabsskur:</b><br>
+                                                    Beklædning: ${standardcarport.value.redskabsskurBeklædning}<br>
+                                                    B${standardcarport.value.redskabsskurBredde}/
+                                                    L${standardcarport.value.redskabsskurLængde}
+                                                </div>
+                                            </c:if>
                                             <div class="mt-1">
                                                 <b>Tag:</b><br>
                                                 Type: ${standardcarport.value.roofType.toString()}<br>
                                                 Materiale: ${standardcarport.value.tagMateriale}<br>
-                                                Tag hældning: ${standardcarport.value.tagHældning}
+                                                <c:if test="${standardcarport.value.tagHældning != null }">
+                                                    Tag hældning: ${standardcarport.value.tagHældning}
+                                                </c:if>
                                             </div>
                                         </div>
                                         <input type="hidden" id="standardCarportId" name="standardCarportId"

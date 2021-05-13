@@ -7,22 +7,17 @@ private int CarportBredde;
 private int CarportHøjde;
 private int CarportLængde;
 private String RedskabsskurBeklædning;
-private int RedskabsskurBredde;
-private int RedskabsskurLængde;
-private int TagHældning;
+private Integer RedskabsskurBredde;
+private Integer RedskabsskurLængde;
+private Integer TagHældning;
 private String TagMateriale;
 private RoofType RoofType;
 
-    public Carport(String carportBeklædning, int carportBredde, int carportHøjde, int carportLængde, String redskabsskurBeklædning, int redskabsskurBredde, int redskabsskurLængde, int tagHældning, String tagMateriale, RoofType roofType) {
+    public Carport(String carportBeklædning, int carportBredde, int carportHøjde, int carportLængde, RoofType roofType) {
         this.carportBeklædning = carportBeklædning;
         CarportBredde = carportBredde;
         CarportHøjde = carportHøjde;
         CarportLængde = carportLængde;
-        RedskabsskurBeklædning = redskabsskurBeklædning;
-        RedskabsskurBredde = redskabsskurBredde;
-        RedskabsskurLængde = redskabsskurLængde;
-        TagHældning = tagHældning;
-        TagMateriale = tagMateriale;
         RoofType = roofType;
     }
 
@@ -50,20 +45,36 @@ private RoofType RoofType;
         return CarportLængde;
     }
 
+    public void setRedskabsskurBeklædning(String redskabsskurBeklædning) {
+        RedskabsskurBeklædning = redskabsskurBeklædning;
+    }
+
     public String getRedskabsskurBeklædning() {
         return RedskabsskurBeklædning;
     }
 
-    public int getRedskabsskurBredde() {
+    public Integer getRedskabsskurBredde() {
         return RedskabsskurBredde;
     }
 
-    public int getRedskabsskurLængde() {
+    public Integer getRedskabsskurLængde() {
         return RedskabsskurLængde;
     }
 
-    public int getTagHældning() {
+    public Integer getTagHældning() {
         return TagHældning;
+    }
+
+    public void setRedskabsskurBredde(Integer redskabsskurBredde) {
+        RedskabsskurBredde = redskabsskurBredde;
+    }
+
+    public void setRedskabsskurLængde(Integer redskabsskurLængde) {
+        RedskabsskurLængde = redskabsskurLængde;
+    }
+
+    public void setTagHældning(Integer tagHældning) {
+        TagHældning = tagHældning;
     }
 
     public String getTagMateriale() {
@@ -72,5 +83,27 @@ private RoofType RoofType;
 
     public String getRoofType() {
         return RoofType.toString();
+    }
+
+
+    public void setTagMateriale(String tagMateriale) {
+        TagMateriale = tagMateriale;
+    }
+
+    @Override
+    public String toString() {
+        return "Carport{" +
+                "id=" + id +
+                ", carportBeklædning='" + carportBeklædning + '\'' +
+                ", CarportBredde=" + CarportBredde +
+                ", CarportHøjde=" + CarportHøjde +
+                ", CarportLængde=" + CarportLængde +
+                ", RedskabsskurBeklædning='" + RedskabsskurBeklædning + '\'' +
+                ", RedskabsskurBredde=" + RedskabsskurBredde +
+                ", RedskabsskurLængde=" + RedskabsskurLængde +
+                ", TagHældning=" + TagHældning +
+                ", TagMateriale='" + TagMateriale + '\'' +
+                ", RoofType=" + RoofType +
+                '}';
     }
 }
