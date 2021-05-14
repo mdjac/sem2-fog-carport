@@ -7,7 +7,7 @@ public class Material {
     private int materialsCategoryId;
     private int variantId;
     private int quantity;
-    private double depth;
+    private double width;
     private double length;
     private double height;
     private double price;
@@ -22,8 +22,8 @@ public class Material {
         this.price = price;
     }
 
-    public void setDepth(double depth) {
-        this.depth = depth;
+    public void setWidth(double width) {
+        this.width = width;
     }
 
     public void setLength(double length) {
@@ -42,6 +42,22 @@ public class Material {
         return materialName;
     }
 
+    @Override
+    public String toString() {
+        return "Material{" +
+                "categoryName='" + categoryName + '\'' +
+                ", materialName='" + materialName + '\'' +
+                ", materialsId=" + materialsId +
+                ", materialsCategoryId=" + materialsCategoryId +
+                ", variantId=" + variantId +
+                ", quantity=" + quantity +
+                ", width=" + width +
+                ", length=" + length +
+                ", height=" + height +
+                ", price=" + price +
+                '}';
+    }
+
     public int getMaterialsId() {
         return materialsId;
     }
@@ -58,8 +74,8 @@ public class Material {
         return quantity;
     }
 
-    public double getDepth() {
-        return depth;
+    public double getWidth() {
+        return width;
     }
 
     public double getLength() {
@@ -74,19 +90,4 @@ public class Material {
         return price;
     }
 
-    @Override
-    public String toString() {
-        return "Material{" +
-                "categoryName='" + categoryName + '\'' +
-                ", materialName='" + materialName + '\'' +
-                ", materialsId=" + materialsId +
-                ", materialsCategoryId=" + materialsCategoryId +
-                ", variantId=" + variantId +
-                ", quantity=" + quantity +
-                ", depth=" + depth +
-                ", length=" + length +
-                ", height=" + height +
-                ", price=" + price +
-                '}';
-    }
 }

@@ -4,14 +4,17 @@ public class Carport {
     //The reason for Integer at some of them, is to make them possible to be null for prettier print on site.
 private int id;
 private String carportBeklædning;
+private Integer carportBeklædningId;
 private int CarportBredde;
 private int CarportHøjde;
 private int CarportLængde;
 private String RedskabsskurBeklædning;
+private Integer RedskabsskurBeklædningId;
 private Integer RedskabsskurBredde;
 private Integer RedskabsskurLængde;
 private Integer TagHældning;
 private String TagMateriale;
+private Integer TagMaterialeId;
 private RoofType RoofType;
 
     public Carport(String carportBeklædning, int carportBredde, int carportHøjde, int carportLængde, RoofType roofType) {
@@ -20,6 +23,30 @@ private RoofType RoofType;
         CarportHøjde = carportHøjde;
         CarportLængde = carportLængde;
         RoofType = roofType;
+    }
+
+    public Integer getCarportBeklædningId() {
+        return carportBeklædningId;
+    }
+
+    public Integer getRedskabsskurBeklædningId() {
+        return RedskabsskurBeklædningId;
+    }
+
+    public Integer getTagMaterialeId() {
+        return TagMaterialeId;
+    }
+
+    public void setCarportBeklædningId(Integer carportBeklædningId) {
+        this.carportBeklædningId = carportBeklædningId;
+    }
+
+    public void setRedskabsskurBeklædningId(Integer redskabsskurBeklædningId) {
+        RedskabsskurBeklædningId = redskabsskurBeklædningId;
+    }
+
+    public void setTagMaterialeId(Integer tagMaterialeId) {
+        TagMaterialeId = tagMaterialeId;
     }
 
     public void setId(int id) {

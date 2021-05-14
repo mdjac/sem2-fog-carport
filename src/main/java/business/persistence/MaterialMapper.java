@@ -1,16 +1,10 @@
 package business.persistence;
 
 
-import business.entities.Carport;
 import business.entities.Material;
-import business.entities.Order;
-import business.entities.Status;
 import business.exceptions.UserException;
-import web.FrontController;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.TreeMap;
 
 public class MaterialMapper {
@@ -33,7 +27,7 @@ public class MaterialMapper {
                     "materials_category_id,\n" +
                     "materials_variant.id as variant_id,\n" +
                     "materials_variant.quantity,\n" +
-                    "materials_variant.depth,\n" +
+                    "materials_variant.width,\n" +
                     "materials_variant.length,\n" +
                     "materials_variant.height,\n" +
                     "materials_variant.price\n" +
@@ -52,11 +46,11 @@ public class MaterialMapper {
                     int variantId = rs.getInt("variant_id");
                     int quantity = rs.getInt("quantity");
                     double price = rs.getDouble("price");
-                    double depth = rs.getDouble("depth");
+                    double width = rs.getDouble("width");
                     double length = rs.getDouble("length");
                     double height = rs.getDouble("height");
                     Material material = new Material(categoryName,materialName,materialsId,materialsCategoryId,variantId,quantity,price);
-                    material.setDepth(depth);
+                    material.setWidth(width);
                     material.setLength(length);
                     material.setHeight(height);
 

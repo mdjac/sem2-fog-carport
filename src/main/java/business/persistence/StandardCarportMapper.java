@@ -92,13 +92,15 @@ public class StandardCarportMapper {
                     //Create carport
                     Carport carport = new Carport(carport_beklædning, carport_bredde, carport_højde, carport_længde, tag_type);
                     carport.setId(standardCarportID);
-
+                    carport.setCarportBeklædningId(carport_beklædningId);
+                    carport.setTagMaterialeId(tag_materialeId);
                     //Checks which fields must be ignored
                     if(redskabsskur_beklædningId != 0){
                         String redskabsskur_beklædning = FrontController.categoryFormOptions.get(3).get(redskabsskur_beklædningId).getMaterialName();
                         carport.setRedskabsskurBeklædning(redskabsskur_beklædning);
                         carport.setRedskabsskurBredde(redskabsskur_bredde);
                         carport.setRedskabsskurLængde(redskabsskur_længde);
+                        carport.setRedskabsskurBeklædningId(redskabsskur_beklædningId);
                     }
 
                     //Tag beklædning skal findes i forskelligt materiale ID efter om det er fladt eller skrå tag

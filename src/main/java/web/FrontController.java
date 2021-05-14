@@ -110,15 +110,13 @@ public class FrontController extends HttpServlet {
 
         //Sets allowedMeasurements
         allowedMeasurements.put("roofTilt",new AllowedMinMax(3, 10));
-        allowedMeasurements.put("carportLength",new AllowedMinMax(200, 780));
-        allowedMeasurements.put("carportWidth",new AllowedMinMax(300, 500));
-        allowedMeasurements.put("carportHeight",new AllowedMinMax(150, 250));
+        allowedMeasurements.put("carportLength",new AllowedMinMax(480, 780));
+        allowedMeasurements.put("carportWidth",new AllowedMinMax(300, 600));
+        allowedMeasurements.put("carportHeight",new AllowedMinMax(200, 300));
         allowedMeasurements.put("shedLength",new AllowedMinMax(100, 200));
         allowedMeasurements.put("shedWidth",new AllowedMinMax(100, 200));
         getServletContext().setAttribute("allowedMeasurements",allowedMeasurements);
 
-        //Todo skal slettes
-        System.out.println("Line 121: "+Calculator.getOptimalMaterial(10, 701, true).toString());
     }
 
     protected void processRequest(
