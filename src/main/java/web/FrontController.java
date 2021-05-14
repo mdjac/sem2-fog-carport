@@ -116,6 +116,9 @@ public class FrontController extends HttpServlet {
         allowedMeasurements.put("shedLength",new AllowedMinMax(100, 200));
         allowedMeasurements.put("shedWidth",new AllowedMinMax(100, 200));
         getServletContext().setAttribute("allowedMeasurements",allowedMeasurements);
+
+        //Todo skal slettes
+        System.out.println("Line 121: "+Calculator.getOptimalMaterial(10, 701, true).toString());
     }
 
     protected void processRequest(
