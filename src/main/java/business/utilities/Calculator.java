@@ -172,15 +172,32 @@ public abstract class Calculator {
 
     public static int calculateStolper(Carport carport) {
         int stolpeAntal = 0;
-
+        int redskabsskurAntal = 0;
         int forresteStolpeAfstandFraFront = 100;
         int bagersteStolpeAfstandFraBag = 20;
         int maxAfstandMellemStolper = 310;
         double stolpeBredde = 10;
+        int redskabsskurLængde = 0;
 
         int carportLængde = carport.getCarportLængde();
+        if (carport.getRedskabsskurLængde() != null) {
+            redskabsskurLængde = carport.getRedskabsskurLængde();
+            int redskabsskurBredde = carport.getRedskabsskurBredde();
+            double skurResultatDistanceSider = calculateOptimalDistance(100, maxAfstandMellemStolper, stolpeBredde, redskabsskurLængde);
+            int redskabsskurStolpeAntalSider = (int) ((redskabsskurLængde - (stolpeBredde*2))/skurResultatDistanceSider);
+            double skurResultatDistanceFrontBag = calculateOptimalDistance(100, maxAfstandMellemStolper, stolpeBredde, redskabsskurBredde);
+            int redskabsskurStolpeAntalFrontBag = (int) ((redskabsskurBredde - (stolpeBredde*2))/skurResultatDistanceFrontBag);
 
-        int afstand = carportLængde-forresteStolpeAfstandFraFront-bagersteStolpeAfstandFraBag;
+            //Ganges med 2 for at få begge sider med
+            redskabsskurStolpeAntalSider = redskabsskurStolpeAntalSider*2;
+            //Minus med 2 fordi der allerede er en stolpe i hvert hjørne
+            redskabsskurStolpeAntalFrontBag = redskabsskurStolpeAntalFrontBag-2;
+            //Gange med 2 for at få både for og bagside med
+            redskabsskurStolpeAntalFrontBag = redskabsskurStolpeAntalFrontBag*2;
+
+            redskabsskurAntal = redskabsskurStolpeAntalFrontBag+redskabsskurStolpeAntalSider;
+        }
+        int afstand = carportLængde-forresteStolpeAfstandFraFront-redskabsskurLængde-bagersteStolpeAfstandFraBag;
 
         double result = calculateOptimalDistance(100, maxAfstandMellemStolper, stolpeBredde, afstand);
         System.out.println("Linje 102 " + result);
@@ -190,7 +207,9 @@ public abstract class Calculator {
         //Vi ganger med 2 for at få total antal stolper fra begge sider
         stolpeAntal = stolpeAntal*2;
         System.out.println("stolpe antal: "+stolpeAntal);
-        return  stolpeAntal;
+        System.out.println("stolpe antal skur: "+redskabsskurAntal);
+
+        return  stolpeAntal + redskabsskurAntal;
     }
 
 }

@@ -113,8 +113,8 @@ public class FrontController extends HttpServlet {
         allowedMeasurements.put("carportLength",new AllowedMinMax(480, 780));
         allowedMeasurements.put("carportWidth",new AllowedMinMax(300, 600));
         allowedMeasurements.put("carportHeight",new AllowedMinMax(200, 300));
-        allowedMeasurements.put("shedLength",new AllowedMinMax(100, 200));
-        allowedMeasurements.put("shedWidth",new AllowedMinMax(100, 200));
+        allowedMeasurements.put("shedLength",new AllowedMinMax(100, 400));
+        allowedMeasurements.put("shedWidth",new AllowedMinMax(100, 400));
         getServletContext().setAttribute("allowedMeasurements",allowedMeasurements);
 
     }
