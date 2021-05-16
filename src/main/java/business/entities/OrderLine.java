@@ -1,7 +1,10 @@
 package business.entities;
 
+import web.FrontController;
+
 public class OrderLine {
     private int id;
+    private String materialName;
     private int quantity;
     private int ordersID;
     private String unit;
@@ -14,6 +17,14 @@ public class OrderLine {
         this.unit = unit;
         this.materialsVariantId = materialsVariantId;
         this.description = description;
+    }
+
+    public void setMaterialName(String materialName) {
+        this.materialName = materialName;
+    }
+
+    public String getMaterialName() {
+        return materialName;
     }
 
     public void setId(int id) {
@@ -42,5 +53,11 @@ public class OrderLine {
 
     public String getDescription() {
         return description;
+    }
+
+    //todo get material name from database or treemap
+    @Override
+    public String toString() {
+        return "name: " + materialName +"description: " + description +", quantity=" + quantity + ", unit='" + unit + '\'';
     }
 }
