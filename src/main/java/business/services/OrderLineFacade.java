@@ -6,6 +6,7 @@ import business.persistence.Database;
 import business.persistence.OrderLineMapper;
 
 import java.sql.SQLException;
+import java.util.TreeMap;
 
 public class OrderLineFacade {
     OrderLineMapper orderLineMapper;
@@ -16,5 +17,9 @@ public class OrderLineFacade {
 
     public boolean insertOrderLine (OrderLine orderLine) throws UserException, SQLException {
         return orderLineMapper.insertOrderLine(orderLine);
+    }
+
+    public TreeMap<Integer, OrderLine> getOrderLinesByOrderId(int orderId) throws UserException {
+        return orderLineMapper.getOrderLinesByOrderId(orderId);
     }
 }

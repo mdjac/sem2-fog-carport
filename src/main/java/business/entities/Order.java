@@ -10,12 +10,14 @@ public class Order {
     private Timestamp time;
     private int userId;
     private Carport carport;
+    private TreeMap<Integer, OrderLine> BOM;
 
     public Order(Status status, double totalPrice, int userId, Carport carport) {
         this.status = status;
         this.totalPrice = totalPrice;
         this.userId = userId;
         this.carport = carport;
+        this.BOM = new TreeMap<>();
     }
 
     public void setId(int id) {
@@ -49,6 +51,14 @@ public class Order {
 
     public Carport getCarport() {
         return carport;
+    }
+
+    public TreeMap<Integer, OrderLine> getBOM() {
+        return BOM;
+    }
+
+    public void setBOM(TreeMap<Integer, OrderLine> BOM) {
+        this.BOM = BOM;
     }
 
     @Override

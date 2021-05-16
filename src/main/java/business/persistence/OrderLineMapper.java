@@ -1,12 +1,11 @@
 package business.persistence;
 
-import business.entities.OrderLine;
+import business.entities.*;
 import business.exceptions.UserException;
+import business.utilities.Calculator;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.TreeMap;
 
 public class OrderLineMapper {
     private Database database;
@@ -14,6 +13,43 @@ public class OrderLineMapper {
     public OrderLineMapper(Database database) {
         this.database = database;
     }
+
+    public TreeMap<Integer, OrderLine> getOrderLinesByOrderId(int orderId) throws UserException {
+        TreeMap<Integer,OrderLine> BOM = new TreeMap<>();
+        try (Connection connection = database.connect())
+        {
+            String sql = "SELECT * from order_line where orders_id = ?";
+
+            try (PreparedStatement ps = connection.prepareStatement(sql))
+            {
+                ps.setInt(1,orderId);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next())
+                {
+                    int id = rs.getInt("id");
+                    int quantity = rs.getInt("quantity");
+                    int orders_id = rs.getInt("orders_id");
+                    String unit = rs.getString("unit");
+                    int materialsVariantId = rs.getInt("materials_variant_id");
+                    String description = rs.getString("description");
+                    OrderLine orderLine = new OrderLine(quantity,orders_id,unit, Calculator.getMaterialByMaterialVariantId(materialsVariantId),description);
+                    orderLine.setId(id);
+                    BOM.put(orderLine.getId(),orderLine);
+                }
+                return BOM;
+            }
+            catch (SQLException ex)
+            {
+                throw new UserException(ex.getMessage());
+            }
+        }
+        catch (SQLException ex)
+        {
+            throw new UserException("Connection to database could not be established");
+        }
+    }
+
+
 
     public boolean insertOrderLine (OrderLine orderLine) throws UserException{
         try (Connection connection = database.connect()) {
