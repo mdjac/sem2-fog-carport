@@ -1,11 +1,9 @@
 package business.persistence;
 
 
-import business.entities.Carport;
-import business.entities.Order;
-import business.entities.RoofType;
-import business.entities.Status;
+import business.entities.*;
 import business.exceptions.UserException;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import web.FrontController;
 
 import java.sql.*;
@@ -19,15 +17,16 @@ public class OrderMapper {
         this.database = database;
     }
 
-    public TreeMap<Integer,Order> getOrders(boolean allOrders, int inputUserId) throws UserException {
+    public TreeMap<Integer,Order> getOrders(User user) throws UserException {
         TreeMap<Integer,Order> orders = new TreeMap<>();
         try (Connection connection = database.connect())
         {
             String sql = "SELECT orders.id as order_id," +
-                    " status," +
+                    "status," +
                     "totalprice," +
                     "time," +
-                    "users_id,carport.id as carport_id," +
+                    "users_id," +
+                    "carport.id as carport_id," +
                     "carport_material," +
                     "carport_width," +
                     "carport_height," +
@@ -39,10 +38,17 @@ public class OrderMapper {
                     "roof_material," +
                     "roof_type\n" +
                     "FROM orders\n" +
-                    "INNER JOIN carport ON orders.id = carport.orders_id;";
+                    "INNER JOIN carport ON orders.id = carport.orders_id";
+
+            if(user.getRole().equals("customer")){
+                sql += " WHERE users_id = ?";
+            }
 
             try (PreparedStatement ps = connection.prepareStatement(sql))
             {
+                if(user.getRole().equals("customer")){
+                    ps.setInt(1,user.getId());
+                }
                 ResultSet rs = ps.executeQuery();
                 while (rs.next())
                 {
@@ -54,24 +60,38 @@ public class OrderMapper {
                     Timestamp time = rs.getTimestamp("time");
                     int userId = rs.getInt("users_id");
                     int carportId = rs.getInt("carport_id");
-                    String carportMaterial = rs.getString("carport_material");
+                    int carportMaterialId = rs.getInt("carport_material");
                     int carportWidth = rs.getInt("carport_width");
                     int carportHeight = rs.getInt("carport_height");
                     int carportLength = rs.getInt("carport_length");
-                    String shedMaterial = rs.getString("shed_material");
+                    int shedMaterialId = rs.getInt("shed_material");
                     int shedWidth = rs.getInt("shed_width");
                     int shedLength = rs.getInt("shed_length");
                     int roofTilt = rs.getInt("roof_tilt");
-                    String roofMaterial = rs.getString("roof_material");
+                    int roofMaterialId = rs.getInt("roof_material");
                     RoofType roofType = RoofType.fromString(rs.getString("roof_type"));
 
-
+                    //Create carport
+                    carport = new Carport(Carport.findCarportMaterialFromId(carportMaterialId),carportWidth,carportHeight,carportLength,roofType,Carport.findRoofMaterialFromId(roofMaterialId,roofType));
+                    carport.setId(carportId);
+                    //Checks which fields must be ignored
+                    if(shedMaterialId != 0){
+                        carport.setShedMaterial(Carport.findShedMaterialFromId(shedMaterialId));
+                        carport.setShedWidth(shedWidth);
+                        carport.setShedLength(shedLength);
+                    }
+                    if(roofType == RoofType.Tag_Med_Rejsning){
+                        carport.setRoofTilt(roofTilt);
+                    }
+                    order = new Order(status,totalPrice,userId,carport);
+                    order.setId(orderId);
+                    order.setTime(time);
+                    orders.put(order.getId(),order);
                 }
                 return orders;
             }
             catch (SQLException ex)
             {
-
                 throw new UserException(ex.getMessage());
             }
         }

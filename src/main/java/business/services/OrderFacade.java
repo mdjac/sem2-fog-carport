@@ -2,6 +2,7 @@ package business.services;
 
 import business.entities.Carport;
 import business.entities.Order;
+import business.entities.User;
 import business.exceptions.UserException;
 import business.persistence.Database;
 import business.persistence.OrderMapper;
@@ -17,5 +18,9 @@ public class OrderFacade {
 
     public Order insertOrder(Order order, Carport carport) throws UserException {
         return orderMapper.insertOrder(order,carport);
+    }
+
+    public TreeMap<Integer,Order> getOrders(User user) throws UserException {
+        return orderMapper.getOrders(user);
     }
 }

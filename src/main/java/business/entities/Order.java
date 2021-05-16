@@ -50,5 +50,17 @@ public class Order {
     public Carport getCarport() {
         return carport;
     }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", status=" + status +
+                ", totalPrice=" + totalPrice +
+                ", time=" + time +
+                ", userId=" + userId +
+                ", carport=" + carport +
+                '}';
+    }
 }
 

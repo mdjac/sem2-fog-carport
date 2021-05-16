@@ -1,12 +1,10 @@
 package web;
 
-import business.entities.AllowedMinMax;
-import business.entities.Carport;
-import business.entities.Material;
-import business.entities.RoofType;
+import business.entities.*;
 import business.exceptions.UserException;
 import business.persistence.Database;
 import business.services.MaterialFacade;
+import business.services.OrderFacade;
 import business.services.StandardCarportFacade;
 import business.utilities.Calculator;
 import web.commands.*;
@@ -116,7 +114,6 @@ public class FrontController extends HttpServlet {
         allowedMeasurements.put("shedLength",new AllowedMinMax(100, 400));
         allowedMeasurements.put("shedWidth",new AllowedMinMax(100, 400));
         getServletContext().setAttribute("allowedMeasurements",allowedMeasurements);
-
     }
 
     protected void processRequest(

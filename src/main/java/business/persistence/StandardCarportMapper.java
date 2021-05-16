@@ -95,11 +95,9 @@ public class StandardCarportMapper {
                         carport.setShedWidth(shedWidth);
                         carport.setShedLength(shedLength);
                     }
-
-                    carport.setRoofMaterial(Carport.findRoofMaterialFromId(roofMaterialId,roofType));
                     if(roofType == RoofType.Tag_Med_Rejsning){
                         carport.setRoofTilt(roofTilt);
-                    }else
+                    }
                     System.out.println(carport);
                     standardCarports.put(carport.getId(),carport);
                 }
