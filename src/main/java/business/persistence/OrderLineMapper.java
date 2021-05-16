@@ -1,6 +1,5 @@
 package business.persistence;
 
-import business.entities.Carport;
 import business.entities.OrderLine;
 import business.exceptions.UserException;
 
@@ -29,7 +28,7 @@ public class OrderLineMapper {
                 ps.setInt(1,orderLine.getQuantity());
                 ps.setInt(2,orderLine.getOrdersID());
                 ps.setString(3,orderLine.getUnit());
-                ps.setInt(4,orderLine.getMaterialsVariantId());
+                ps.setInt(4,orderLine.getMaterial().getVariantId());
                 ps.setString(5,orderLine.getDescription());
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected == 1) {
