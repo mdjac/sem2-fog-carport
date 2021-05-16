@@ -17,16 +17,16 @@ public class StandardCarportMapper {
     public boolean insertStandardCarport (RoofType roofType, int roofMaterialId, int carportMaterialId, int carportLength, int carportWidth, int carportHeight, Integer roofTilt,  Integer shedMaterialId, Integer shedLength, Integer shedWidth) throws UserException{
         try (Connection connection = database.connect()) {
             String sql = "INSERT INTO `standard_carports` " +
-                    "(carport_beklædning," +
-                    "carport_bredde," +
-                    "carport_højde," +
-                    "carport_længde," +
-                    "redskabsskur_beklædning," +
-                    "redskabsskur_bredde," +
-                    "redskabsskur_længde," +
-                    "tag_hældning," +
-                    "tag_materiale," +
-                    "tag_type) " +
+                    "(carport_material," +
+                    "carport_width," +
+                    "carport_height," +
+                    "carport_length," +
+                    "shed_material," +
+                    "shed_width," +
+                    "shed_length," +
+                    "roof_tilt," +
+                    "roof_material," +
+                    "roof_type) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setInt(1,carportMaterialId);
@@ -73,46 +73,46 @@ public class StandardCarportMapper {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next())
                 {
-                    int carport_beklædningId = rs.getInt("carport_beklædning");
-                    int carport_bredde = rs.getInt("carport_bredde");
-                    int carport_højde = rs.getInt("carport_højde");
-                    int carport_længde = rs.getInt("carport_længde");
-                    int redskabsskur_beklædningId = rs.getInt("redskabsskur_beklædning");
-                    int redskabsskur_bredde = rs.getInt("redskabsskur_bredde");
-                    int redskabsskur_længde = rs.getInt("redskabsskur_længde");
-                    int tag_hældning = rs.getInt("tag_hældning");
-                    int tag_materialeId = rs.getInt("tag_materiale");
-                    RoofType tag_type = RoofType.fromString(rs.getString("tag_type"));
+                    int carportMaterialId = rs.getInt("carport_material");
+                    int carportWidth = rs.getInt("carport_width");
+                    int carportHeight = rs.getInt("carport_height");
+                    int carportLength = rs.getInt("carport_length");
+                    int shedMaterialId = rs.getInt("shed_material");
+                    int shedWidth = rs.getInt("shed_width");
+                    int shedLength = rs.getInt("shed_length");
+                    int roofTilt = rs.getInt("roof_tilt");
+                    int roofMaterialId = rs.getInt("roof_material");
+                    RoofType roofType = RoofType.fromString(rs.getString("roof_type"));
                     int standardCarportID = rs.getInt("id");
 
 
                     //Find material name based on id
-                    String carport_beklædning = FrontController.categoryFormOptions.get(1).get(carport_beklædningId).getMaterialName();
+                    String carport_beklædning = FrontController.categoryFormOptions.get(1).get(carportMaterialId).getMaterialName();
 
                     //Create carport
-                    Carport carport = new Carport(carport_beklædning, carport_bredde, carport_højde, carport_længde, tag_type);
+                    Carport carport = new Carport(carport_beklædning, carportWidth, carportHeight, carportLength, roofType);
                     carport.setId(standardCarportID);
-                    carport.setCarportBeklædningId(carport_beklædningId);
-                    carport.setTagMaterialeId(tag_materialeId);
+                    carport.setCarportBeklædningId(carportMaterialId);
+                    carport.setTagMaterialeId(roofMaterialId);
                     //Checks which fields must be ignored
-                    if(redskabsskur_beklædningId != 0){
-                        String redskabsskur_beklædning = FrontController.categoryFormOptions.get(3).get(redskabsskur_beklædningId).getMaterialName();
+                    if(shedMaterialId != 0){
+                        String redskabsskur_beklædning = FrontController.categoryFormOptions.get(3).get(shedMaterialId).getMaterialName();
                         carport.setRedskabsskurBeklædning(redskabsskur_beklædning);
-                        carport.setRedskabsskurBredde(redskabsskur_bredde);
-                        carport.setRedskabsskurLængde(redskabsskur_længde);
-                        carport.setRedskabsskurBeklædningId(redskabsskur_beklædningId);
+                        carport.setRedskabsskurBredde(shedWidth);
+                        carport.setRedskabsskurLængde(shedLength);
+                        carport.setRedskabsskurBeklædningId(shedMaterialId);
                     }
 
                     //Tag beklædning skal findes i forskelligt materiale ID efter om det er fladt eller skrå tag
                     String tag_materiale;
-                    if(tag_type == RoofType.Fladt_Tag){
+                    if(roofType == RoofType.Fladt_Tag){
                         //Fladt tag materiale category id == 2
-                        tag_materiale = FrontController.categoryFormOptions.get(2).get(tag_materialeId).getMaterialName();
+                        tag_materiale = FrontController.categoryFormOptions.get(2).get(roofMaterialId).getMaterialName();
                     }else
                     {
                         //Tag med rejsning materiale category id == 4
-                        tag_materiale = FrontController.categoryFormOptions.get(4).get(tag_materialeId).getMaterialName();
-                        carport.setTagHældning(tag_hældning);
+                        tag_materiale = FrontController.categoryFormOptions.get(4).get(roofMaterialId).getMaterialName();
+                        carport.setTagHældning(roofTilt);
                     }
                     carport.setTagMateriale(tag_materiale);
                     System.out.println(carport);

@@ -18,16 +18,16 @@ public class OrderMapper {
     public boolean insertCarport (Carport carport, int orderId) throws UserException, SQLException {
         try (Connection connection = database.connect()) {
             String sql = "INSERT INTO `carport` " +
-                    "(tag_type," +
-                    "tag_materiale," +
-                    "tag_hældning," +
-                    "carport_beklædning," +
-                    "carport_bredde," +
-                    "carport_højde," +
-                    "carport_længde," +
-                    "redskabsskur_beklædning," +
-                    "redskabsskur_bredde," +
-                    "redskabsskur_længde," +
+                    "(roof_type," +
+                    "roof_material," +
+                    "roof_tilt," +
+                    "carport_material," +
+                    "carport_width," +
+                    "carport_height," +
+                    "carport_length," +
+                    "shed_material," +
+                    "shed_width," +
+                    "shed_length," +
                     "orders_id) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
