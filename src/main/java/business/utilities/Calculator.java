@@ -115,7 +115,7 @@ public abstract class Calculator {
             //4,5 x 50 mm. Skruer 300 stk.
             bomItems.add(new OrderLine(2,order.getId(), "pakke(r)", 42,"til montering af inderste beklædning"));
 
-            if (carport.getRedskabsskurLængde() > 1) {
+            if (carport.getRedskabsskurLængde() != null && carport.getRedskabsskurLængde() > 1) {
                 //stalddørsgreb 50x75
                 bomItems.add(new OrderLine(1, order.getId(), "sæt", 24, "Til lås på dør i skur"));
                 //t hængsel 390 mm
