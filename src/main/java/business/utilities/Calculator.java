@@ -36,17 +36,17 @@ public abstract class Calculator {
 
             //calculate spær
             int spærAntal = calculateSpær(carport);
-            optimalMaterialResult = getOptimalMaterial(9, carport.getCarportBredde(), 19.5, 5,false);
+            optimalMaterialResult = getOptimalMaterial(9, carport.getCarportWidth(), 19.5, 5,false);
             bomItems.add(new OrderLine(spærAntal,order.getId(), "stk",optimalMaterialResult.getMaterial().getVariantId(),"Spær, monteres på rem"));
 
             //Calculate stolper inklusiv redskabsskur
             int stolpeAntal = calculateStolper(carport);
-            optimalMaterialResult = getOptimalMaterial(10, (carport.getCarportHøjde()+90), 9.7, 5, false);
+            optimalMaterialResult = getOptimalMaterial(10, (carport.getCarportHeight()+90), 9.7, 5, false);
             bomItems.add(new OrderLine(stolpeAntal, order.getId(), "stk", optimalMaterialResult.getMaterial().getVariantId(), "Stolper nedgraves 90 cm. i jord"));
 
             //Calculate remme
             //TODO If time permits e can change materialSplit to be allowed. This has to be in sync with stolpe afstanden
-            optimalMaterialResult = getOptimalMaterial(9,carport.getCarportLængde(), 19.5, 5, false);
+            optimalMaterialResult = getOptimalMaterial(9,carport.getCarportLength(), 19.5, 5, false);
             bomItems.add(new OrderLine(2, order.getId(), "stk", optimalMaterialResult.getMaterial().getVariantId(), "Remme i sider, sadles ned i stolper"));
 
 
@@ -56,31 +56,31 @@ public abstract class Calculator {
 
         //Calculate Tag
             //Under Sternsbrædder side * 2 for vi skal have til begge sider
-            optimalMaterialResult = getOptimalMaterial(carport.getCarportBeklædningId(), carport.getCarportLængde(),20, 5, true);
+            optimalMaterialResult = getOptimalMaterial(carport.getCarportMaterialId(), carport.getCarportLength(),20, 5, true);
             bomItems.add(new OrderLine(optimalMaterialResult.getQuantity()*2, order.getId(), "stk", optimalMaterialResult.getMaterial().getVariantId(), "understernbrædder til siderne"));
 
             //Under Sternsbrædder for og bagende * 2 for vi skal have til begge sider
-            optimalMaterialResult = getOptimalMaterial(carport.getCarportBeklædningId(), carport.getCarportBredde(),20, 5, true);
+            optimalMaterialResult = getOptimalMaterial(carport.getCarportMaterialId(), carport.getCarportWidth(),20, 5, true);
             bomItems.add(new OrderLine(optimalMaterialResult.getQuantity()*2, order.getId(), "stk", optimalMaterialResult.getMaterial().getVariantId(), "understernbrædder til for & bag ende"));
 
             //over Sternsbrædder side * 2 for vi skal have til begge sider
-            optimalMaterialResult = getOptimalMaterial(carport.getCarportBeklædningId(), carport.getCarportLængde(),12.5, 5, true);
+            optimalMaterialResult = getOptimalMaterial(carport.getCarportMaterialId(), carport.getCarportLength(),12.5, 5, true);
             bomItems.add(new OrderLine(optimalMaterialResult.getQuantity()*2, order.getId(), "stk", optimalMaterialResult.getMaterial().getVariantId(), "oversternbrædder til siderne"));
 
             //over Sternsbrædder forende
-            optimalMaterialResult = getOptimalMaterial(carport.getCarportBeklædningId(), carport.getCarportBredde(),12.5, 5, true);
+            optimalMaterialResult = getOptimalMaterial(carport.getCarportMaterialId(), carport.getCarportWidth(),12.5, 5, true);
             bomItems.add(new OrderLine(optimalMaterialResult.getQuantity(), order.getId(), "stk", optimalMaterialResult.getMaterial().getVariantId(), "oversternbrædder til forenden"));
 
             //vandbrædt på stern i forende
-            optimalMaterialResult = getOptimalMaterial(carport.getCarportBeklædningId(), carport.getCarportBredde(),10, 5, true);
+            optimalMaterialResult = getOptimalMaterial(carport.getCarportMaterialId(), carport.getCarportWidth(),10, 5, true);
             bomItems.add(new OrderLine(optimalMaterialResult.getQuantity(), order.getId(), "stk", optimalMaterialResult.getMaterial().getVariantId(), "vandbrædt på stern i forende"));
 
             //vandbrædt på stern i sider * 2 for vi skal have til begge sider
-            optimalMaterialResult = getOptimalMaterial(carport.getCarportBeklædningId(), carport.getCarportLængde(),10, 5, true);
+            optimalMaterialResult = getOptimalMaterial(carport.getCarportMaterialId(), carport.getCarportLength(),10, 5, true);
             bomItems.add(new OrderLine(optimalMaterialResult.getQuantity()*2, order.getId(), "stk", optimalMaterialResult.getMaterial().getVariantId(), "vandbrædt på stern i sider"));
 
             //Tagmateriale antal
-            optimalMaterialResult =getOptimalRoofUnits(carport.getTagMaterialeId(), carport.getCarportLængde(),carport.getCarportBredde(),RoofType.fromString(carport.getRoofType()));
+            optimalMaterialResult =getOptimalRoofUnits(carport.getRoofMaterialId(), carport.getCarportLength(),carport.getCarportWidth(),RoofType.fromString(carport.getRoofType()));
             bomItems.add(new OrderLine(optimalMaterialResult.getQuantity(), order.getId(), "stk", optimalMaterialResult.getMaterial().getVariantId(), "tagmateriale monteres på spær"));
 
 
@@ -89,7 +89,7 @@ public abstract class Calculator {
             bomItems.add(new OrderLine(2,order.getId(), "rulle(r)", 8,"Til vindkryds på spær"));
 
             //Plastmo bundskruer
-            if (carport.getTagMaterialeId() == 3) {
+            if (carport.getRoofMaterialId() == 3) {
                 int quantity = 1;
                 //i ved at seneste optimalMaterialResult er tagmateriale og vi antager at der går én pakke skruer per 4 tagplader
                 quantity =  (int) Math.ceil(optimalMaterialResult.getQuantity()/4);
@@ -115,7 +115,7 @@ public abstract class Calculator {
             //4,5 x 50 mm. Skruer 300 stk.
             bomItems.add(new OrderLine(2,order.getId(), "pakke(r)", 42,"til montering af inderste beklædning"));
 
-            if (carport.getRedskabsskurLængde() != null && carport.getRedskabsskurLængde() > 1) {
+            if (carport.getShedLength() != null && carport.getShedLength() > 1) {
                 //stalddørsgreb 50x75
                 bomItems.add(new OrderLine(1, order.getId(), "sæt", 24, "Til lås på dør i skur"));
                 //t hængsel 390 mm
@@ -239,7 +239,7 @@ public abstract class Calculator {
             fladtTag = false;
         }
 
-        double carportLength = carport.getCarportLængde();
+        double carportLength = carport.getCarportLength();
         double spærMellemrum;
 
         if (fladtTag == true) {
@@ -266,10 +266,10 @@ public abstract class Calculator {
         double stolpeBredde = 10;
         double redskabsskurLængde = 0;
 
-        int carportLængde = carport.getCarportLængde();
-        if (carport.getRedskabsskurLængde() != null) {
-            redskabsskurLængde = carport.getRedskabsskurLængde();
-            int redskabsskurBredde = carport.getRedskabsskurBredde();
+        int carportLængde = carport.getCarportLength();
+        if (carport.getShedLength() != null) {
+            redskabsskurLængde = carport.getShedLength();
+            int redskabsskurBredde = carport.getShedWidth();
             double skurResultatDistanceSider = calculateOptimalDistance(80, maxAfstandMellemStolper, stolpeBredde, redskabsskurLængde, 1);
             int redskabsskurStolpeAntalSider = (int) ((redskabsskurLængde - (stolpeBredde*2))/skurResultatDistanceSider);
             double skurResultatDistanceFrontBag = calculateOptimalDistance(80, maxAfstandMellemStolper, stolpeBredde, redskabsskurBredde,1);

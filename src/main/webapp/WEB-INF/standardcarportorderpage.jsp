@@ -34,25 +34,25 @@
                                         <div class="card-text">
                                             <div>
                                                 <b>Carport:</b><br>
-                                                Beklædning: ${standardcarport.value.carportBeklædning}<br>
-                                                B${standardcarport.value.carportBredde}/
-                                                L${standardcarport.value.carportLængde}/
-                                                H${standardcarport.value.carportHøjde}
+                                                Beklædning: ${standardcarport.value.carportMaterial}<br>
+                                                B${standardcarport.value.carportWidth}/
+                                                L${standardcarport.value.carportLength}/
+                                                H${standardcarport.value.carportHeight}
                                             </div>
-                                            <c:if test="${standardcarport.value.redskabsskurBeklædning != null }">
+                                            <c:if test="${standardcarport.value.shedMaterial != null }">
                                                 <div class="mt-1">
                                                     <b>Redskabsskur:</b><br>
-                                                    Beklædning: ${standardcarport.value.redskabsskurBeklædning}<br>
-                                                    B${standardcarport.value.redskabsskurBredde}/
-                                                    L${standardcarport.value.redskabsskurLængde}
+                                                    Beklædning: ${standardcarport.value.shedMaterial}<br>
+                                                    B${standardcarport.value.shedWidth}/
+                                                    L${standardcarport.value.shedLength}
                                                 </div>
                                             </c:if>
                                             <div class="mt-1">
                                                 <b>Tag:</b><br>
                                                 Type: ${standardcarport.value.roofType.toString()}<br>
-                                                Materiale: ${standardcarport.value.tagMateriale}<br>
-                                                <c:if test="${standardcarport.value.tagHældning != null }">
-                                                    Tag hældning: ${standardcarport.value.tagHældning}
+                                                Materiale: ${standardcarport.value.roofMaterial}<br>
+                                                <c:if test="${standardcarport.value.roofTilt != null }">
+                                                    Tag hældning: ${standardcarport.value.roofTilt}
                                                 </c:if>
                                             </div>
                                         </div>

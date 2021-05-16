@@ -32,20 +32,20 @@ public class OrderMapper {
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setString(1,carport.getRoofType());
-                ps.setString(2,carport.getTagMateriale());
-                if(carport.getTagHældning() != null){
-                    ps.setInt(3,carport.getTagHældning());
+                ps.setString(2,carport.getRoofMaterial());
+                if(carport.getRoofTilt() != null){
+                    ps.setInt(3,carport.getRoofTilt());
                 }else{
                     ps.setNull(3,java.sql.Types.INTEGER);
                 }
-                ps.setString(4,carport.getCarportBeklædning());
-                ps.setInt(5,carport.getCarportBredde());
-                ps.setInt(6,carport.getCarportHøjde());
-                ps.setInt(7,carport.getCarportLængde());
-                if(carport.getRedskabsskurBeklædning() != null){
-                    ps.setString(8,carport.getRedskabsskurBeklædning());
-                    ps.setInt(9,carport.getRedskabsskurBredde());
-                    ps.setInt(10,carport.getRedskabsskurLængde());
+                ps.setString(4,carport.getCarportMaterial());
+                ps.setInt(5,carport.getCarportWidth());
+                ps.setInt(6,carport.getCarportHeight());
+                ps.setInt(7,carport.getCarportLength());
+                if(carport.getShedMaterial() != null){
+                    ps.setString(8,carport.getShedMaterial());
+                    ps.setInt(9,carport.getShedWidth());
+                    ps.setInt(10,carport.getShedLength());
                 }else{
                     ps.setNull(8, Types.VARCHAR);
                     ps.setNull(9,java.sql.Types.INTEGER);

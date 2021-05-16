@@ -92,15 +92,15 @@ public class StandardCarportMapper {
                     //Create carport
                     Carport carport = new Carport(carport_beklædning, carportWidth, carportHeight, carportLength, roofType);
                     carport.setId(standardCarportID);
-                    carport.setCarportBeklædningId(carportMaterialId);
-                    carport.setTagMaterialeId(roofMaterialId);
+                    carport.setCarportMaterialId(carportMaterialId);
+                    carport.setRoofMaterialId(roofMaterialId);
                     //Checks which fields must be ignored
                     if(shedMaterialId != 0){
                         String redskabsskur_beklædning = FrontController.categoryFormOptions.get(3).get(shedMaterialId).getMaterialName();
-                        carport.setRedskabsskurBeklædning(redskabsskur_beklædning);
-                        carport.setRedskabsskurBredde(shedWidth);
-                        carport.setRedskabsskurLængde(shedLength);
-                        carport.setRedskabsskurBeklædningId(shedMaterialId);
+                        carport.setShedMaterial(redskabsskur_beklædning);
+                        carport.setShedWidth(shedWidth);
+                        carport.setShedLength(shedLength);
+                        carport.setShedMaterialId(shedMaterialId);
                     }
 
                     //Tag beklædning skal findes i forskelligt materiale ID efter om det er fladt eller skrå tag
@@ -112,9 +112,9 @@ public class StandardCarportMapper {
                     {
                         //Tag med rejsning materiale category id == 4
                         tag_materiale = FrontController.categoryFormOptions.get(4).get(roofMaterialId).getMaterialName();
-                        carport.setTagHældning(roofTilt);
+                        carport.setRoofTilt(roofTilt);
                     }
-                    carport.setTagMateriale(tag_materiale);
+                    carport.setRoofMaterial(tag_materiale);
                     System.out.println(carport);
                     standardCarports.put(carport.getId(),carport);
                 }

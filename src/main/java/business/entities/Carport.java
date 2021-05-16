@@ -3,50 +3,50 @@ package business.entities;
 public class Carport {
     //The reason for Integer at some of them, is to make them possible to be null for prettier print on site.
 private int id;
-private String carportBeklædning;
-private Integer carportBeklædningId;
-private int CarportBredde;
-private int CarportHøjde;
-private int CarportLængde;
-private String RedskabsskurBeklædning;
-private Integer RedskabsskurBeklædningId;
-private Integer RedskabsskurBredde;
-private Integer RedskabsskurLængde;
-private Integer TagHældning;
-private String TagMateriale;
-private Integer TagMaterialeId;
-private RoofType RoofType;
+private String carportMaterial;
+private Integer carportMaterialId;
+private int carportWidth;
+private int carportHeight;
+private int carportLength;
+private String shedMaterial;
+private Integer shedMaterialId;
+private Integer shedWidth;
+private Integer shedLength;
+private Integer roofTilt;
+private String roofMaterial;
+private Integer roofMaterialId;
+private RoofType roofType;
 
-    public Carport(String carportBeklædning, int carportBredde, int carportHøjde, int carportLængde, RoofType roofType) {
-        this.carportBeklædning = carportBeklædning;
-        CarportBredde = carportBredde;
-        CarportHøjde = carportHøjde;
-        CarportLængde = carportLængde;
-        RoofType = roofType;
+    public Carport(String carportMaterial, int carportWidth, int carportHeight, int carportLength, RoofType roofType) {
+        this.carportMaterial = carportMaterial;
+        this.carportWidth = carportWidth;
+        this.carportHeight = carportHeight;
+        this.carportLength = carportLength;
+        this.roofType = roofType;
     }
 
-    public Integer getCarportBeklædningId() {
-        return carportBeklædningId;
+    public Integer getCarportMaterialId() {
+        return carportMaterialId;
     }
 
-    public Integer getRedskabsskurBeklædningId() {
-        return RedskabsskurBeklædningId;
+    public Integer getShedMaterialId() {
+        return shedMaterialId;
     }
 
-    public Integer getTagMaterialeId() {
-        return TagMaterialeId;
+    public Integer getRoofMaterialId() {
+        return roofMaterialId;
     }
 
-    public void setCarportBeklædningId(Integer carportBeklædningId) {
-        this.carportBeklædningId = carportBeklædningId;
+    public void setCarportMaterialId(Integer carportMaterialId) {
+        this.carportMaterialId = carportMaterialId;
     }
 
-    public void setRedskabsskurBeklædningId(Integer redskabsskurBeklædningId) {
-        RedskabsskurBeklædningId = redskabsskurBeklædningId;
+    public void setShedMaterialId(Integer shedMaterialId) {
+        this.shedMaterialId = shedMaterialId;
     }
 
-    public void setTagMaterialeId(Integer tagMaterialeId) {
-        TagMaterialeId = tagMaterialeId;
+    public void setRoofMaterialId(Integer roofMaterialId) {
+        this.roofMaterialId = roofMaterialId;
     }
 
     public void setId(int id) {
@@ -57,81 +57,81 @@ private RoofType RoofType;
         return id;
     }
 
-    public String getCarportBeklædning() {
-        return carportBeklædning;
+    public String getCarportMaterial() {
+        return carportMaterial;
     }
 
-    public int getCarportBredde() {
-        return CarportBredde;
+    public int getCarportWidth() {
+        return carportWidth;
     }
 
-    public int getCarportHøjde() {
-        return CarportHøjde;
+    public int getCarportHeight() {
+        return carportHeight;
     }
 
-    public int getCarportLængde() {
-        return CarportLængde;
+    public int getCarportLength() {
+        return carportLength;
     }
 
-    public void setRedskabsskurBeklædning(String redskabsskurBeklædning) {
-        RedskabsskurBeklædning = redskabsskurBeklædning;
+    public void setShedMaterial(String shedMaterial) {
+        this.shedMaterial = shedMaterial;
     }
 
-    public String getRedskabsskurBeklædning() {
-        return RedskabsskurBeklædning;
+    public String getShedMaterial() {
+        return shedMaterial;
     }
 
-    public Integer getRedskabsskurBredde() {
-        return RedskabsskurBredde;
+    public Integer getShedWidth() {
+        return shedWidth;
     }
 
-    public Integer getRedskabsskurLængde() {
-        return RedskabsskurLængde;
+    public Integer getShedLength() {
+        return shedLength;
     }
 
-    public Integer getTagHældning() {
-        return TagHældning;
+    public Integer getRoofTilt() {
+        return roofTilt;
     }
 
-    public void setRedskabsskurBredde(Integer redskabsskurBredde) {
-        RedskabsskurBredde = redskabsskurBredde;
+    public void setShedWidth(Integer shedWidth) {
+        this.shedWidth = shedWidth;
     }
 
-    public void setRedskabsskurLængde(Integer redskabsskurLængde) {
-        RedskabsskurLængde = redskabsskurLængde;
+    public void setShedLength(Integer shedLength) {
+        this.shedLength = shedLength;
     }
 
-    public void setTagHældning(Integer tagHældning) {
-        TagHældning = tagHældning;
+    public void setRoofTilt(Integer roofTilt) {
+        this.roofTilt = roofTilt;
     }
 
-    public String getTagMateriale() {
-        return TagMateriale;
+    public String getRoofMaterial() {
+        return roofMaterial;
     }
 
     public String getRoofType() {
-        return RoofType.toString();
+        return roofType.toString();
     }
 
 
-    public void setTagMateriale(String tagMateriale) {
-        TagMateriale = tagMateriale;
+    public void setRoofMaterial(String roofMaterial) {
+        this.roofMaterial = roofMaterial;
     }
 
     @Override
     public String toString() {
         return "Carport{" +
                 "id=" + id +
-                ", carportBeklædning='" + carportBeklædning + '\'' +
-                ", CarportBredde=" + CarportBredde +
-                ", CarportHøjde=" + CarportHøjde +
-                ", CarportLængde=" + CarportLængde +
-                ", RedskabsskurBeklædning='" + RedskabsskurBeklædning + '\'' +
-                ", RedskabsskurBredde=" + RedskabsskurBredde +
-                ", RedskabsskurLængde=" + RedskabsskurLængde +
-                ", TagHældning=" + TagHældning +
-                ", TagMateriale='" + TagMateriale + '\'' +
-                ", RoofType=" + RoofType +
+                ", carportBeklædning='" + carportMaterial + '\'' +
+                ", CarportBredde=" + carportWidth +
+                ", CarportHøjde=" + carportHeight +
+                ", CarportLængde=" + carportLength +
+                ", RedskabsskurBeklædning='" + shedMaterial + '\'' +
+                ", RedskabsskurBredde=" + shedWidth +
+                ", RedskabsskurLængde=" + shedLength +
+                ", TagHældning=" + roofTilt +
+                ", TagMateriale='" + roofMaterial + '\'' +
+                ", RoofType=" + roofType +
                 '}';
     }
 }
