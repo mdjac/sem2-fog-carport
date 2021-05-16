@@ -45,9 +45,8 @@ public class LoginCommand extends CommandUnprotectedPage
                     SubmitOrderCommand submitOrderCommand = new SubmitOrderCommand("receiptpage","customer");
                     return submitOrderCommand.execute(request,response);
             }
-
-
-        String pageToShow =  user.getRole() + "page";
+        //String pageToShow =  user.getRole() + "page";
+            String pageToShow = "index";
         return REDIRECT_INDICATOR + pageToShow;
         }
         catch (UserException ex)

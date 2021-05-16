@@ -46,9 +46,9 @@ public class MaterialMapper {
                     int variantId = rs.getInt("variant_id");
                     int quantity = rs.getInt("quantity");
                     double price = rs.getDouble("price");
-                    double width = rs.getDouble("width");
-                    double length = rs.getDouble("length");
-                    double height = rs.getDouble("height");
+                    Double width = (Double) rs.getObject("width");
+                    Double length = (Double) rs.getObject("length");
+                    Double height = (Double) rs.getObject("height");
                     Material material = new Material(categoryName,materialName,materialsId,materialsCategoryId,variantId,quantity,price);
                     material.setWidth(width);
                     material.setLength(length);

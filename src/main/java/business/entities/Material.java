@@ -7,9 +7,9 @@ public class Material {
     private int materialsCategoryId;
     private int variantId;
     private int quantity;
-    private double width;
-    private double length;
-    private double height;
+    private Double width;
+    private Double length;
+    private Double height;
     private double price;
 
     public Material(String categoryName, String materialName, int materialsId, int materialsCategoryId, int variantId, int quantity, double price) {
@@ -22,16 +22,18 @@ public class Material {
         this.price = price;
     }
 
-    public void setWidth(double width) {
-        this.width = width;
-    }
 
-    public void setLength(double length) {
-        this.length = length;
-    }
-
-    public void setHeight(double height) {
-        this.height = height;
+    @Override
+    public String toString() {
+        StringBuilder toBOM = new StringBuilder("");
+        if(width != null || height != null){
+            toBOM.append(getHeight()+"X"+getWidth()+" cm. ");
+        }
+        toBOM.append(getMaterialName());
+        if(quantity != 1){
+            toBOM.append(" "+getQuantity()+" stk");
+        }
+        return toBOM.toString();
     }
 
     public String getCategoryName() {
@@ -42,21 +44,6 @@ public class Material {
         return materialName;
     }
 
-    @Override
-    public String toString() {
-        return "Material{" +
-                "categoryName='" + categoryName + '\'' +
-                ", materialName='" + materialName + '\'' +
-                ", materialsId=" + materialsId +
-                ", materialsCategoryId=" + materialsCategoryId +
-                ", variantId=" + variantId +
-                ", quantity=" + quantity +
-                ", width=" + width +
-                ", length=" + length +
-                ", height=" + height +
-                ", price=" + price +
-                '}';
-    }
 
     public int getMaterialsId() {
         return materialsId;
@@ -74,20 +61,34 @@ public class Material {
         return quantity;
     }
 
-    public double getWidth() {
+    public Double getWidth() {
         return width;
     }
 
-    public double getLength() {
+    public void setWidth(Double width) {
+        this.width = width;
+    }
+
+    public Double getLength() {
         return length;
     }
 
-    public double getHeight() {
+    public void setLength(Double length) {
+        this.length = length;
+    }
+
+    public Double getHeight() {
         return height;
+    }
+
+    public void setHeight(Double height) {
+        this.height = height;
     }
 
     public double getPrice() {
         return price;
     }
+
+
 
 }

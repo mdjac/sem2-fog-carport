@@ -34,6 +34,7 @@ public abstract class Command
         commands.put("addstandardcarportpage",new CommandProtectedPage("addstandardcarportpage","employee"));
         commands.put("addstandardcarportcommand", new AddStandardCarportCommand("addstandardcarportpage","employee"));
         commands.put("showorders", new ShowOrdersCommand("orderspage"));
+        commands.put("showorderlinecommand", new ShowOrderLineCommand("showorderlinepage","employee"));
     }
 
     public static Command fromPath(

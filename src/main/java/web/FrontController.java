@@ -3,6 +3,7 @@ package web;
 import business.entities.*;
 import business.exceptions.UserException;
 import business.persistence.Database;
+import business.persistence.OrderLineMapper;
 import business.services.MaterialFacade;
 import business.services.OrderFacade;
 import business.services.StandardCarportFacade;
@@ -114,6 +115,19 @@ public class FrontController extends HttpServlet {
         allowedMeasurements.put("shedLength",new AllowedMinMax(100, 400));
         allowedMeasurements.put("shedWidth",new AllowedMinMax(100, 400));
         getServletContext().setAttribute("allowedMeasurements",allowedMeasurements);
+
+        OrderLineMapper orderLineMapper = new OrderLineMapper(database);
+        TreeMap<Integer, OrderLine> test;
+        try {
+            test = orderLineMapper.getOrderLinesByOrderId(115);
+            for (Map.Entry<Integer, OrderLine> tmp: test.entrySet())
+            {
+                System.out.println("orderline ID ="+tmp.getKey()+"   ---   "+tmp.getValue().toString());
+            }
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
+
     }
 
     protected void processRequest(

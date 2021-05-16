@@ -30,7 +30,7 @@
                             </div>
 
                         </div>
-                    <form class="col text-center"  action="${pageContext.request.contextPath}/fc/showorderlincommand" method="post">
+                    <form class="col text-center"  action="${pageContext.request.contextPath}/fc/showorderlinecommand" method="post">
                         <input type="hidden" name="carportid" value="${orders.value.carport.id}">
                         <button type="submit" class="btn btn-primary btn-sm" name="orderid" value="${orders.key}">
                             Vis stykliste
