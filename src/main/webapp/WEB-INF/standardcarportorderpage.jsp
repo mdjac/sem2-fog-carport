@@ -34,7 +34,7 @@
                                         <div class="card-text">
                                             <div>
                                                 <b>Carport:</b><br>
-                                                Beklædning: ${standardcarport.value.carportMaterial}<br>
+                                                Beklædning: ${standardcarport.value.carportMaterial.materialName}<br>
                                                 B${standardcarport.value.carportWidth}/
                                                 L${standardcarport.value.carportLength}/
                                                 H${standardcarport.value.carportHeight}
@@ -42,7 +42,7 @@
                                             <c:if test="${standardcarport.value.shedMaterial != null }">
                                                 <div class="mt-1">
                                                     <b>Redskabsskur:</b><br>
-                                                    Beklædning: ${standardcarport.value.shedMaterial}<br>
+                                                    Beklædning: ${standardcarport.value.shedMaterial.materialName}<br>
                                                     B${standardcarport.value.shedWidth}/
                                                     L${standardcarport.value.shedLength}
                                                 </div>
@@ -50,7 +50,7 @@
                                             <div class="mt-1">
                                                 <b>Tag:</b><br>
                                                 Type: ${standardcarport.value.roofType.toString()}<br>
-                                                Materiale: ${standardcarport.value.roofMaterial}<br>
+                                                Materiale: ${standardcarport.value.roofMaterial.materialName}<br>
                                                 <c:if test="${standardcarport.value.roofTilt != null }">
                                                     Tag hældning: ${standardcarport.value.roofTilt}
                                                 </c:if>

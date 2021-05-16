@@ -14,7 +14,7 @@ public class StandardCarportMapper {
         this.database = database;
     }
 
-    public boolean insertStandardCarport (RoofType roofType, int roofMaterialId, int carportMaterialId, int carportLength, int carportWidth, int carportHeight, Integer roofTilt,  Integer shedMaterialId, Integer shedLength, Integer shedWidth) throws UserException{
+    public boolean insertStandardCarport (Carport carport) throws UserException{
         try (Connection connection = database.connect()) {
             String sql = "INSERT INTO `standard_carports` " +
                     "(carport_material," +
@@ -29,26 +29,26 @@ public class StandardCarportMapper {
                     "roof_type) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-                ps.setInt(1,carportMaterialId);
-                ps.setInt(2,carportWidth);
-                ps.setInt(3,carportHeight);
-                ps.setInt(4,carportLength);
-                if(shedMaterialId != null){
-                    ps.setInt(5,shedMaterialId);
-                    ps.setInt(6,shedWidth);
-                    ps.setInt(7,shedLength);
+                ps.setInt(1,carport.getCarportMaterial().getMaterialsId());
+                ps.setInt(2,carport.getCarportWidth());
+                ps.setInt(3,carport.getCarportHeight());
+                ps.setInt(4,carport.getCarportLength());
+                if(carport.getShedMaterial() != null){
+                    ps.setInt(5,carport.getShedMaterial().getMaterialsId());
+                    ps.setInt(6,carport.getShedWidth());
+                    ps.setInt(7,carport.getShedLength());
                 }else{
                     ps.setNull(5,java.sql.Types.INTEGER);
                     ps.setNull(6,java.sql.Types.INTEGER);
                     ps.setNull(7,java.sql.Types.INTEGER);
                 }
-                if(roofType.equals(RoofType.Tag_Med_Rejsning)){
-                    ps.setInt(8,roofTilt);
+                if(carport.getRoofType().equals(RoofType.Tag_Med_Rejsning)){
+                    ps.setInt(8,carport.getRoofTilt());
                 }else{
                     ps.setNull(8,java.sql.Types.INTEGER);
                 }
-                ps.setInt(9,roofMaterialId);
-                ps.setString(10,roofType.toString());
+                ps.setInt(9,carport.getRoofMaterial().getMaterialsId());
+                ps.setString(10,carport.getRoofType().toString());
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected == 1) {
                     return true;
@@ -86,35 +86,20 @@ public class StandardCarportMapper {
                     int standardCarportID = rs.getInt("id");
 
 
-                    //Find material name based on id
-                    String carport_beklædning = FrontController.categoryFormOptions.get(1).get(carportMaterialId).getMaterialName();
-
                     //Create carport
-                    Carport carport = new Carport(carport_beklædning, carportWidth, carportHeight, carportLength, roofType);
+                    Carport carport = new Carport(Carport.findCarportMaterialFromId(carportMaterialId), carportWidth, carportHeight, carportLength, roofType,Carport.findRoofMaterialFromId(roofMaterialId,roofType));
                     carport.setId(standardCarportID);
-                    carport.setCarportMaterialId(carportMaterialId);
-                    carport.setRoofMaterialId(roofMaterialId);
                     //Checks which fields must be ignored
                     if(shedMaterialId != 0){
-                        String redskabsskur_beklædning = FrontController.categoryFormOptions.get(3).get(shedMaterialId).getMaterialName();
-                        carport.setShedMaterial(redskabsskur_beklædning);
+                        carport.setShedMaterial(Carport.findShedMaterialFromId(shedMaterialId));
                         carport.setShedWidth(shedWidth);
                         carport.setShedLength(shedLength);
-                        carport.setShedMaterialId(shedMaterialId);
                     }
 
-                    //Tag beklædning skal findes i forskelligt materiale ID efter om det er fladt eller skrå tag
-                    String tag_materiale;
-                    if(roofType == RoofType.Fladt_Tag){
-                        //Fladt tag materiale category id == 2
-                        tag_materiale = FrontController.categoryFormOptions.get(2).get(roofMaterialId).getMaterialName();
-                    }else
-                    {
-                        //Tag med rejsning materiale category id == 4
-                        tag_materiale = FrontController.categoryFormOptions.get(4).get(roofMaterialId).getMaterialName();
+                    carport.setRoofMaterial(Carport.findRoofMaterialFromId(roofMaterialId,roofType));
+                    if(roofType == RoofType.Tag_Med_Rejsning){
                         carport.setRoofTilt(roofTilt);
-                    }
-                    carport.setRoofMaterial(tag_materiale);
+                    }else
                     System.out.println(carport);
                     standardCarports.put(carport.getId(),carport);
                 }

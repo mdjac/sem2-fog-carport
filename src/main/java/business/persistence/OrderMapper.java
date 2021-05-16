@@ -3,9 +3,13 @@ package business.persistence;
 
 import business.entities.Carport;
 import business.entities.Order;
+import business.entities.RoofType;
+import business.entities.Status;
 import business.exceptions.UserException;
+import web.FrontController;
 
 import java.sql.*;
+import java.util.TreeMap;
 
 public class OrderMapper {
     private Database database;
@@ -14,6 +18,70 @@ public class OrderMapper {
     {
         this.database = database;
     }
+
+    public TreeMap<Integer,Order> getOrders(boolean allOrders, int inputUserId) throws UserException {
+        TreeMap<Integer,Order> orders = new TreeMap<>();
+        try (Connection connection = database.connect())
+        {
+            String sql = "SELECT orders.id as order_id," +
+                    " status," +
+                    "totalprice," +
+                    "time," +
+                    "users_id,carport.id as carport_id," +
+                    "carport_material," +
+                    "carport_width," +
+                    "carport_height," +
+                    "carport_length," +
+                    "shed_material," +
+                    "shed_width," +
+                    "shed_length," +
+                    "roof_tilt," +
+                    "roof_material," +
+                    "roof_type\n" +
+                    "FROM orders\n" +
+                    "INNER JOIN carport ON orders.id = carport.orders_id;";
+
+            try (PreparedStatement ps = connection.prepareStatement(sql))
+            {
+                ResultSet rs = ps.executeQuery();
+                while (rs.next())
+                {
+                    Order order = null;
+                    Carport carport = null;
+                    int orderId = rs.getInt("order_id");
+                    Status status = Status.fromString(rs.getString("status"));
+                    double totalPrice = rs.getDouble("totalprice");
+                    Timestamp time = rs.getTimestamp("time");
+                    int userId = rs.getInt("users_id");
+                    int carportId = rs.getInt("carport_id");
+                    String carportMaterial = rs.getString("carport_material");
+                    int carportWidth = rs.getInt("carport_width");
+                    int carportHeight = rs.getInt("carport_height");
+                    int carportLength = rs.getInt("carport_length");
+                    String shedMaterial = rs.getString("shed_material");
+                    int shedWidth = rs.getInt("shed_width");
+                    int shedLength = rs.getInt("shed_length");
+                    int roofTilt = rs.getInt("roof_tilt");
+                    String roofMaterial = rs.getString("roof_material");
+                    RoofType roofType = RoofType.fromString(rs.getString("roof_type"));
+
+
+                }
+                return orders;
+            }
+            catch (SQLException ex)
+            {
+
+                throw new UserException(ex.getMessage());
+            }
+        }
+        catch (SQLException ex)
+        {
+            throw new UserException("Connection to database could not be established");
+        }
+    }
+
+
 
     public boolean insertCarport (Carport carport, int orderId) throws UserException, SQLException {
         try (Connection connection = database.connect()) {
@@ -32,18 +100,18 @@ public class OrderMapper {
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setString(1,carport.getRoofType());
-                ps.setString(2,carport.getRoofMaterial());
+                ps.setInt(2,carport.getRoofMaterial().getMaterialsId());
                 if(carport.getRoofTilt() != null){
                     ps.setInt(3,carport.getRoofTilt());
                 }else{
                     ps.setNull(3,java.sql.Types.INTEGER);
                 }
-                ps.setString(4,carport.getCarportMaterial());
+                ps.setInt(4,carport.getCarportMaterial().getMaterialsId());
                 ps.setInt(5,carport.getCarportWidth());
                 ps.setInt(6,carport.getCarportHeight());
                 ps.setInt(7,carport.getCarportLength());
                 if(carport.getShedMaterial() != null){
-                    ps.setString(8,carport.getShedMaterial());
+                    ps.setInt(8,carport.getShedMaterial().getMaterialsId());
                     ps.setInt(9,carport.getShedWidth());
                     ps.setInt(10,carport.getShedLength());
                 }else{

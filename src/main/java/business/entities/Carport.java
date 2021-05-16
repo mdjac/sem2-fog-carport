@@ -1,53 +1,31 @@
 package business.entities;
 
+import business.exceptions.UserException;
+import web.FrontController;
+
 public class Carport {
     //The reason for Integer at some of them, is to make them possible to be null for prettier print on site.
 private int id;
-private String carportMaterial;
-private Integer carportMaterialId;
+private Material carportMaterial;
 private int carportWidth;
 private int carportHeight;
 private int carportLength;
-private String shedMaterial;
-private Integer shedMaterialId;
+private Material shedMaterial;
 private Integer shedWidth;
 private Integer shedLength;
 private Integer roofTilt;
-private String roofMaterial;
-private Integer roofMaterialId;
+private Material roofMaterial;
 private RoofType roofType;
 
-    public Carport(String carportMaterial, int carportWidth, int carportHeight, int carportLength, RoofType roofType) {
+    public Carport(Material carportMaterial, int carportWidth, int carportHeight, int carportLength, RoofType roofType, Material roofMaterial) {
         this.carportMaterial = carportMaterial;
         this.carportWidth = carportWidth;
         this.carportHeight = carportHeight;
         this.carportLength = carportLength;
         this.roofType = roofType;
+        this.roofMaterial = roofMaterial;
     }
 
-    public Integer getCarportMaterialId() {
-        return carportMaterialId;
-    }
-
-    public Integer getShedMaterialId() {
-        return shedMaterialId;
-    }
-
-    public Integer getRoofMaterialId() {
-        return roofMaterialId;
-    }
-
-    public void setCarportMaterialId(Integer carportMaterialId) {
-        this.carportMaterialId = carportMaterialId;
-    }
-
-    public void setShedMaterialId(Integer shedMaterialId) {
-        this.shedMaterialId = shedMaterialId;
-    }
-
-    public void setRoofMaterialId(Integer roofMaterialId) {
-        this.roofMaterialId = roofMaterialId;
-    }
 
     public void setId(int id) {
         this.id = id;
@@ -55,10 +33,6 @@ private RoofType roofType;
 
     public int getId() {
         return id;
-    }
-
-    public String getCarportMaterial() {
-        return carportMaterial;
     }
 
     public int getCarportWidth() {
@@ -71,14 +45,6 @@ private RoofType roofType;
 
     public int getCarportLength() {
         return carportLength;
-    }
-
-    public void setShedMaterial(String shedMaterial) {
-        this.shedMaterial = shedMaterial;
-    }
-
-    public String getShedMaterial() {
-        return shedMaterial;
     }
 
     public Integer getShedWidth() {
@@ -105,7 +71,23 @@ private RoofType roofType;
         this.roofTilt = roofTilt;
     }
 
-    public String getRoofMaterial() {
+    public void setShedMaterial(Material shedMaterial) {
+        this.shedMaterial = shedMaterial;
+    }
+
+    public void setRoofMaterial(Material roofMaterial) {
+        this.roofMaterial = roofMaterial;
+    }
+
+    public Material getCarportMaterial() {
+        return carportMaterial;
+    }
+
+    public Material getShedMaterial() {
+        return shedMaterial;
+    }
+
+    public Material getRoofMaterial() {
         return roofMaterial;
     }
 
@@ -114,9 +96,7 @@ private RoofType roofType;
     }
 
 
-    public void setRoofMaterial(String roofMaterial) {
-        this.roofMaterial = roofMaterial;
-    }
+
 
     @Override
     public String toString() {
@@ -133,5 +113,23 @@ private RoofType roofType;
                 ", TagMateriale='" + roofMaterial + '\'' +
                 ", RoofType=" + roofType +
                 '}';
+    }
+
+    public static Material findCarportMaterialFromId(int materialId){
+        return FrontController.categoryFormOptions.get(1).get(materialId);
+    }
+    public static Material findShedMaterialFromId(int materialId){
+        return FrontController.categoryFormOptions.get(3).get(materialId);
+    }
+    public static Material findRoofMaterialFromId(int materialId, RoofType roofType) throws UserException {
+        if (roofType == RoofType.Fladt_Tag) {
+            //Fladt tag materiale category id == 2
+            return FrontController.categoryFormOptions.get(2).get(materialId);
+        } else if (roofType == RoofType.Tag_Med_Rejsning) {
+            //Tag med rejsning materiale category id == 4
+            return FrontController.categoryFormOptions.get(4).get(materialId);
+        } else {
+            throw new UserException("Failed when trying to find Roof Material as RoofType doesn't exist");
+        }
     }
 }

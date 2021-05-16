@@ -21,8 +21,9 @@ public class AddStandardCarportCommand extends CommandProtectedPage{
     }
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws UserException {
         StandardCarportFacade standardCarportFacade = new StandardCarportFacade(database);
+        Carport carport;
         //Fetch required variables
         RoofType roofType = RoofType.valueOf(request.getParameter("rooftype"));
         int roofMaterialId = Integer.parseInt(request.getParameter("roofmaterial"));
@@ -30,10 +31,13 @@ public class AddStandardCarportCommand extends CommandProtectedPage{
         int carportLength = Integer.parseInt(request.getParameter("carportlength"));
         int carportWidth = Integer.parseInt(request.getParameter("carportwidth"));
         int carportHeight = Integer.parseInt(request.getParameter("carportheight"));
+        carport = new Carport(Carport.findCarportMaterialFromId(carportMaterialId),carportWidth,carportHeight,carportLength,roofType,Carport.findRoofMaterialFromId(roofMaterialId,roofType));
+
         //Only tries to getParameter if the value isn't empty as not all carports have tilt
         Integer roofTilt = null;
         if(!request.getParameter("rooftilt").isEmpty()){
             roofTilt = Integer.parseInt(request.getParameter("rooftilt"));
+            carport.setRoofTilt(roofTilt);
         }
         //Only tries to getParameters if shed is choosen
         Integer shedMaterialId = null;
@@ -43,6 +47,9 @@ public class AddStandardCarportCommand extends CommandProtectedPage{
             shedMaterialId = Integer.parseInt(request.getParameter("shedmaterial"));
             shedLength = Integer.parseInt(request.getParameter("shedlength"));
             shedWidth = Integer.parseInt(request.getParameter("shedwidth"));
+            carport.setShedMaterial(Carport.findShedMaterialFromId(shedMaterialId));
+            carport.setShedLength(shedLength);
+            carport.setShedWidth(shedWidth);
         }
 
         //Check if the carports dimensions is okay
@@ -69,9 +76,8 @@ public class AddStandardCarportCommand extends CommandProtectedPage{
             request.setAttribute("status", "One or more entered measurements is not accepted!");
             return "addstandardcarportpage";
         }
-
         try {
-            standardCarportFacade.insertStandardCarport(roofType,roofMaterialId,carportMaterialId,carportLength,carportWidth,carportHeight,roofTilt,shedMaterialId,shedLength,shedWidth);
+            standardCarportFacade.insertStandardCarport(carport);
             request.setAttribute("status", "Standard carport added!");
         } catch (UserException e) {
             e.printStackTrace();

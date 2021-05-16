@@ -18,8 +18,8 @@ public class StandardCarportFacade {
         this.standardCarportMapper = new StandardCarportMapper(database);
     }
 
-    public boolean insertStandardCarport (RoofType roofType, int roofMaterialId, int carportMaterialId, int carportLength, int carportWidth, int carportHeight, Integer roofTilt, Integer shedMaterialId, Integer shedLength, Integer shedWidth) throws UserException{
-        return standardCarportMapper.insertStandardCarport(roofType,roofMaterialId,carportMaterialId,carportLength,carportWidth,carportHeight,roofTilt,shedMaterialId,shedLength,shedWidth);
+    public boolean insertStandardCarport (Carport carport) throws UserException{
+        return standardCarportMapper.insertStandardCarport(carport);
     }
 
     public TreeMap<Integer, Carport> getStandardCarports() throws UserException {
