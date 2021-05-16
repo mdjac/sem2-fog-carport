@@ -23,16 +23,17 @@
                         <div class="col-lg-10 collapsed align-items-center text-decoration-none">
                             <div class="row">
                                 <div class="col-sm-2">Order ID: ${orders.value.id}</div>
-                                <div class="col-sm-4">Timestamp: ${orders.value.timestamp}</div>
+                                <div class="col-sm-4">Timestamp: ${orders.value.time}</div>
                                 <div class="col-sm-2">Status: ${orders.value.status}</div>
                                 <div class="col-sm-2">User Id: ${orders.value.userId}</div>
                                 <div class="col-sm-2">Total Price: ${orders.value.totalPrice}</div>
                             </div>
 
                         </div>
-                    <form class="col text-center"  action="${pageContext.request.contextPath}/fc/removefromorders" method="post">
-                        <button type="submit" class="btn btn-danger btn-sm" name="delete" value="${orders.key}">
-                            Delete
+                    <form class="col text-center"  action="${pageContext.request.contextPath}/fc/showorderlincommand" method="post">
+                        <input type="hidden" name="carportid" value="${orders.value.carport.id}">
+                        <button type="submit" class="btn btn-primary btn-sm" name="orderid" value="${orders.key}">
+                            Vis stykliste
                         </button>
                     </form>
                 </h2>
@@ -42,22 +43,47 @@
                     <div class="accordion-body">
                         <div class="list align-items-center">
                             <div class="row align-items-center" style="height: 50px; margin-top: 2px; border-radius: 7px; background-color: #F4F3EE;">
-                                <div class="col-sm-4"><b>Name</b></div>
-                                <div class="col-sm-6"><b>Quantity</b></div>
-                                <div class="col-sm-2"><b>Total price</b></div>
+                                <div class="col-sm-4"><b>Carport</b></div>
+                                <div class="col-sm-4"><b>Tag</b></div>
+                                <div class="col-sm-4"><b>Redskabsskur</b></div>
                             </div>
-                            <c:forEach var="products" items="${orders.value.products}">
-                                <div class="row align-items-center" style="height: 50px; margin-top: 2px; border-radius: 7px; background-color: #F4F3EE;">
-                                    <div class="col-sm-4">${products.name}</div>
-                                    <div class="col-sm-6">${products.quantity}</div>
-                                    <div class="col-sm-2">${products.totalPrice}</div>
-                                </div>
-                            </c:forEach>
+
+                            <div class="row align-items-center" style="height: 50px; margin-top: 2px; border-radius: 7px; background-color: #F4F3EE;">
+                                <div class="col-sm-4">Carport materiale: ${orders.value.carport.carportMaterial.materialName}</div>
+                                <div class="col-sm-4">Tag Materiale: ${orders.value.carport.roofMaterial.materialName}</div>
+                                <div class="col-sm-4">Redskabsskur Materiale: ${orders.value.carport.shedMaterial.materialName}</div>
+                            </div>
+                            <div class="row align-items-center" style="height: 50px; margin-top: 2px; border-radius: 7px; background-color: #F4F3EE;">
+                                <div class="col-sm-4">Carport Bredde: ${orders.value.carport.carportWidth}</div>
+                                <div class="col-sm-4">Tag Type: ${orders.value.carport.roofType}</div>
+                                <div class="col-sm-4">Redskabsskur bredde: ${orders.value.carport.shedWidth}</div>
+                            </div>
+                            <div class="row align-items-center" style="height: 50px; margin-top: 2px; border-radius: 7px; background-color: #F4F3EE;">
+                                <div class="col-sm-4">Carport Længde: ${orders.value.carport.carportLength}</div>
+                                <div class="col-sm-4">Tag Hældning: ${orders.value.carport.roofTilt}</div>
+                                <div class="col-sm-4">Redskabsskur længde: ${orders.value.carport.shedLength}</div>
+                            </div>
+                            <div class="row align-items-center" style="height: 50px; margin-top: 2px; border-radius: 7px; background-color: #F4F3EE;">
+                                <div class="col-sm-4">Carport Højde: ${orders.value.carport.carportHeight}</div>
+                                <div class="col-sm-4"></div>
+                                <div class="col-sm-4"></div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
         </c:forEach>
         </div>
+        <script>
+            $(document).ready(function(){
+                $("#myInput").on("keyup", function() {
+                    var value = $(this).val().toLowerCase();
+                    $("#myTable tr").filter(function() {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
+            });
+        </script>
     </jsp:body>
 </t:genericpage>
