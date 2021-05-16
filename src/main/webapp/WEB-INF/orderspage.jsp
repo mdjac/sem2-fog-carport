@@ -13,18 +13,27 @@
     </jsp:attribute>
 
     <jsp:body>
+        <div class="search-container">
+            <input class="input-medium search-query" id="accordion_search_bar" placeholder="Søg">
+            <button onClick="setSearchAttribute('Afhentet')">Sorter efter Afhentet</button>
+            <button onClick="setSearchAttribute('Tilbud afsendt')">Sorter efter Tilbud afsendt</button>
+            <button onClick="setSearchAttribute('Tilbud accepteret')">Sorter efter Tilbud accepteret</button>
+            <button onClick="setSearchAttribute('Forespørgsel')">Sorter efter Forespørgsel</button>
+        </div>
+        <br>
+
         <div class="accordion" id="accordionExample">
         <c:forEach var="orders" items="${requestScope.orders}">
 
 
-            <div class="accordion-item align-items-center">
+            <div id="${orders.key}" class="accordion-item align-items-center">
                 <div class="align-items-center">
                 <h2 class="row accordion-button collapsed accordionhover" style="margin-left: 0; margin-bottom: 0;" data-bs-toggle="collapse" data-bs-target="#collapse${orders.key}" aria-expanded="false" aria-controls="collapse${orders.key}" id="heading${orders.key}">
                         <div class="col-lg-10 collapsed align-items-center text-decoration-none">
                             <div class="row">
                                 <div class="col-sm-2">Order ID: ${orders.value.id}</div>
                                 <div class="col-sm-4">Timestamp: ${orders.value.time}</div>
-                                <div class="col-sm-2">Status: ${orders.value.status}</div>
+                                <div class="col-sm-2">Status: ${orders.value.status.toString()}</div>
                                 <div class="col-sm-2">User Id: ${orders.value.userId}</div>
                                 <div class="col-sm-2">Total Price: ${orders.value.totalPrice}</div>
                             </div>
@@ -76,14 +85,46 @@
         </c:forEach>
         </div>
         <script>
-            $(document).ready(function(){
-                $("#myInput").on("keyup", function() {
-                    var value = $(this).val().toLowerCase();
-                    $("#myTable tr").filter(function() {
-                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                    });
+
+
+            function setSearchAttribute(input) {
+                var x = document.getElementById("accordion_search_bar").value = input;
+                document.getElementById("accordion_search_bar").click();
+            }
+            (function(){
+                var searchTerm, panelContainerId;
+                // Create a new contains that is case insensitive
+                jQuery.expr[':'].containsCaseInsensitive = function (n, i, m) {
+                    return jQuery(n).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
+                };
+
+                jQuery('#accordion_search_bar').on('change keyup paste click', function () {
+                    searchTerm = jQuery(this).val();
+                    if (searchTerm.length >=1) {
+                        jQuery('.accordion > .accordion-item').each(function () {
+                            panelContainerId = '#' + jQuery(this).attr('id');
+                            jQuery(panelContainerId + ':not(:containsCaseInsensitive(' + searchTerm + '))').hide();
+                            jQuery(panelContainerId + ':containsCaseInsensitive(' + searchTerm + ')').show().find(".accordion-collapse").collapse("hide");
+                            //To show collapsed use below
+                            //jQuery(panelContainerId + ':containsCaseInsensitive(' + searchTerm + ')').show().find(".accordion-collapse").collapse("show");
+                        });
+                    }
+                    else if (searchTerm.length == 0){
+                        //Used to get all items back after a failed search
+                        jQuery('.accordion > .accordion-item').each(function () {
+                            panelContainerId = '#' + jQuery(this).attr('id');
+                            jQuery(panelContainerId + ':not(:containsCaseInsensitive(' + searchTerm + '))').show();
+                            jQuery(panelContainerId + ':containsCaseInsensitive(' + searchTerm + ')').show().find(".accordion-collapse").collapse("hide");
+                        });
+                    }
+                    else {
+                        jQuery(".accordion-item > div").show();
+                        jQuery(".accordion-item > div").find(".accordion-collapse").collapse("hide");
+                    }
                 });
-            });
+            }());
+
+
         </script>
     </jsp:body>
 </t:genericpage>
