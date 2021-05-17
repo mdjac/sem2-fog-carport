@@ -4,8 +4,10 @@ import business.entities.*;
 import business.exceptions.UserException;
 import business.persistence.Database;
 import business.persistence.OrderLineMapper;
+import business.persistence.StandardCalcValuesMapper;
 import business.services.MaterialFacade;
 import business.services.OrderFacade;
+import business.services.StandardCalcValuesFacade;
 import business.services.StandardCarportFacade;
 import business.utilities.Calculator;
 import sun.reflect.generics.tree.Tree;
@@ -109,14 +111,8 @@ public class FrontController extends HttpServlet {
         getServletContext().setAttribute("categoryFormOptions", categoryFormOptions);
 
 
-        //Sets allowedMeasurements
-        allowedMeasurements.put("roofTilt",new AllowedMinMax(3, 10));
-        allowedMeasurements.put("carportLength",new AllowedMinMax(480, 780));
-        allowedMeasurements.put("carportWidth",new AllowedMinMax(300, 600));
-        allowedMeasurements.put("carportHeight",new AllowedMinMax(200, 300));
-        allowedMeasurements.put("shedLength",new AllowedMinMax(100, 400));
-        allowedMeasurements.put("shedWidth",new AllowedMinMax(100, 400));
-        getServletContext().setAttribute("allowedMeasurements",allowedMeasurements);
+        setAllowedMeasurements();
+
 
         OrderLineMapper orderLineMapper = new OrderLineMapper(database);
         TreeMap<Integer, OrderLine> test;
@@ -199,4 +195,16 @@ public class FrontController extends HttpServlet {
         return "FrontController for application";
     }
 
+    public void setAllowedMeasurements(){
+        StandardCalcValuesFacade standardCalcValuesFacade = new StandardCalcValuesFacade(database);
+        try {
+            allowedMeasurements = standardCalcValuesFacade.getAllowedMeasurements();
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
+        getServletContext().setAttribute("allowedMeasurements",allowedMeasurements);
+    }
+
 }
+
+

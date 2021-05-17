@@ -1,22 +1,31 @@
 package business.entities;
 
 public class AllowedMinMax {
-    private int min;
-    private int max;
+    private Integer min;
+    private Integer max;
 
-
-    public int getMin() {
-        return min;
-    }
-
-    public int getMax() {
-        return max;
-    }
-
-    public AllowedMinMax(int min, int max) {
+    public AllowedMinMax(Integer min, Integer max) {
         this.min = min;
         this.max = max;
     }
+
+
+    public Integer getMin() {
+        return min;
+    }
+
+    public void setMin(Integer min) {
+        this.min = min;
+    }
+
+    public Integer getMax() {
+        return max;
+    }
+
+    public void setMax(Integer max) {
+        this.max = max;
+    }
+
     public boolean between(int i) {
         if (i >= this.min && i <= this.max)
             return true;
