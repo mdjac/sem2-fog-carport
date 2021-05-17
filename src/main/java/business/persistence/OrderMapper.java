@@ -172,7 +172,7 @@ public class OrderMapper {
                 try {
                     insertCarport(carport,order.getId());
                 } catch (Exception ex) {
-                    System.out.println(ex.getMessage());
+                    ex.printStackTrace();
                     //TODO: Delete entry in orders and entries in order_Details for the order
                     //deleteOrderDetails(orderId);
                     //deleteOrder(orderId);

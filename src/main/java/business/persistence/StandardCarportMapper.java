@@ -105,7 +105,6 @@ public class StandardCarportMapper {
                     if(roofType == RoofType.Tag_Med_Rejsning){
                         carport.setRoofTilt(roofTilt);
                     }
-                    System.out.println(carport);
                     standardCarports.put(carport.getStandardCarportId(),carport);
                 }
                 return standardCarports;

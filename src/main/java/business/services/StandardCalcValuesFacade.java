@@ -17,4 +17,8 @@ public class StandardCalcValuesFacade {
     public TreeMap<String, AllowedMinMax> getAllowedMeasurements() throws UserException {
         return standardCalcValuesMapper.getAllowedMeasurements();
     }
+
+    public TreeMap<String, Double> getCalculatorRequiredMaterialWidth() throws UserException {
+        return standardCalcValuesMapper.getCalculatorRequiredMaterialWidth();
+    }
 }

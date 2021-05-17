@@ -21,7 +21,7 @@ public class StandardCalcValuesMapper {
         TreeMap<String, AllowedMinMax> allowedMeasurements = new TreeMap<>();
         try (Connection connection = database.connect())
         {
-            String sql = "SELECT * FROM standard_calc_values where id = 1";
+            String sql = "SELECT * FROM standard_calc_values where category = 'AllowedMeasurements'";
             try (PreparedStatement ps = connection.prepareStatement(sql))
             {
                 ResultSet rs = ps.executeQuery();
@@ -33,6 +33,33 @@ public class StandardCalcValuesMapper {
                   allowedMeasurements.put(name,new AllowedMinMax(min,max));
                 }
                 return allowedMeasurements;
+            }
+            catch (SQLException ex)
+            {
+                throw new UserException(ex.getMessage());
+            }
+        }
+        catch (SQLException ex)
+        {
+            throw new UserException("Connection to database could not be established");
+        }
+    }
+
+    public TreeMap<String, Double> getCalculatorRequiredMaterialWidth() throws UserException {
+        TreeMap<String, Double> calculatorRequiredMaterialWidth = new TreeMap<>();
+        try (Connection connection = database.connect())
+        {
+            String sql = "SELECT * FROM standard_calc_values where category = 'RequiredMaterialWidth'";
+            try (PreparedStatement ps = connection.prepareStatement(sql))
+            {
+                ResultSet rs = ps.executeQuery();
+                while (rs.next())
+                {
+                    String name = rs.getString("name");
+                    Double value = rs.getDouble("value");
+                    calculatorRequiredMaterialWidth.put(name,value);
+                }
+                return calculatorRequiredMaterialWidth;
             }
             catch (SQLException ex)
             {
