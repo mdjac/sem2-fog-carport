@@ -37,6 +37,8 @@ public class FrontController extends HttpServlet {
     public static TreeMap<String,Integer> postDistances = new TreeMap<>();
 
     StandardCalcValuesFacade standardCalcValuesFacade;
+    MaterialFacade materialFacade;
+    StandardCarportFacade standardCarportFacade;
 
 
     public void init() throws ServletException {
@@ -50,74 +52,30 @@ public class FrontController extends HttpServlet {
         }
 
         // Initialize whatever global datastructures needed here:
-        //Used to collect all material from the database
-        MaterialFacade materialFacade = new MaterialFacade(database);
-        try {
-            materialMap = materialFacade.getAllMaterials();
-        } catch (UserException e) {
-            e.printStackTrace();
-        }
-
-
-        TreeMap<Integer, Material> formOption = new TreeMap<>();
-        for (Map.Entry<Integer, TreeMap<Integer, Material>> tmp : materialMap.entrySet()) {
-            for (Material tmp1 : tmp.getValue().values()) {
-                if (!categoryFormOptions.containsKey(tmp.getKey())) {
-                    formOption = new TreeMap<>();
-                    formOption.put(tmp1.getMaterialsId(), tmp1);
-                    categoryFormOptions.put(tmp1.getMaterialsCategoryId(), formOption);
-                } else {
-                    //If categori id exist then we add the material to the treeMap under the existing categoriID
-                    formOption = categoryFormOptions.get(tmp.getKey());
-                    //Check om materialeID eksistere i formoption listen, hvis ikke tilføj
-
-                    if (!formOption.containsKey(tmp1.getMaterialsId())) {
-                        formOption.put(tmp1.getMaterialsId(), tmp1);
-                    }
-                }
-            }
-        }
-        getServletContext().setAttribute("categoryFormOptions", categoryFormOptions);
-
-
-        //Get standard carports
-        StandardCarportFacade standardCarportFacade = new StandardCarportFacade(database);
-        try {
-            standardCarports = standardCarportFacade.getStandardCarports();
-        } catch (UserException e) {
-            e.printStackTrace();
-        }
-        //Add standard carports to app scope
-        getServletContext().setAttribute("standardCarports", standardCarports);
-
-
-        //Sets options to appscopes
-        //Roof types
-        ArrayList<RoofType> roofTypes = new ArrayList<>();
-        for (RoofType type : RoofType.values()) {
-            roofTypes.add(type);
-        }
-        getServletContext().setAttribute("roofTypes", roofTypes);
-        //Rest of form options
-        getServletContext().setAttribute("categoryFormOptions", categoryFormOptions);
-
-
-
+        materialFacade = new MaterialFacade(database);
         standardCalcValuesFacade = new StandardCalcValuesFacade(database);
+        standardCarportFacade = new StandardCarportFacade(database);
+
+        //Used to collect all material from the database
+        setMaterialMap();
+        //Used to populate the dropdown options on the form based on what FOG decides to offer in database
+        setCategoryFormOptions();
+        //Used to set the standard carports from DB for display and ordering on website
+        setStandardCarports();
+        //Used to populate which roof types can be selected at form
+        setRoofTypes();
+        //Used to make it possible for fog employee to modify BOM which other variants from the same materialID
+        setMaterialVariantMap();
+        //Used to set which dimensions we allow for creation of new carports. eg. max length of the carport.
         setAllowedMeasurements();
+        //Used to set which width we require for specific materials (used in calculations of BOM) eg. we want a post to be a specific width as it cant be to slim
         setCalculatorRequiredMaterialWidth();
+        //Used to set which min and max distance we allow for rafters (different for flat roof and roof with tilt).
         setRaftersDistance();
+        //Used to set post distances needed in calculations, eg. max distance between posts
         setPostDistances();
 
 
-
-        for (Map.Entry<Integer,Material> tmp: materialMap.get(5).entrySet()) {
-            int materialId = tmp.getValue().getMaterialsId();
-            if(!materialVariantMap.containsKey(materialId)){
-                materialVariantMap.put(materialId,Material.getMaterialVariantsFromMaterialId(materialId));
-            }
-        }
-        getServletContext().setAttribute("materialVariantMap",materialVariantMap);
     }
 
     protected void processRequest(
@@ -204,6 +162,65 @@ public class FrontController extends HttpServlet {
         }
     }
 
+    public void setMaterialMap(){
+        try {
+            materialMap = materialFacade.getAllMaterials();
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setCategoryFormOptions(){
+        TreeMap<Integer, Material> formOption;
+        for (Map.Entry<Integer, TreeMap<Integer, Material>> tmp : materialMap.entrySet()) {
+            for (Material tmp1 : tmp.getValue().values()) {
+                if (!categoryFormOptions.containsKey(tmp.getKey())) {
+                    formOption = new TreeMap<>();
+                    formOption.put(tmp1.getMaterialsId(), tmp1);
+                    categoryFormOptions.put(tmp1.getMaterialsCategoryId(), formOption);
+                } else {
+                    //If categori id exist then we add the material to the treeMap under the existing categoriID
+                    formOption = categoryFormOptions.get(tmp.getKey());
+                    //Check om materialeID eksistere i formoption listen, hvis ikke tilføj
+
+                    if (!formOption.containsKey(tmp1.getMaterialsId())) {
+                        formOption.put(tmp1.getMaterialsId(), tmp1);
+                    }
+                }
+            }
+        }
+        getServletContext().setAttribute("categoryFormOptions", categoryFormOptions);
+    }
+
+    public void setStandardCarports(){
+        //Get standard carports
+        try {
+            standardCarports = standardCarportFacade.getStandardCarports();
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
+        //Add standard carports to app scope
+        getServletContext().setAttribute("standardCarports", standardCarports);
+    }
+
+    public void setRoofTypes(){
+        //Roof types
+        ArrayList<RoofType> roofTypes = new ArrayList<>();
+        for (RoofType type : RoofType.values()) {
+            roofTypes.add(type);
+        }
+        getServletContext().setAttribute("roofTypes", roofTypes);
+    }
+
+    public void setMaterialVariantMap(){
+        for (Map.Entry<Integer,Material> tmp: materialMap.get(5).entrySet()) {
+            int materialId = tmp.getValue().getMaterialsId();
+            if(!materialVariantMap.containsKey(materialId)){
+                materialVariantMap.put(materialId,Material.getMaterialVariantsFromMaterialId(materialId));
+            }
+        }
+        getServletContext().setAttribute("materialVariantMap",materialVariantMap);
+    }
 }
 
 
