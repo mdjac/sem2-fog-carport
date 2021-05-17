@@ -32,7 +32,22 @@ public class EditAndDeleteOrderLineCommand extends CommandProtectedPage{
                 int rowsAffected = orderLineFacade.deleteOrderLine(deleteIds);
             }
             String[] ids = request.getParameterValues("materialVariantId[]");
-        System.out.println("line 36: "+ ids.length);
+            String[] quantityArray = request.getParameterValues("quantity[]");
+            String[] descriptionArray = request.getParameterValues("description[]");
+            String[] orderlineidArray = request.getParameterValues("orderlineid[]");
+
+        if (ids != null) {
+            System.out.println("line 38: " + ids.length);
+        }
+        if (quantityArray != null) {
+            System.out.println("line 41: " + quantityArray.length);
+        }
+        if (descriptionArray != null) {
+            System.out.println("line 44: " + descriptionArray.length);
+        }
+        if (orderlineidArray != null) {
+            System.out.println("line 44: " + orderlineidArray.length);
+        }
         //Edit part
 
 

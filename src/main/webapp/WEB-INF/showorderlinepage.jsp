@@ -29,11 +29,11 @@
                 <tbody>
                 <c:forEach var="orderline" items="${requestScope.BOM}">
                     <form>
-                    <input type="hidden" value="${orderline.key}" name="orderlineid[]">
+                    <input type="hidden" id="${orderline.key}" value="${orderline.key}" name="orderlineid[]">
                     <tr>
                         <th scope="row">${orderline.key}</th>
                         <td>
-                            <select class="form-select" id="${orderline.key}" name="materialVariantId[]">
+                            <select class="form-select" id="materialVariantId_${orderline.key}" name="materialVariantId[]">
                                 <option value="${orderline.value.material.variantId}"
                                         selected>${orderline.value.material.toString()}</option>
                                 <c:set var="materialid" value="${orderline.value.material.materialsId}"></c:set>
@@ -41,21 +41,21 @@
                                 <c:forEach var="buildingmaterialvariantmap"
                                            items="${applicationScope.materialVariantMap.get(materialid)}">
                                     <c:if test="${buildingmaterialvariantmap.key != variantid}">
-                                        <option value="${orderline.key}#${buildingmaterialvariantmap.key}">${buildingmaterialvariantmap.value.toString()}</option>
+                                        <option value="${buildingmaterialvariantmap.key}">${buildingmaterialvariantmap.value.toString()}</option>
                                     </c:if>
                                 </c:forEach>
                             </select>
                         </td>
                         <td>
                             <div class="form-group w-25">
-                                <input type="number" class="form-control" name="quantity" min="0"
+                                <input type="number" id="quantity_${orderline.key}" class="form-control" name="quantity[]" min="0"
                                        value="${orderline.value.quantity}">
                             </div>
                         </td>
                         <td>${orderline.value.unit}</td>
                         <td>
                             <div class="form-group">
-                                <input type="text" class="form-control" name="description"
+                                <input type="text" id="description_${orderline.key}" class="form-control" name="description[]"
                                        value="${orderline.value.description}">
                             </div>
                         </td>
@@ -76,24 +76,37 @@
 
             </div>
         </form>
+
         <script>
             $(document).ready(function() {
                 $('input, select, textarea').on('change', function() {
-                    console.log( $(this).attr('id'));
+                    var id = $(this).attr('id');
+                    var test = id.slice(id.indexOf("_")+1)
+
+                    var id = '#'+test;
+                    $(id).addClass("changed");
+
+                    var m = "#materialVariantId_"+test;
+                    $(m).addClass("changed");
+
+                    var q = "#quantity_"+test;
+                    $(q).addClass("changed");
+
+                    var d = "#description_"+test;
+                    $(d).addClass("changed");
+
                     $(this).addClass('changed');
                 });
-                $("#gem").click(function(){
-                    $('input:not(.changed), textarea:not(.changed), select:not(.changed)').prop('disabled', true);
 
-                });
+
                 $('form').on('submit', function() {
-                    $('input:not(.changed), textarea:not(.changed), select:not(.changed)').prop('disabled', true);
-                    $('input[name="orderid"]').prop('disabled', false);
-
-
-                    // alert and return just for showing
-                    alert($(this).serialize().replace('%5B', '[').replace('%5D', ']'));
-                    return true;
+                    var numItems = $('.changed').length
+                    if (numItems > 0) {
+                        $('input:not(.changed), textarea:not(.changed), select:not(.changed)').prop('disabled', true);
+                        $('input[name="orderid"]').prop('disabled', false);
+                        return true;
+                    }
+                    return false;
                 });
             });
         </script>
