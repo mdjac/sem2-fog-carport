@@ -34,13 +34,13 @@
                             <select class="form-select" name="materialVariantId[]">
                                 <option value="${orderline.value.material.variantId}"
                                         selected>${orderline.value.material.toString()}</option>
-                                <c:forEach var="buildingmaterialvariantmap" items="${applicationScope.materialVariantMap}">
-                                    <c:if test="${orderline.value.material.materialsId == buildingmaterialvariantmap.key}">
-                                        <c:set var="variantsbymaterialId" value="${buildingmaterialvariantmap.value}"/>
+                                <c:set var="materialid" value="${orderline.value.material.materialsId}"></c:set>
+                                <c:set var="variantid" value="${orderline.value.material.variantId}"></c:set>
+                                <c:forEach var="buildingmaterialvariantmap"
+                                           items="${applicationScope.materialVariantMap.get(materialid)}">
+                                    <c:if test="${buildingmaterialvariantmap.key != variantid}">
+                                        <option value="${buildingmaterialvariantmap.key}">${buildingmaterialvariantmap.value.toString()}</option>
                                     </c:if>
-                                    <c:forEach var="variants" items="${variantsbymaterialId}">
-                                        <option value="${variants.key}">${variants.value.toString()}</option>
-                                    </c:forEach>
                                 </c:forEach>
                             </select>
                         </td>

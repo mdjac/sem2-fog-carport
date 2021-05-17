@@ -160,7 +160,6 @@ public abstract class Calculator {
                         quantity = 1;
                     }
                 } else {
-
                     // check if other length can be used
                     int quantityTmp = (int) Math.ceil(requiredLength/tmp.getLength());
                     if ((tmp.getLength()*quantityTmp)-requiredLength < waste || waste == -1 && materialSplitAllowed == true) {
