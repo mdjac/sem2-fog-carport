@@ -23,7 +23,7 @@ public class ShowSvgCommand extends CommandUnprotectedPage {
         {
             svg.addRect(100 + 50 * x, 0, 600.0, 4.5);
         }*/
-        
+
         svg.addRect(100,100,carport.getCarportHeight(),carport.getCarportWidth());
 
         request.setAttribute("svgdrawing", svg.toString());

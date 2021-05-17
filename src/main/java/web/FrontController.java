@@ -8,6 +8,7 @@ import business.services.MaterialFacade;
 import business.services.OrderFacade;
 import business.services.StandardCarportFacade;
 import business.utilities.Calculator;
+import sun.reflect.generics.tree.Tree;
 import web.commands.*;
 
 import java.io.IOException;
@@ -33,6 +34,7 @@ public class FrontController extends HttpServlet {
     public static TreeMap<Integer, TreeMap<Integer, Material>> materialMap = new TreeMap<>();
     public static TreeMap<Integer, TreeMap<Integer, Material>> categoryFormOptions = new TreeMap<>();
     public static TreeMap<String, AllowedMinMax> allowedMeasurements = new TreeMap<>();
+    public static TreeMap<Integer, TreeMap<Integer, Material>> materialVariantMap = new TreeMap<>();
 
 
     public void init() throws ServletException {
@@ -75,10 +77,10 @@ public class FrontController extends HttpServlet {
         }
 
         //TODO: Skal slettes
-        for (Map.Entry<Integer, TreeMap<Integer, Material>> tmp : categoryFormOptions.entrySet()) {
+        for (Map.Entry<Integer, TreeMap<Integer, Material>> tmp : materialMap.entrySet()) {
             System.out.println("");
             for (Material tmp1 : tmp.getValue().values()) {
-                System.out.println("" + tmp.getKey() + " --- " + tmp1.getMaterialName() + " --- " + tmp1.getMaterialsId());
+                System.out.println("" + tmp.getKey() + " --- " + tmp1.toString() + " --- " + tmp1.getMaterialsId());
             }
         }
 
@@ -122,10 +124,26 @@ public class FrontController extends HttpServlet {
             test = orderLineMapper.getOrderLinesByOrderId(115);
             for (Map.Entry<Integer, OrderLine> tmp: test.entrySet())
             {
-                System.out.println("orderline ID ="+tmp.getKey()+"   ---   "+tmp.getValue().toString());
+                System.out.println("orderline ID ="+tmp.getKey()+"   ---   "+tmp.getValue().getMaterial()+" MaterialID: "+tmp.getValue().getMaterial().getMaterialsId());
             }
         } catch (UserException e) {
             e.printStackTrace();
+        }
+
+        for (Map.Entry<Integer,Material> tmp: materialMap.get(5).entrySet()) {
+            int materialId = tmp.getValue().getMaterialsId();
+            if(!materialVariantMap.containsKey(materialId)){
+                materialVariantMap.put(materialId,Material.getMaterialVariantsFromMaterialId(materialId));
+            }
+        }
+        getServletContext().setAttribute("materialVariantMap",materialVariantMap);
+
+        System.out.println("Now souting materialVariantMap");
+        for (Map.Entry<Integer, TreeMap<Integer,Material>> tmp: materialVariantMap.entrySet()) {
+            System.out.println("MaterialId: "+tmp.getKey()+" MaterialName: "+tmp.getValue().firstEntry().getValue().getMaterialName());
+            for (Map.Entry<Integer,Material> tmp1: tmp.getValue().entrySet()) {
+                System.out.println("VariantId= "+tmp1.getValue().getVariantId()+" MaterialId= "+tmp1.getValue().getMaterialsId()+" --- "+tmp1.getValue().toString());
+            }
         }
 
     }

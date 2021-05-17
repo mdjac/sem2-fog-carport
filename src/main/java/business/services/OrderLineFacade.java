@@ -6,6 +6,8 @@ import business.persistence.Database;
 import business.persistence.OrderLineMapper;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
 
 public class OrderLineFacade {
@@ -21,5 +23,8 @@ public class OrderLineFacade {
 
     public TreeMap<Integer, OrderLine> getOrderLinesByOrderId(int orderId) throws UserException {
         return orderLineMapper.getOrderLinesByOrderId(orderId);
+    }
+    public int deleteOrderLine(List<Integer> deleteIds) throws UserException {
+        return orderLineMapper.deleteOrderLine(deleteIds);
     }
 }

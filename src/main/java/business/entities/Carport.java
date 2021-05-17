@@ -16,6 +16,7 @@ private Integer shedLength;
 private Integer roofTilt;
 private Material roofMaterial;
 private RoofType roofType;
+private Integer standardCarportId;
 
     public Carport(Material carportMaterial, int carportWidth, int carportHeight, int carportLength, RoofType roofType, Material roofMaterial) {
         this.carportMaterial = carportMaterial;
@@ -95,8 +96,13 @@ private RoofType roofType;
         return roofType.toString();
     }
 
+    public Integer getStandardCarportId() {
+        return standardCarportId;
+    }
 
-
+    public void setStandardCarportId(Integer standardCarportId) {
+        this.standardCarportId = standardCarportId;
+    }
 
     @Override
     public String toString() {

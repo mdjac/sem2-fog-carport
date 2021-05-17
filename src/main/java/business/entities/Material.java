@@ -1,5 +1,10 @@
 package business.entities;
 
+import web.FrontController;
+
+import java.util.Map;
+import java.util.TreeMap;
+
 public class Material {
     private String categoryName;
     private String materialName;
@@ -26,8 +31,17 @@ public class Material {
     @Override
     public String toString() {
         StringBuilder toBOM = new StringBuilder("");
-        if(width != null || height != null){
-            toBOM.append(getHeight()+"X"+getWidth()+" cm. ");
+        if(length != null){
+            toBOM.append("L: "+getLength()+" ");
+        }
+        if(width != null){
+            toBOM.append("B: "+getWidth()+" ");
+        }
+        if(height != null){
+            toBOM.append("H: "+getHeight()+" ");
+        }
+        if(length != null || width != null || height != null){
+            toBOM.append(" cm. ");
         }
         toBOM.append(getMaterialName());
         if(quantity != 1){
@@ -89,6 +103,15 @@ public class Material {
         return price;
     }
 
+    public static TreeMap<Integer,Material> getMaterialVariantsFromMaterialId(int materialId){
+        TreeMap<Integer, Material> materialVariantMap = new TreeMap<>();
+        for (Map.Entry<Integer,Material> tmp: FrontController.materialMap.get(5).entrySet()) {
+            if(tmp.getValue().getMaterialsId() == materialId){
+                materialVariantMap.put(tmp.getValue().getVariantId(),tmp.getValue());
+            }
+        }
+        return materialVariantMap;
+    }
 
 
 }

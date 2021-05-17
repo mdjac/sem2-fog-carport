@@ -5,6 +5,8 @@ import business.exceptions.UserException;
 import business.utilities.Calculator;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
 
 public class OrderLineMapper {
@@ -13,6 +15,34 @@ public class OrderLineMapper {
     public OrderLineMapper(Database database) {
         this.database = database;
     }
+
+    public int deleteOrderLine(List<Integer> deleteIds) throws UserException {
+        try (Connection connection = database.connect())
+        {
+            StringBuilder sql = new StringBuilder("DELETE FROM `order_line` WHERE id IN (?");
+            for (int i = 0; i < deleteIds.size()-1 ; i++) {
+                sql.append(",?");
+            }
+            sql.append(")");
+            try (PreparedStatement ps = connection.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS))
+            {
+                for (int i = 1; i < deleteIds.size()+1; i++) {
+                    ps.setInt(i,deleteIds.get(i-1));
+                }
+                int rowsAffected = ps.executeUpdate();
+                return rowsAffected;
+            }
+            catch (SQLException ex)
+            {
+                throw new UserException(ex.getMessage());
+            }
+        }
+        catch (SQLException ex)
+        {
+            throw new UserException(ex.getMessage());
+        }
+    }
+
 
     public TreeMap<Integer, OrderLine> getOrderLinesByOrderId(int orderId) throws UserException {
         TreeMap<Integer,OrderLine> BOM = new TreeMap<>();
