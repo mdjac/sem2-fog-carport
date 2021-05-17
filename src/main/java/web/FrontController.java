@@ -34,6 +34,7 @@ public class FrontController extends HttpServlet {
     public static TreeMap<Integer, TreeMap<Integer, Material>> materialVariantMap = new TreeMap<>();
     public static TreeMap<String,Double> calculatorRequiredMaterialWidth = new TreeMap<>();
     public static TreeMap<String, MinMax> raftersDistance = new TreeMap<>();
+    public static TreeMap<String,Integer> postDistances = new TreeMap<>();
 
     StandardCalcValuesFacade standardCalcValuesFacade;
 
@@ -100,10 +101,14 @@ public class FrontController extends HttpServlet {
         //Rest of form options
         getServletContext().setAttribute("categoryFormOptions", categoryFormOptions);
 
+
+
         standardCalcValuesFacade = new StandardCalcValuesFacade(database);
         setAllowedMeasurements();
         setCalculatorRequiredMaterialWidth();
         setRaftersDistance();
+        setPostDistances();
+
 
 
         for (Map.Entry<Integer,Material> tmp: materialMap.get(5).entrySet()) {
@@ -186,6 +191,14 @@ public class FrontController extends HttpServlet {
     public void setRaftersDistance(){
         try {
             raftersDistance = standardCalcValuesFacade.getRaftersDistance();
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setPostDistances(){
+        try {
+            postDistances = standardCalcValuesFacade.getPostDistances();
         } catch (UserException e) {
             e.printStackTrace();
         }

@@ -25,4 +25,7 @@ public class StandardCalcValuesFacade {
     public TreeMap<String, MinMax> getRaftersDistance() throws UserException {
         return standardCalcValuesMapper.getRaftersDistance();
     }
+    public TreeMap<String, Integer> getPostDistances() throws UserException {
+        return standardCalcValuesMapper.getPostDistances();
+    }
 }

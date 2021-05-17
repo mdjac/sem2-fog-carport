@@ -17,7 +17,7 @@ public class StandardCalcValuesMapper {
     }
 
     public TreeMap<String, MinMax> getRaftersDistance() throws UserException {
-        TreeMap<String, MinMax> allowedMeasurements = new TreeMap<>();
+        TreeMap<String, MinMax> raftersDistances = new TreeMap<>();
         try (Connection connection = database.connect())
         {
             String sql = "SELECT * FROM standard_calc_values where category = 'SpærAfstande'";
@@ -29,9 +29,9 @@ public class StandardCalcValuesMapper {
                     String name = rs.getString("name");
                     Integer min = rs.getInt("min");
                     Integer max = rs.getInt("max");
-                    allowedMeasurements.put(name,new MinMax(min,max));
+                    raftersDistances.put(name,new MinMax(min,max));
                 }
-                return allowedMeasurements;
+                return raftersDistances;
             }
             catch (SQLException ex)
             {
@@ -88,6 +88,33 @@ public class StandardCalcValuesMapper {
                     calculatorRequiredMaterialWidth.put(name,value);
                 }
                 return calculatorRequiredMaterialWidth;
+            }
+            catch (SQLException ex)
+            {
+                throw new UserException(ex.getMessage());
+            }
+        }
+        catch (SQLException ex)
+        {
+            throw new UserException("Connection to database could not be established");
+        }
+    }
+
+    public TreeMap<String, Integer> getPostDistances() throws UserException {
+        TreeMap<String, Integer> postDistances = new TreeMap<>();
+        try (Connection connection = database.connect())
+        {
+            String sql = "SELECT * FROM standard_calc_values where category = 'StolpeAfstande'";
+            try (PreparedStatement ps = connection.prepareStatement(sql))
+            {
+                ResultSet rs = ps.executeQuery();
+                while (rs.next())
+                {
+                    String name = rs.getString("name");
+                    Integer value = rs.getInt("value");
+                    postDistances.put(name,value);
+                }
+                return postDistances;
             }
             catch (SQLException ex)
             {

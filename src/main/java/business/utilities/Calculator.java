@@ -234,7 +234,6 @@ public abstract class Calculator {
         } else {
             fladtTag = false;
         }
-
         double carportLength = carport.getCarportLength();
         double spærMellemrum;
 
@@ -256,10 +255,11 @@ public abstract class Calculator {
     public static int calculateStolper(Carport carport) {
         int stolpeAntal = 0;
         int redskabsskurAntal = 0;
-        int forresteStolpeAfstandFraFront = 100;
-        int bagersteStolpeAfstandFraBag = 20;
-        int maxAfstandMellemStolper = 310;
-        double stolpeBredde = 10;
+        int forresteStolpeAfstandFraFront = getPostDistancsByCategory("forresteStolpeAfstandFraFront").intValue();
+        int bagersteStolpeAfstandFraBag = getPostDistancsByCategory("bagersteStolpeAfstandFraBag").intValue();
+        int maxAfstandMellemStolper = getPostDistancsByCategory("maxAfstandMellemStolper").intValue();
+
+        double stolpeBredde = getRequiredWidthByCategory("stolper");
         double redskabsskurLængde = 0;
 
         int carportLængde = carport.getCarportLength();
@@ -323,5 +323,9 @@ public abstract class Calculator {
 
     public static MinMax getRaftersDistanceByRoofType(String category){
         return FrontController.raftersDistance.get(category);
+    }
+
+    public static Integer getPostDistancsByCategory(String category){
+        return FrontController.postDistances.get(category).intValue();
     }
 }
