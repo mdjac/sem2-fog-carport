@@ -212,7 +212,6 @@ public abstract class Calculator {
                 result = i;
             }
         }
-
         System.out.println("Result : " +result);
         System.out.println("bestRemainder : " +bestRemainder);
         return result;
@@ -220,12 +219,13 @@ public abstract class Calculator {
 
     public static int calculateSpær(Carport carport){
         //Alle mål er i centimeter
-        double spærMaxAfstandFladtTag = 60;
-        double spærMinAfstandFladtTag = 50;
-        double spærMaxAfstandTagMedRejsning = 100;
-        double spærMinAfstandTagMedRejsning = 70;
-        //Todo Hent spærbredde fra database
-        double spærBredde = 4.5;
+        double spærMinAfstandFladtTag = getRaftersDistanceByRoofType("FladtTag").getMin();
+        double spærMaxAfstandFladtTag = getRaftersDistanceByRoofType("FladtTag").getMax();
+
+        double spærMinAfstandTagMedRejsning = getRaftersDistanceByRoofType("TagMedRejsning").getMin();
+        double spærMaxAfstandTagMedRejsning = getRaftersDistanceByRoofType("TagMedRejsning").getMax();
+
+        double spærBredde = getRequiredWidthByCategory("spær");
 
         boolean fladtTag;
 
@@ -319,5 +319,9 @@ public abstract class Calculator {
 
     public static double getRequiredWidthByCategory(String category){
         return FrontController.calculatorRequiredMaterialWidth.get(category).doubleValue();
+    }
+
+    public static MinMax getRaftersDistanceByRoofType(String category){
+        return FrontController.raftersDistance.get(category);
     }
 }

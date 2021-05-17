@@ -3,14 +3,9 @@ package web;
 import business.entities.*;
 import business.exceptions.UserException;
 import business.persistence.Database;
-import business.persistence.OrderLineMapper;
-import business.persistence.StandardCalcValuesMapper;
 import business.services.MaterialFacade;
-import business.services.OrderFacade;
 import business.services.StandardCalcValuesFacade;
 import business.services.StandardCarportFacade;
-import business.utilities.Calculator;
-import sun.reflect.generics.tree.Tree;
 import web.commands.*;
 
 import java.io.IOException;
@@ -35,9 +30,11 @@ public class FrontController extends HttpServlet {
     public static TreeMap<Integer, Carport> standardCarports = new TreeMap<>();
     public static TreeMap<Integer, TreeMap<Integer, Material>> materialMap = new TreeMap<>();
     public static TreeMap<Integer, TreeMap<Integer, Material>> categoryFormOptions = new TreeMap<>();
-    public static TreeMap<String, AllowedMinMax> allowedMeasurements = new TreeMap<>();
+    public static TreeMap<String, MinMax> allowedMeasurements = new TreeMap<>();
     public static TreeMap<Integer, TreeMap<Integer, Material>> materialVariantMap = new TreeMap<>();
     public static TreeMap<String,Double> calculatorRequiredMaterialWidth = new TreeMap<>();
+    public static TreeMap<String, MinMax> raftersDistance = new TreeMap<>();
+
     StandardCalcValuesFacade standardCalcValuesFacade;
 
 
@@ -60,8 +57,8 @@ public class FrontController extends HttpServlet {
             e.printStackTrace();
         }
 
-        TreeMap<Integer, Material> formOption = new TreeMap<>();
 
+        TreeMap<Integer, Material> formOption = new TreeMap<>();
         for (Map.Entry<Integer, TreeMap<Integer, Material>> tmp : materialMap.entrySet()) {
             for (Material tmp1 : tmp.getValue().values()) {
                 if (!categoryFormOptions.containsKey(tmp.getKey())) {
@@ -106,6 +103,7 @@ public class FrontController extends HttpServlet {
         standardCalcValuesFacade = new StandardCalcValuesFacade(database);
         setAllowedMeasurements();
         setCalculatorRequiredMaterialWidth();
+        setRaftersDistance();
 
 
         for (Map.Entry<Integer,Material> tmp: materialMap.get(5).entrySet()) {
@@ -180,6 +178,14 @@ public class FrontController extends HttpServlet {
     public void setCalculatorRequiredMaterialWidth(){
         try {
             calculatorRequiredMaterialWidth = standardCalcValuesFacade.getCalculatorRequiredMaterialWidth();
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setRaftersDistance(){
+        try {
+            raftersDistance = standardCalcValuesFacade.getRaftersDistance();
         } catch (UserException e) {
             e.printStackTrace();
         }

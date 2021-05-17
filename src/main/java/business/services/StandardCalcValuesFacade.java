@@ -1,6 +1,6 @@
 package business.services;
 
-import business.entities.AllowedMinMax;
+import business.entities.MinMax;
 import business.exceptions.UserException;
 import business.persistence.Database;
 import business.persistence.StandardCalcValuesMapper;
@@ -14,11 +14,15 @@ public class StandardCalcValuesFacade {
         this.standardCalcValuesMapper = new StandardCalcValuesMapper(database);
     }
 
-    public TreeMap<String, AllowedMinMax> getAllowedMeasurements() throws UserException {
+    public TreeMap<String, MinMax> getAllowedMeasurements() throws UserException {
         return standardCalcValuesMapper.getAllowedMeasurements();
     }
 
     public TreeMap<String, Double> getCalculatorRequiredMaterialWidth() throws UserException {
         return standardCalcValuesMapper.getCalculatorRequiredMaterialWidth();
+    }
+
+    public TreeMap<String, MinMax> getRaftersDistance() throws UserException {
+        return standardCalcValuesMapper.getRaftersDistance();
     }
 }

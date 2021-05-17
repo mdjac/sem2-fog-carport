@@ -1,10 +1,10 @@
 package business.entities;
 
-public class AllowedMinMax {
+public class MinMax {
     private Integer min;
     private Integer max;
 
-    public AllowedMinMax(Integer min, Integer max) {
+    public MinMax(Integer min, Integer max) {
         this.min = min;
         this.max = max;
     }
