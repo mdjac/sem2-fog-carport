@@ -9,6 +9,7 @@ import java.util.TreeMap;
 
 public class StandardCarportMapper {
     private Database database;
+    public static Integer nextStandardCarportId = 0;
 
     public StandardCarportMapper(Database database){
         this.database = database;
@@ -16,7 +17,7 @@ public class StandardCarportMapper {
 
     public boolean insertStandardCarport (Carport carport) throws UserException{
         try (Connection connection = database.connect()) {
-            String sql = "INSERT INTO `standard_carports` " +
+            String sql = "INSERT INTO `carport` " +
                     "(carport_material," +
                     "carport_width," +
                     "carport_height," +
@@ -26,8 +27,9 @@ public class StandardCarportMapper {
                     "shed_length," +
                     "roof_tilt," +
                     "roof_material," +
-                    "roof_type) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    "roof_type, " +
+                    "standard_carport_id)" +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setInt(1,carport.getCarportMaterial().getMaterialsId());
                 ps.setInt(2,carport.getCarportWidth());
@@ -49,6 +51,7 @@ public class StandardCarportMapper {
                 }
                 ps.setInt(9,carport.getRoofMaterial().getMaterialsId());
                 ps.setString(10,carport.getRoofType().toString());
+                ps.setInt(11,nextStandardCarportId);
                 int rowsAffected = ps.executeUpdate();
                 if (rowsAffected == 1) {
                     return true;
@@ -67,7 +70,7 @@ public class StandardCarportMapper {
         TreeMap<Integer, Carport> standardCarports = new TreeMap<>();
         try (Connection connection = database.connect())
         {
-            String sql = "SELECT * FROM standard_carports";
+            String sql = "SELECT * FROM carport WHERE standard_carport_id IS NOT NULL";
             try (PreparedStatement ps = connection.prepareStatement(sql))
             {
                 ResultSet rs = ps.executeQuery();
@@ -83,12 +86,16 @@ public class StandardCarportMapper {
                     int roofTilt = rs.getInt("roof_tilt");
                     int roofMaterialId = rs.getInt("roof_material");
                     RoofType roofType = RoofType.fromString(rs.getString("roof_type"));
-                    int standardCarportID = rs.getInt("id");
+                    int standardCarportID = rs.getInt("standard_carport_id");
 
+                    //Used to fix next std carport id for new std carports
+                    if(standardCarportID >= nextStandardCarportId){
+                    nextStandardCarportId = standardCarportID +1;
+                    }
 
                     //Create carport
                     Carport carport = new Carport(Carport.findCarportMaterialFromId(carportMaterialId), carportWidth, carportHeight, carportLength, roofType,Carport.findRoofMaterialFromId(roofMaterialId,roofType));
-                    carport.setId(standardCarportID);
+                    carport.setStandardCarportId(standardCarportID);
                     //Checks which fields must be ignored
                     if(shedMaterialId != 0){
                         carport.setShedMaterial(Carport.findShedMaterialFromId(shedMaterialId));
@@ -99,7 +106,7 @@ public class StandardCarportMapper {
                         carport.setRoofTilt(roofTilt);
                     }
                     System.out.println(carport);
-                    standardCarports.put(carport.getId(),carport);
+                    standardCarports.put(carport.getStandardCarportId(),carport);
                 }
                 return standardCarports;
             }

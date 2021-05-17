@@ -30,7 +30,7 @@
                                          src="${pageContext.request.contextPath}/images/carport-std-enkelt.png"
                                          alt="Card image cap">
                                     <div class="card-body">
-                                        <h5 class="card-title">Standard carport #${standardcarport.value.id} </h5>
+                                        <h5 class="card-title">Standard carport #${standardcarport.value.standardCarportId} </h5>
                                         <div class="card-text">
                                             <div>
                                                 <b>Carport:</b><br>
@@ -57,7 +57,7 @@
                                             </div>
                                         </div>
                                         <input type="hidden" id="standardCarportId" name="standardCarportId"
-                                               value="${standardcarport.value.id}">
+                                               value="${standardcarport.value.standardCarportId}">
                                         <input class="btn btn-primary mt-2" type="submit" value="Send forespørgsel">
                                     </div>
                                 </div>
