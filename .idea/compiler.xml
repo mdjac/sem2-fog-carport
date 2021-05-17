@@ -15,7 +15,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="carport" options="-endorseddirs &quot;$PROJECT_DIR$/target/endorsed&quot;" />
+      <module name="carport" options="-endorseddirs &quot;C:\Users\Shark Gaming\Documents\GitHub\sem2-fog-carport\target/endorsed&quot;" />
     </option>
   </component>
 </project>
