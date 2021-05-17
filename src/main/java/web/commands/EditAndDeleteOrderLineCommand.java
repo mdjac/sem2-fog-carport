@@ -30,7 +30,6 @@ public class EditAndDeleteOrderLineCommand extends CommandProtectedPage{
                     deleteIds.add(Integer.parseInt(tmp));
                 }
                 int rowsAffected = orderLineFacade.deleteOrderLine(deleteIds);
-                System.out.println("Order Lines delete: "+rowsAffected);
             }
             String[] ids = request.getParameterValues("materialVariantId[]");
         System.out.println("line 36: "+ ids.length);

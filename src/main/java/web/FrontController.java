@@ -4,8 +4,10 @@ import business.entities.*;
 import business.exceptions.UserException;
 import business.persistence.Database;
 import business.persistence.OrderLineMapper;
+import business.persistence.StandardCalcValuesMapper;
 import business.services.MaterialFacade;
 import business.services.OrderFacade;
+import business.services.StandardCalcValuesFacade;
 import business.services.StandardCarportFacade;
 import business.utilities.Calculator;
 import sun.reflect.generics.tree.Tree;
@@ -35,6 +37,8 @@ public class FrontController extends HttpServlet {
     public static TreeMap<Integer, TreeMap<Integer, Material>> categoryFormOptions = new TreeMap<>();
     public static TreeMap<String, AllowedMinMax> allowedMeasurements = new TreeMap<>();
     public static TreeMap<Integer, TreeMap<Integer, Material>> materialVariantMap = new TreeMap<>();
+    public static TreeMap<String,Double> calculatorRequiredMaterialWidth = new TreeMap<>();
+    StandardCalcValuesFacade standardCalcValuesFacade;
 
 
     public void init() throws ServletException {
@@ -75,15 +79,6 @@ public class FrontController extends HttpServlet {
                 }
             }
         }
-
-        //TODO: Skal slettes
-        for (Map.Entry<Integer, TreeMap<Integer, Material>> tmp : materialMap.entrySet()) {
-            System.out.println("");
-            for (Material tmp1 : tmp.getValue().values()) {
-                System.out.println("" + tmp.getKey() + " --- " + tmp1.toString() + " --- " + tmp1.getMaterialsId());
-            }
-        }
-
         getServletContext().setAttribute("categoryFormOptions", categoryFormOptions);
 
 
@@ -108,27 +103,10 @@ public class FrontController extends HttpServlet {
         //Rest of form options
         getServletContext().setAttribute("categoryFormOptions", categoryFormOptions);
 
+        standardCalcValuesFacade = new StandardCalcValuesFacade(database);
+        setAllowedMeasurements();
+        setCalculatorRequiredMaterialWidth();
 
-        //Sets allowedMeasurements
-        allowedMeasurements.put("roofTilt",new AllowedMinMax(3, 10));
-        allowedMeasurements.put("carportLength",new AllowedMinMax(480, 780));
-        allowedMeasurements.put("carportWidth",new AllowedMinMax(300, 600));
-        allowedMeasurements.put("carportHeight",new AllowedMinMax(200, 300));
-        allowedMeasurements.put("shedLength",new AllowedMinMax(100, 400));
-        allowedMeasurements.put("shedWidth",new AllowedMinMax(100, 400));
-        getServletContext().setAttribute("allowedMeasurements",allowedMeasurements);
-
-        OrderLineMapper orderLineMapper = new OrderLineMapper(database);
-        TreeMap<Integer, OrderLine> test;
-        try {
-            test = orderLineMapper.getOrderLinesByOrderId(115);
-            for (Map.Entry<Integer, OrderLine> tmp: test.entrySet())
-            {
-                System.out.println("orderline ID ="+tmp.getKey()+"   ---   "+tmp.getValue().getMaterial()+" MaterialID: "+tmp.getValue().getMaterial().getMaterialsId());
-            }
-        } catch (UserException e) {
-            e.printStackTrace();
-        }
 
         for (Map.Entry<Integer,Material> tmp: materialMap.get(5).entrySet()) {
             int materialId = tmp.getValue().getMaterialsId();
@@ -137,15 +115,6 @@ public class FrontController extends HttpServlet {
             }
         }
         getServletContext().setAttribute("materialVariantMap",materialVariantMap);
-
-        System.out.println("Now souting materialVariantMap");
-        for (Map.Entry<Integer, TreeMap<Integer,Material>> tmp: materialVariantMap.entrySet()) {
-            System.out.println("MaterialId: "+tmp.getKey()+" MaterialName: "+tmp.getValue().firstEntry().getValue().getMaterialName());
-            for (Map.Entry<Integer,Material> tmp1: tmp.getValue().entrySet()) {
-                System.out.println("VariantId= "+tmp1.getValue().getVariantId()+" MaterialId= "+tmp1.getValue().getMaterialsId()+" --- "+tmp1.getValue().toString());
-            }
-        }
-
     }
 
     protected void processRequest(
@@ -199,4 +168,23 @@ public class FrontController extends HttpServlet {
         return "FrontController for application";
     }
 
+    public void setAllowedMeasurements(){
+        try {
+            allowedMeasurements = standardCalcValuesFacade.getAllowedMeasurements();
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
+        getServletContext().setAttribute("allowedMeasurements",allowedMeasurements);
+    }
+
+    public void setCalculatorRequiredMaterialWidth(){
+        try {
+            calculatorRequiredMaterialWidth = standardCalcValuesFacade.getCalculatorRequiredMaterialWidth();
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
+
+

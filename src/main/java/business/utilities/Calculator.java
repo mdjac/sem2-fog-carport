@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 
 public abstract class Calculator {
-
-
     //Assumptions:
     //Alle mål er i centimeter
     //Remme kan laves i uendelige længder
@@ -36,17 +34,17 @@ public abstract class Calculator {
 
             //calculate spær
             int spærAntal = calculateSpær(carport);
-            optimalMaterialResult = getOptimalMaterial(9, carport.getCarportWidth(), 19.5, 5,false);
+            optimalMaterialResult = getOptimalMaterial(9, carport.getCarportWidth(), getRequiredWidthByCategory("spær"), 5,false);
             bomItems.add(new OrderLine(spærAntal,order.getId(), "stk",optimalMaterialResult.getMaterial(),"Spær, monteres på rem"));
 
             //Calculate stolper inklusiv redskabsskur
             int stolpeAntal = calculateStolper(carport);
-            optimalMaterialResult = getOptimalMaterial(10, (carport.getCarportHeight()+90), 9.7, 5, false);
+            optimalMaterialResult = getOptimalMaterial(10, (carport.getCarportHeight()+90), getRequiredWidthByCategory("stolper"), 5, false);
             bomItems.add(new OrderLine(stolpeAntal, order.getId(), "stk", optimalMaterialResult.getMaterial(), "Stolper nedgraves 90 cm. i jord"));
 
             //Calculate remme
             //TODO If time permits e can change materialSplit to be allowed. This has to be in sync with stolpe afstanden
-            optimalMaterialResult = getOptimalMaterial(9,carport.getCarportLength(), 19.5, 5, false);
+            optimalMaterialResult = getOptimalMaterial(9,carport.getCarportLength(), getRequiredWidthByCategory("remme"), 5, false);
             bomItems.add(new OrderLine(2, order.getId(), "stk", optimalMaterialResult.getMaterial(), "Remme i sider, sadles ned i stolper"));
 
 
@@ -56,27 +54,27 @@ public abstract class Calculator {
 
         //Calculate Tag
             //Under Sternsbrædder side * 2 for vi skal have til begge sider
-            optimalMaterialResult = getOptimalMaterial(carport.getCarportMaterial().getMaterialsId(), carport.getCarportLength(),20, 5, true);
+            optimalMaterialResult = getOptimalMaterial(carport.getCarportMaterial().getMaterialsId(), carport.getCarportLength(), getRequiredWidthByCategory("understernsbrædder"),5, true);
             bomItems.add(new OrderLine(optimalMaterialResult.getQuantity()*2, order.getId(), "stk", optimalMaterialResult.getMaterial(), "understernbrædder til siderne"));
 
             //Under Sternsbrædder for og bagende * 2 for vi skal have til begge sider
-            optimalMaterialResult = getOptimalMaterial(carport.getCarportMaterial().getMaterialsId(), carport.getCarportWidth(),20, 5, true);
+            optimalMaterialResult = getOptimalMaterial(carport.getCarportMaterial().getMaterialsId(), carport.getCarportWidth(),getRequiredWidthByCategory("understernsbrædder"), 5, true);
             bomItems.add(new OrderLine(optimalMaterialResult.getQuantity()*2, order.getId(), "stk", optimalMaterialResult.getMaterial(), "understernbrædder til for & bag ende"));
 
             //over Sternsbrædder side * 2 for vi skal have til begge sider
-            optimalMaterialResult = getOptimalMaterial(carport.getCarportMaterial().getMaterialsId(), carport.getCarportLength(),12.5, 5, true);
+            optimalMaterialResult = getOptimalMaterial(carport.getCarportMaterial().getMaterialsId(), carport.getCarportLength(),getRequiredWidthByCategory("oversternsbrædder"), 5, true);
             bomItems.add(new OrderLine(optimalMaterialResult.getQuantity()*2, order.getId(), "stk", optimalMaterialResult.getMaterial(), "oversternbrædder til siderne"));
 
             //over Sternsbrædder forende
-            optimalMaterialResult = getOptimalMaterial(carport.getCarportMaterial().getMaterialsId(), carport.getCarportWidth(),12.5, 5, true);
+            optimalMaterialResult = getOptimalMaterial(carport.getCarportMaterial().getMaterialsId(), carport.getCarportWidth(),getRequiredWidthByCategory("oversternsbrædder"), 5, true);
             bomItems.add(new OrderLine(optimalMaterialResult.getQuantity(), order.getId(), "stk", optimalMaterialResult.getMaterial(), "oversternbrædder til forenden"));
 
             //vandbrædt på stern i forende
-            optimalMaterialResult = getOptimalMaterial(carport.getCarportMaterial().getMaterialsId(), carport.getCarportWidth(),10, 5, true);
+            optimalMaterialResult = getOptimalMaterial(carport.getCarportMaterial().getMaterialsId(), carport.getCarportWidth(),getRequiredWidthByCategory("vandbrædt"), 5, true);
             bomItems.add(new OrderLine(optimalMaterialResult.getQuantity(), order.getId(), "stk", optimalMaterialResult.getMaterial(), "vandbrædt på stern i forende"));
 
             //vandbrædt på stern i sider * 2 for vi skal have til begge sider
-            optimalMaterialResult = getOptimalMaterial(carport.getCarportMaterial().getMaterialsId(), carport.getCarportLength(),10, 5, true);
+            optimalMaterialResult = getOptimalMaterial(carport.getCarportMaterial().getMaterialsId(), carport.getCarportLength(),getRequiredWidthByCategory("vandbrædt"), 5, true);
             bomItems.add(new OrderLine(optimalMaterialResult.getQuantity()*2, order.getId(), "stk", optimalMaterialResult.getMaterial(), "vandbrædt på stern i sider"));
 
             //Tagmateriale antal
@@ -137,10 +135,6 @@ public abstract class Calculator {
                 material = getMaterialByMaterialVariantId(25);
                 bomItems.add(new OrderLine(32, order.getId(), "stk", material, "Til montering af løsholter i skur"));
             }
-        for (int i = 0; i < bomItems.size(); i++) {
-            System.out.println(bomItems.get(i).toString());
-        }
-
         return bomItems;
 
     }
@@ -204,7 +198,7 @@ public abstract class Calculator {
         //We have calculated how many units neede to cover the carport width, now we multiply with the required
         //items needed for the length
         quantity = quantity*((int) Math.ceil(carportLength/material.getWidth()));
-        System.out.println("Roof quantity: "+quantity);
+        System.out.println("roof quantity:" +quantity);
         return new OptimalMaterialResult(quantity,material);
     }
 
@@ -321,5 +315,9 @@ public abstract class Calculator {
 
     public static Material getMaterialByMaterialVariantId(int variantId){
         return FrontController.materialMap.get(5).get(variantId);
+    }
+
+    public static double getRequiredWidthByCategory(String category){
+        return FrontController.calculatorRequiredMaterialWidth.get(category).doubleValue();
     }
 }
