@@ -52,7 +52,10 @@
                                        value="${orderline.value.quantity}">
                             </div>
                         </td>
-                        <td>${orderline.value.unit}</td>
+                        <td>
+                            ${orderline.value.unit}
+                            <input type="hidden" name="unit[]" value="${orderline.value.unit}" id="unit_${orderline.key}">
+                        </td>
                         <td>
                             <div class="form-group">
                                 <input type="text" id="description_${orderline.key}" class="form-control" name="description[]"
@@ -84,18 +87,21 @@
                     $(this).addClass('changed');
 
                     var id = $(this).attr('id');
-                    var test = id.slice(id.indexOf("_")+1)
+                    var idSplitted = id.slice(id.indexOf("_")+1)
 
-                    var id = '#'+test;
+                    var id = '#'+idSplitted;
                     $(id).addClass("changed");
 
-                    var m = "#materialVariantId_"+test;
+                    var m = "#materialVariantId_"+idSplitted;
                     $(m).addClass("changed");
 
-                    var q = "#quantity_"+test;
+                    var q = "#quantity_"+idSplitted;
                     $(q).addClass("changed");
 
-                    var d = "#description_"+test;
+                    var u = "#unit_"+idSplitted;
+                    $(u).addClass("changed");
+
+                    var d = "#description_"+idSplitted;
                     $(d).addClass("changed");
                 });
 
