@@ -26,11 +26,16 @@
                         <div class="col-lg-4 mt-2">
                             <form class="" action="${pageContext.request.contextPath}${link}" method="post">
                                 <div class="card text-center" style="width: 18rem;">
+                                    <c:set var="picture" value="/images/carport-std-fladtTag.png"></c:set>
+                                    <c:if test="${not empty standardcarport.value.roofTilt}">
+                                        <c:set var="picture" value="/images/carport-std-rejsning.png"></c:set>
+                                    </c:if>
                                     <img class="card-img-top"
-                                         src="${pageContext.request.contextPath}/images/carport-std-enkelt.png"
+                                         src="${pageContext.request.contextPath}${picture}"
                                          alt="Card image cap">
                                     <div class="card-body">
-                                        <h5 class="card-title">Standard carport #${standardcarport.value.standardCarportId} </h5>
+                                        <h5 class="card-title">Standard carport
+                                            #${standardcarport.value.standardCarportId} </h5>
                                         <div class="card-text">
                                             <div>
                                                 <b>Carport:</b><br>
