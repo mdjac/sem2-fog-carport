@@ -12,9 +12,7 @@
     </jsp:attribute>
 
     <jsp:body>
-        <div class="about-section">
-            <h1>Profile Page</h1>
-        </div>
+
 
 
         <div class="row mt-5">

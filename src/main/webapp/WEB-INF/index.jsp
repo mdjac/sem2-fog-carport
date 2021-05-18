@@ -24,7 +24,7 @@
                     </p>
                 </div>
                 <div class="row mt-5">
-                    <div class="col-lg-6">
+                    <div class="col-md-6">
                         <form class="" action="${pageContext.request.contextPath}/fc/standardcarportorderpage"
                               method="post">
                             <div class="card text-center" style="width: 18rem;">
@@ -38,12 +38,12 @@
                                         Byggevejledning medfølger<br>
                                         Levering inden for 10 hverdage<br>
                                     </p>
-                                    <input class="btn btn-primary" type="submit" value="Vælg">
+                                    <input class="button" type="submit" value="Vælg">
                                 </div>
                             </div>
                         </form>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-md-6">
                         <form class="" action="${pageContext.request.contextPath}/fc/customizedcarportorderpage"
                               method="post">
                             <div class="card text-center" style="width: 18rem;">
@@ -57,7 +57,7 @@
                                         Byggevejledning medfølger<br>
                                         Tilbud fremsendes indenfor 10 hverdage<br>
                                     </p>
-                                    <input class="btn btn-primary" type="submit" value="Vælg">
+                                    <input class="button" type="submit" value="Vælg">
                                 </div>
                             </div>
                         </form>

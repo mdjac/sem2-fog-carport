@@ -2,25 +2,39 @@
     CSS styles for the whole website
     The file is included in the genericpage.tag template
  */
+.button {
+    border: none;
+    outline: 0;
+    display: inline-block;
+    padding: 8px;
+    color: white;
+    background-color: #0B2069;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+}
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    margin: 8px;
+}
+.banner {
+    background-size: cover!important;
+    /*height: 654px;*/
+    top: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+}
+.show {
+    display: block!important;
 
-    .banner {
-        background-size: cover!important;
-        /*height: 654px;*/
-        top: 0;
-        position: absolute;
-        width: 100%;
-        z-index: 1;
-    }
-    .show {
-        display: block!important;
+}
+.test {
+    height: 300px !important;
 
-    }
-    .test {
-        height: 300px !important;
-
-        background-position: center center;
-        background-repeat: no-repeat no-repeat;
-    }
+    background-position: center center;
+    background-repeat: no-repeat no-repeat;
+}
 #topmenu_login_dialogue
 {
     font-size: smaller;
@@ -76,6 +90,7 @@
     top: 0;
     background: #0B2069;
 }
+
 .topNavigation{
 
 
