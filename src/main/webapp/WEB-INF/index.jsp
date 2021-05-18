@@ -12,7 +12,7 @@
     </jsp:attribute>
 
     <jsp:body>
-        <!-- skal slettes -->
+        <!-- skal slettes !!!!!!!!!!!!!!!!!!!!!!!!!!!-->
         <a href="${pageContext.request.contextPath}/fc/showsvg">SVG TEGNING</a>
         <div class="row">
             <div class="col-lg-3"></div>

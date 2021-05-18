@@ -15,6 +15,7 @@
     <jsp:body>
       <h1>SVG TEGNING HEJ</h1>
         <p>her vises tegningen</p>
+
         ${requestScope.svgdrawing}
 
     </jsp:body>
