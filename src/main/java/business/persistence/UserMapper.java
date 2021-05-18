@@ -14,6 +14,48 @@ public class UserMapper
         this.database = database;
     }
 
+
+    public User updateUser(User user, String newpassword) throws UserException
+    {
+        try (Connection connection = database.connect())
+        {
+            String sql;
+            //Password is not a part of user object so has to be checked seperately.
+            if(newpassword != null){
+                 sql = "UPDATE `users` SET `email` = ?, `password` = ?, telephone = ? WHERE (`id` = ?)";
+            }else{
+                 sql = "UPDATE `users` SET `email` = ?, telephone = ? WHERE (`id` = ?)";
+            }
+            try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS))
+            {
+                if(newpassword != null){
+                    ps.setString(1,user.getEmail());
+                    ps.setString(2, newpassword);
+                    ps.setString(3,user.getTelephone());
+                    ps.setInt(4,user.getId());
+                }else{
+                    ps.setString(1,user.getEmail());
+                    ps.setString(2,user.getTelephone());
+                    ps.setInt(3,user.getId());
+                }
+                int rowAffected = ps.executeUpdate();
+                if (rowAffected != 1) {
+                    throw new UserException("Error when updating user");
+                }
+                return user;
+            }
+            catch (SQLException ex)
+            {
+                throw new UserException(ex.getMessage());
+            }
+        }
+        catch (SQLException ex)
+        {
+            throw new UserException(ex.getMessage());
+        }
+    }
+
+
     public void createUser(User user, String password) throws UserException
     {
         try (Connection connection = database.connect())
