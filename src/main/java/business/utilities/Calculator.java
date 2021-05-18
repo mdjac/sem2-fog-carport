@@ -33,7 +33,7 @@ public abstract class Calculator {
         //calculate carport
 
             //calculate spær
-            int spærAntal = calculateSpær(carport);
+            int spærAntal = calculateSpær(carport, false);
             optimalMaterialResult = getOptimalMaterial(9, carport.getCarportWidth(), getRequiredWidthByCategory("spær"), 5,false);
             bomItems.add(new OrderLine(spærAntal,order.getId(), "stk",optimalMaterialResult.getMaterial(),"Spær, monteres på rem"));
 
@@ -53,6 +53,14 @@ public abstract class Calculator {
 
 
         //Calculate Tag
+            if (carport.getRoofType().equals(RoofType.Tag_Med_Rejsning.toString())) {
+                //Tværgående spær
+                //calculate spær
+                int tværgåendeSpærAntal = calculateSpær(carport, true);
+                optimalMaterialResult = getOptimalMaterial(9, carport.getCarportLength(), getRequiredWidthByCategory("spær"), 5,false);
+                bomItems.add(new OrderLine(tværgåendeSpærAntal,order.getId(), "stk",optimalMaterialResult.getMaterial(),"Tværgående spær, monteres på spær"));
+
+            }
             //Under Sternsbrædder side * 2 for vi skal have til begge sider
             optimalMaterialResult = getOptimalMaterial(carport.getCarportMaterial().getMaterialsId(), carport.getCarportLength(), getRequiredWidthByCategory("understernsbrædder"),5, true);
             bomItems.add(new OrderLine(optimalMaterialResult.getQuantity()*2, order.getId(), "stk", optimalMaterialResult.getMaterial(), "understernbrædder til siderne"));
@@ -80,6 +88,8 @@ public abstract class Calculator {
             //Tagmateriale antal
             optimalMaterialResult = getOptimalRoofUnits(carport.getRoofMaterial().getMaterialsId(), carport.getCarportLength(),carport.getCarportWidth(),RoofType.fromString(carport.getRoofType()));
             bomItems.add(new OrderLine(optimalMaterialResult.getQuantity(), order.getId(), "stk", optimalMaterialResult.getMaterial(), "tagmateriale monteres på spær"));
+
+
 
 
         //SKRUER OG BESLAG
@@ -217,13 +227,15 @@ public abstract class Calculator {
         return result;
     }
 
-    public static int calculateSpær(Carport carport){
+    public static int calculateSpær(Carport carport, boolean tværgåendeSpær){
         //Alle mål er i centimeter
         double spærMinAfstandFladtTag = getRaftersDistanceByRoofType("FladtTag").getMin();
         double spærMaxAfstandFladtTag = getRaftersDistanceByRoofType("FladtTag").getMax();
 
         double spærMinAfstandTagMedRejsning = getRaftersDistanceByRoofType("TagMedRejsning").getMin();
         double spærMaxAfstandTagMedRejsning = getRaftersDistanceByRoofType("TagMedRejsning").getMax();
+        double tværgåendeSpærMinAfstandTagMedRejsning = getRaftersDistanceByRoofType("tagMedRejsningTværgående").getMin();
+        double tværgåendeSpærMaxAfstandTagMedRejsning = getRaftersDistanceByRoofType("tagMedRejsningTværgående").getMax();
 
         double spærBredde = getRequiredWidthByCategory("spær");
 
@@ -235,13 +247,18 @@ public abstract class Calculator {
             fladtTag = false;
         }
         double carportLength = carport.getCarportLength();
+        double carportwidth = carport.getCarportWidth();
         double spærMellemrum;
 
         if (fladtTag == true) {
             spærMellemrum = calculateOptimalDistance(spærMinAfstandFladtTag, spærMaxAfstandFladtTag, spærBredde, carportLength, 0.1);
 
         } else {
-            spærMellemrum = calculateOptimalDistance(spærMinAfstandTagMedRejsning, spærMaxAfstandTagMedRejsning, spærBredde, carportLength, 0.1);
+            if (tværgåendeSpær == false) {
+                spærMellemrum = calculateOptimalDistance(spærMinAfstandTagMedRejsning, spærMaxAfstandTagMedRejsning, spærBredde, carportLength, 0.1);
+            } else {
+                spærMellemrum = calculateOptimalDistance(tværgåendeSpærMinAfstandTagMedRejsning, tværgåendeSpærMaxAfstandTagMedRejsning, spærBredde, carportwidth, 0.1);
+            }
         }
         int spærAntal = (int) ((carportLength-(spærBredde*2))/spærMellemrum);
 
