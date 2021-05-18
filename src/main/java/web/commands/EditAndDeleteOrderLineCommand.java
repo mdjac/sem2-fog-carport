@@ -3,6 +3,8 @@ package web.commands;
 import business.entities.OrderLine;
 import business.exceptions.UserException;
 import business.services.OrderLineFacade;
+import business.utilities.Calculator;
+import web.FrontController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,8 +20,7 @@ public class EditAndDeleteOrderLineCommand extends CommandProtectedPage{
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws UserException {
         OrderLineFacade orderLineFacade = new OrderLineFacade(database);
-        int orderId = Integer.parseInt(request.getParameter("orderid"));
-        request.setAttribute("orderid",orderId);
+
         //Deletion part
             //Gets all delete ID's as an array
             String[] tmpDeleteIds = request.getParameterValues("deleteIds[]");
@@ -30,8 +31,35 @@ public class EditAndDeleteOrderLineCommand extends CommandProtectedPage{
                     deleteIds.add(Integer.parseInt(tmp));
                 }
                 int rowsAffected = orderLineFacade.deleteOrderLine(deleteIds);
-                System.out.println("Order Lines delete: "+rowsAffected);
             }
+            try {
+                String[] materialVariantArray = request.getParameterValues("materialVariantId[]");
+                String[] quantityArray = request.getParameterValues("quantity[]");
+                String[] descriptionArray = request.getParameterValues("description[]");
+                String[] orderlineidArray = request.getParameterValues("orderlineid[]");
+                String[] unitArray = request.getParameterValues("unit[]");
+                int orderId = Integer.parseInt(request.getParameter("orderid"));
+                //request.setAttribute("orderid",orderId);
+                if (descriptionArray != null) {
+                    for (int i = 0; i < descriptionArray.length; i++) {
+                        OrderLine orderLine = new OrderLine(
+                                Integer.parseInt(quantityArray[i]),
+                                orderId,
+                                unitArray[i],
+                                Calculator.getMaterialByMaterialVariantId(Integer.parseInt(materialVariantArray[i])),
+                                descriptionArray[i]);
+                        orderLine.setId(Integer.parseInt(orderlineidArray[i]));
+                        orderLineFacade.updateOrderline(orderLine);
+                    }
+                }
+            } catch (Exception e) {
+                throw new UserException(e.getMessage());
+            }
+
+
+
+
+
         //Edit part
 
 

@@ -28,10 +28,12 @@
                 </thead>
                 <tbody>
                 <c:forEach var="orderline" items="${requestScope.BOM}">
+                    <form>
+                    <input type="hidden" id="${orderline.key}" value="${orderline.key}" name="orderlineid[]">
                     <tr>
                         <th scope="row">${orderline.key}</th>
                         <td>
-                            <select class="form-select" name="materialVariantId[]">
+                            <select class="form-select" id="materialVariantId_${orderline.key}" name="materialVariantId[]">
                                 <option value="${orderline.value.material.variantId}"
                                         selected>${orderline.value.material.toString()}</option>
                                 <c:set var="materialid" value="${orderline.value.material.materialsId}"></c:set>
@@ -46,14 +48,17 @@
                         </td>
                         <td>
                             <div class="form-group w-25">
-                                <input type="number" class="form-control" name="quantity" min="0"
+                                <input type="number" id="quantity_${orderline.key}" class="form-control" name="quantity[]" min="0"
                                        value="${orderline.value.quantity}">
                             </div>
                         </td>
-                        <td>${orderline.value.unit}</td>
+                        <td>
+                            ${orderline.value.unit}
+                            <input type="hidden" name="unit[]" value="${orderline.value.unit}" id="unit_${orderline.key}">
+                        </td>
                         <td>
                             <div class="form-group">
-                                <input type="text" class="form-control" name="description"
+                                <input type="text" id="description_${orderline.key}" class="form-control" name="description[]"
                                        value="${orderline.value.description}">
                             </div>
                         </td>
@@ -64,13 +69,53 @@
                             </div>
                         </td>
                     </tr>
+
                 </c:forEach>
                 </tbody>
             </table>
             <div class="text-center mt-2">
                 <input class="btn btn-danger mt-2" type="reset" value="Fortryd">
-                <input class="btn btn-primary mt-2" type="submit" value="Gem">
+                <input class="btn btn-primary mt-2"  name="myButton" type="submit" value="Gem">
+
             </div>
         </form>
+
+        <script>
+            $(document).ready(function() {
+                $('input, select, textarea').on('change', function() {
+
+                    $(this).addClass('changed');
+
+                    var id = $(this).attr('id');
+                    var idSplitted = id.slice(id.indexOf("_")+1)
+
+                    var id = '#'+idSplitted;
+                    $(id).addClass("changed");
+
+                    var m = "#materialVariantId_"+idSplitted;
+                    $(m).addClass("changed");
+
+                    var q = "#quantity_"+idSplitted;
+                    $(q).addClass("changed");
+
+                    var u = "#unit_"+idSplitted;
+                    $(u).addClass("changed");
+
+                    var d = "#description_"+idSplitted;
+                    $(d).addClass("changed");
+                });
+
+
+                $('form').on('submit', function() {
+                    var numItems = $('.changed').length
+                    if (numItems > 0) {
+                        $('input:not(.changed), textarea:not(.changed), select:not(.changed)').prop('disabled', true);
+                        $('input[name="orderid"]').prop('disabled', false);
+                        return true;
+                    }
+                    return false;
+                });
+            });
+        </script>
     </jsp:body>
 </t:genericpage>

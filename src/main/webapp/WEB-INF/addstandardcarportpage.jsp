@@ -60,7 +60,7 @@
                             </select>
                         </div>
                         <div id="rooftiltdiv" style="display: none" class="col-lg-6 mt-2">
-                            <label for="rooftilt">Tag hældning ${applicationScope.allowedMeasurements["roofTilt"].toString()}</label>
+                            <label for="rooftilt">Tag hældning ${applicationScope.allowedMeasurements["tagHældning"].toString()}</label>
                             <input type="number" class="form-control" id="rooftilt" aria-describedby="rooftilt"
                                    name="rooftilt" required>
                         </div>
@@ -77,7 +77,7 @@
                         </div>
                         <div class="col-lg-6 mt-2">
                             <div class="form-group mt-2">
-                                <label for="carportlength">Carport længde ${applicationScope.allowedMeasurements["carportLength"].toString()}</label>
+                                <label for="carportlength">Carport længde ${applicationScope.allowedMeasurements["carportLængde"].toString()}</label>
                                 <input type="number" class="form-control" id="carportlength"
                                        aria-describedby="carportlength"
                                        name="carportlength" required>
@@ -85,7 +85,7 @@
                         </div>
                         <div class="col-lg-6 mt-2">
                             <div class="form-group mt-2">
-                                <label for="carportwidth">Carport bredde ${applicationScope.allowedMeasurements["carportWidth"].toString()}</label>
+                                <label for="carportwidth">Carport bredde ${applicationScope.allowedMeasurements["carportBredde"].toString()}</label>
                                 <input type="number" class="form-control" id="carportwidth"
                                        aria-describedby="carportwidth"
                                        name="carportwidth" required>
@@ -93,7 +93,7 @@
                         </div>
                         <div class="col-lg-6 mt-2">
                             <div class="form-group mt-2">
-                                <label for="carportheight">Carport højde ${applicationScope.allowedMeasurements["carportHeight"].toString()}</label>
+                                <label for="carportheight">Carport højde ${applicationScope.allowedMeasurements["carportHøjde"].toString()}</label>
                                 <input type="number" class="form-control" id="carportheight"
                                        aria-describedby="carportheight"
                                        name="carportheight" required>
@@ -120,14 +120,14 @@
                         </div>
                         <div id="shedlengthdiv" style="display: none" class="col-lg-6 mt-2">
                             <div class="form-group mt-2">
-                                <label for="shedlength">Redskabsskur længde ${applicationScope.allowedMeasurements["shedLength"].toString()}</label>
+                                <label for="shedlength">Redskabsskur længde ${applicationScope.allowedMeasurements["redskabsskurLængde"].toString()}</label>
                                 <input type="number" class="form-control" id="shedlength" aria-describedby="shedlength"
                                        name="shedlength" required>
                             </div>
                         </div>
                         <div id="shedwidthdiv" style="display: none" class="col-lg-6 mt-2">
                             <div class="form-group mt-2">
-                                <label for="shedwidth">Redskabsskur bredde ${applicationScope.allowedMeasurements["shedWidth"].toString()}</label>
+                                <label for="shedwidth">Redskabsskur bredde ${applicationScope.allowedMeasurements["redskabsskurBredde"].toString()}</label>
                                 <input type="number" class="form-control" id="shedwidth" aria-describedby="shedwidth"
                                        name="shedwidth" required>
                             </div>
