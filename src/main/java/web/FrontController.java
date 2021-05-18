@@ -32,9 +32,9 @@ public class FrontController extends HttpServlet {
     public static TreeMap<Integer, TreeMap<Integer, Material>> categoryFormOptions = new TreeMap<>();
     public static TreeMap<String, MinMax> allowedMeasurements = new TreeMap<>();
     public static TreeMap<Integer, TreeMap<Integer, Material>> materialVariantMap = new TreeMap<>();
-    public static TreeMap<String,Double> calculatorRequiredMaterialWidth = new TreeMap<>();
+    public static TreeMap<String,MinMax> calculatorRequiredMaterialWidth = new TreeMap<>();
     public static TreeMap<String, MinMax> raftersDistance = new TreeMap<>();
-    public static TreeMap<String,Integer> postDistances = new TreeMap<>();
+    public static TreeMap<String,MinMax> postDistances = new TreeMap<>();
 
     StandardCalcValuesFacade standardCalcValuesFacade;
     MaterialFacade materialFacade;

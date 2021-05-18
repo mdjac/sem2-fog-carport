@@ -39,7 +39,8 @@ public abstract class Calculator {
 
             //Calculate stolper inklusiv redskabsskur
             int stolpeAntal = calculateStolper(carport);
-            optimalMaterialResult = getOptimalMaterial(10, (carport.getCarportHeight()+90), getRequiredWidthByCategory("stolper"), 5, false);
+            Double stolpeNedgravning = (Double) getPostDistancsByCategory("stolpeNedgravning");
+            optimalMaterialResult = getOptimalMaterial(10, (carport.getCarportHeight()+stolpeNedgravning.intValue()), getRequiredWidthByCategory("stolper"), 5, false);
             bomItems.add(new OrderLine(stolpeAntal, order.getId(), "stk", optimalMaterialResult.getMaterial(), "Stolper nedgraves 90 cm. i jord"));
 
             //Calculate remme
@@ -219,11 +220,11 @@ public abstract class Calculator {
 
     public static int calculateSpær(Carport carport){
         //Alle mål er i centimeter
-        double spærMinAfstandFladtTag = getRaftersDistanceByRoofType("FladtTag").getMin();
-        double spærMaxAfstandFladtTag = getRaftersDistanceByRoofType("FladtTag").getMax();
+        double spærMinAfstandFladtTag = getRaftersDistanceByRoofType("fladtTag").getMin();
+        double spærMaxAfstandFladtTag = getRaftersDistanceByRoofType("fladtTag").getMax();
 
-        double spærMinAfstandTagMedRejsning = getRaftersDistanceByRoofType("TagMedRejsning").getMin();
-        double spærMaxAfstandTagMedRejsning = getRaftersDistanceByRoofType("TagMedRejsning").getMax();
+        double spærMinAfstandTagMedRejsning = getRaftersDistanceByRoofType("tagMedRejsning").getMin();
+        double spærMaxAfstandTagMedRejsning = getRaftersDistanceByRoofType("tagMedRejsning").getMax();
 
         double spærBredde = getRequiredWidthByCategory("spær");
 
@@ -255,9 +256,9 @@ public abstract class Calculator {
     public static int calculateStolper(Carport carport) {
         int stolpeAntal = 0;
         int redskabsskurAntal = 0;
-        int forresteStolpeAfstandFraFront = getPostDistancsByCategory("forresteStolpeAfstandFraFront").intValue();
-        int bagersteStolpeAfstandFraBag = getPostDistancsByCategory("bagersteStolpeAfstandFraBag").intValue();
-        int maxAfstandMellemStolper = getPostDistancsByCategory("maxAfstandMellemStolper").intValue();
+        double forresteStolpeAfstandFraFront = (Double) getPostDistancsByCategory("forresteStolpeAfstandFraFront");
+        double bagersteStolpeAfstandFraBag = (Double) getPostDistancsByCategory("bagersteStolpeAfstandFraBag");
+        MinMax afstandMellemStolper = (MinMax) getPostDistancsByCategory("afstandMellemStolper");
 
         double stolpeBredde = getRequiredWidthByCategory("stolper");
         double redskabsskurLængde = 0;
@@ -266,9 +267,9 @@ public abstract class Calculator {
         if (carport.getShedLength() != null) {
             redskabsskurLængde = carport.getShedLength();
             int redskabsskurBredde = carport.getShedWidth();
-            double skurResultatDistanceSider = calculateOptimalDistance(80, maxAfstandMellemStolper, stolpeBredde, redskabsskurLængde, 1);
+            double skurResultatDistanceSider = calculateOptimalDistance(afstandMellemStolper.getMin()-(stolpeBredde*2), afstandMellemStolper.getMax(), stolpeBredde, redskabsskurLængde, 1);
             int redskabsskurStolpeAntalSider = (int) ((redskabsskurLængde - (stolpeBredde*2))/skurResultatDistanceSider);
-            double skurResultatDistanceFrontBag = calculateOptimalDistance(80, maxAfstandMellemStolper, stolpeBredde, redskabsskurBredde,1);
+            double skurResultatDistanceFrontBag = calculateOptimalDistance(afstandMellemStolper.getMin()-(stolpeBredde*2), afstandMellemStolper.getMax(), stolpeBredde, redskabsskurBredde,1);
             int redskabsskurStolpeAntalFrontBag = (int) ((redskabsskurBredde - (stolpeBredde*2))/skurResultatDistanceFrontBag);
 
             System.out.println("linje 231 " +redskabsskurStolpeAntalSider);
@@ -293,7 +294,7 @@ public abstract class Calculator {
         //TODO CHECK OP PÅ AT HJØRNESTOLPER IKKE BLIVER TALT DOBBELT I LIGNINGEN EFTER REDSKABSKUR BEREGNINGEN
         double afstand = carportLængde-forresteStolpeAfstandFraFront-redskabsskurLængde-bagersteStolpeAfstandFraBag;
 
-        double result = calculateOptimalDistance(100, maxAfstandMellemStolper, stolpeBredde, afstand, 1);
+        double result = calculateOptimalDistance(afstandMellemStolper.getMin(), afstandMellemStolper.getMax(), stolpeBredde, afstand, 1);
         System.out.println("afstand " + afstand);
         System.out.println("resultat " +result);
         stolpeAntal = (int) ((afstand- (stolpeBredde*2))/result);
@@ -318,14 +319,20 @@ public abstract class Calculator {
     }
 
     public static double getRequiredWidthByCategory(String category){
-        return FrontController.calculatorRequiredMaterialWidth.get(category).doubleValue();
+        return FrontController.calculatorRequiredMaterialWidth.get(category).getValue();
     }
 
     public static MinMax getRaftersDistanceByRoofType(String category){
         return FrontController.raftersDistance.get(category);
     }
 
-    public static Integer getPostDistancsByCategory(String category){
-        return FrontController.postDistances.get(category).intValue();
+    public static Object getPostDistancsByCategory(String category){
+        MinMax minMax = FrontController.postDistances.get(category);
+        if(minMax.getValue() != null){
+            return minMax.getValue();
+        }
+        else{
+        return FrontController.postDistances.get(category);
+        }
     }
 }
