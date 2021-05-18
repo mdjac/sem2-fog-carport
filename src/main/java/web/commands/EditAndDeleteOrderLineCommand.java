@@ -36,18 +36,16 @@ public class EditAndDeleteOrderLineCommand extends CommandProtectedPage{
             String[] descriptionArray = request.getParameterValues("description[]");
             String[] orderlineidArray = request.getParameterValues("orderlineid[]");
 
-        if (ids != null) {
-            System.out.println("line 38: " + ids.length);
-        }
-        if (quantityArray != null) {
-            System.out.println("line 41: " + quantityArray.length);
-        }
+       
         if (descriptionArray != null) {
-            System.out.println("line 44: " + descriptionArray.length);
+            for (int i = 0; i < descriptionArray.length; i++) {
+                System.out.println("index orderline id: "+i + " Value: "+orderlineidArray[i]);
+                System.out.println("index materialvariant: "+i + " Value: "+ids[i]);
+                System.out.println("index quantity: "+i + " Value: "+quantityArray[i]);
+                System.out.println("index describtion: "+i + " Value: "+descriptionArray[i]);
+            }
         }
-        if (orderlineidArray != null) {
-            System.out.println("line 44: " + orderlineidArray.length);
-        }
+
         //Edit part
 
 
