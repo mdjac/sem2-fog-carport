@@ -27,8 +27,8 @@ public class StandardCalcValuesMapper {
                 while (rs.next())
                 {
                     String name = rs.getString("name");
-                    Integer min = rs.getInt("min");
-                    Integer max = rs.getInt("max");
+                    Double min = rs.getDouble("min");
+                    Double max = rs.getDouble("max");
                     raftersDistances.put(name,new MinMax(min,max));
                 }
                 return raftersDistances;
@@ -56,8 +56,8 @@ public class StandardCalcValuesMapper {
                 while (rs.next())
                 {
                   String name = rs.getString("name");
-                  Integer min = rs.getInt("min");
-                  Integer max = rs.getInt("max");
+                  Double min = rs.getDouble("min");
+                  Double max = rs.getDouble("max");
                   allowedMeasurements.put(name,new MinMax(min,max));
                 }
                 return allowedMeasurements;
@@ -73,8 +73,8 @@ public class StandardCalcValuesMapper {
         }
     }
 
-    public TreeMap<String, Double> getCalculatorRequiredMaterialWidth() throws UserException {
-        TreeMap<String, Double> calculatorRequiredMaterialWidth = new TreeMap<>();
+    public TreeMap<String, MinMax> getCalculatorRequiredMaterialWidth() throws UserException {
+        TreeMap<String, MinMax> calculatorRequiredMaterialWidth = new TreeMap<>();
         try (Connection connection = database.connect())
         {
             String sql = "SELECT * FROM standard_calc_values where category = 'NødvendigMaterialeBredde'";
@@ -84,8 +84,9 @@ public class StandardCalcValuesMapper {
                 while (rs.next())
                 {
                     String name = rs.getString("name");
-                    Double value = rs.getDouble("value");
-                    calculatorRequiredMaterialWidth.put(name,value);
+                    Double min = rs.getDouble("min");
+                    Double max = rs.getDouble("max");
+                    calculatorRequiredMaterialWidth.put(name,new MinMax(min,max));
                 }
                 return calculatorRequiredMaterialWidth;
             }
@@ -100,8 +101,8 @@ public class StandardCalcValuesMapper {
         }
     }
 
-    public TreeMap<String, Integer> getPostDistances() throws UserException {
-        TreeMap<String, Integer> postDistances = new TreeMap<>();
+    public TreeMap<String, MinMax> getPostDistances() throws UserException {
+        TreeMap<String, MinMax> postDistances = new TreeMap<>();
         try (Connection connection = database.connect())
         {
             String sql = "SELECT * FROM standard_calc_values where category = 'StolpeAfstande'";
@@ -111,8 +112,9 @@ public class StandardCalcValuesMapper {
                 while (rs.next())
                 {
                     String name = rs.getString("name");
-                    Integer value = rs.getInt("value");
-                    postDistances.put(name,value);
+                    Double min = rs.getDouble("min");
+                    Double max = rs.getDouble("max");
+                    postDistances.put(name,new MinMax(min,max));
                 }
                 return postDistances;
             }

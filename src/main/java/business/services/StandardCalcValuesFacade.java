@@ -18,14 +18,14 @@ public class StandardCalcValuesFacade {
         return standardCalcValuesMapper.getAllowedMeasurements();
     }
 
-    public TreeMap<String, Double> getCalculatorRequiredMaterialWidth() throws UserException {
+    public TreeMap<String, MinMax> getCalculatorRequiredMaterialWidth() throws UserException {
         return standardCalcValuesMapper.getCalculatorRequiredMaterialWidth();
     }
 
     public TreeMap<String, MinMax> getRaftersDistance() throws UserException {
         return standardCalcValuesMapper.getRaftersDistance();
     }
-    public TreeMap<String, Integer> getPostDistances() throws UserException {
+    public TreeMap<String, MinMax> getPostDistances() throws UserException {
         return standardCalcValuesMapper.getPostDistances();
     }
 }

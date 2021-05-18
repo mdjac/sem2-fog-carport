@@ -1,29 +1,40 @@
 package business.entities;
 
 public class MinMax {
-    private Integer min;
-    private Integer max;
+    private Double min;
+    private Double max;
+    private Double value;
 
-    public MinMax(Integer min, Integer max) {
+    public MinMax(Double min, Double max) {
         this.min = min;
         this.max = max;
+        if(min.equals(max)){
+            setValue(max);
+        }
     }
 
-
-    public Integer getMin() {
+    public Double getMin() {
         return min;
     }
 
-    public void setMin(Integer min) {
+    public void setMin(Double min) {
         this.min = min;
     }
 
-    public Integer getMax() {
+    public Double getMax() {
         return max;
     }
 
-    public void setMax(Integer max) {
+    public void setMax(Double max) {
         this.max = max;
+    }
+
+    public Double getValue() {
+        return value;
+    }
+
+    public void setValue(Double value) {
+        this.value = value;
     }
 
     public boolean between(int i) {
@@ -35,6 +46,6 @@ public class MinMax {
 
     @Override
     public String toString() {
-        return "(Min: " + min +" - Max: " + max+" Tilladt)";
+        return "(Min: " + min.intValue() +" - Max: " + max.intValue()+" Tilladt)";
     }
 }
