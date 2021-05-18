@@ -35,7 +35,11 @@ public abstract class Command
         commands.put("addstandardcarportcommand", new AddStandardCarportCommand("addstandardcarportpage","employee"));
         commands.put("showorders", new ShowOrdersCommand("orderspage"));
         commands.put("showorderlinecommand", new ShowOrderLineCommand("showorderlinepage","employee"));
+
+        commands.put("showsvg", new ShowSvgCommand("svgpage"));
+
         commands.put("editanddeleteorderlinecommand",new EditAndDeleteOrderLineCommand("showorderlinepage","employee"));
+
     }
 
     public static Command fromPath(
