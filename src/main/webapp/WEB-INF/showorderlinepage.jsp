@@ -80,6 +80,9 @@
         <script>
             $(document).ready(function() {
                 $('input, select, textarea').on('change', function() {
+
+                    $(this).addClass('changed');
+
                     var id = $(this).attr('id');
                     var test = id.slice(id.indexOf("_")+1)
 
@@ -94,8 +97,6 @@
 
                     var d = "#description_"+test;
                     $(d).addClass("changed");
-
-                    $(this).addClass('changed');
                 });
 
 
