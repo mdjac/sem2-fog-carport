@@ -32,8 +32,8 @@ public class ShowSvgCommand extends CommandUnprotectedPage {
             svg.addText(250,320,300); // <-- hent carport length fra db
         //
         //remme
-        svg.addRect(100,25,7,300);
-        svg.addRect(100,243,7,300);
+        svg.addRect(100,25,7,305);
+        svg.addRect(100,243,7,305);
 
 
         //stolper
@@ -87,7 +87,7 @@ public class ShowSvgCommand extends CommandUnprotectedPage {
                 svg.addText(130+50*j,12,55);
             }
         }
-        
+
 
         request.setAttribute("svgdrawing", svg.toString());
         return pageToShow;
