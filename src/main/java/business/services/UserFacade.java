@@ -29,4 +29,8 @@ public class UserFacade
         return user;
     }
 
+    public User updateUser(User user, String newpassword) throws UserException{
+        return userMapper.updateUser(user,newpassword);
+    }
+
 }
