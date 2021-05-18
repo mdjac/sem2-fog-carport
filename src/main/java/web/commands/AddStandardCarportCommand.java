@@ -52,27 +52,7 @@ public class AddStandardCarportCommand extends CommandProtectedPage{
             carport.setShedWidth(shedWidth);
         }
 
-        //Check if the carports dimensions is okay
-        boolean acceptableMeasurements = false;
-        if(FrontController.allowedMeasurements.get("carportLængde").between(carportLength) && FrontController.allowedMeasurements.get("carportBredde").between(carportWidth) && FrontController.allowedMeasurements.get("carportHøjde").between(carportHeight)){
-            //Carport dimensions is okay
-            acceptableMeasurements = true;
-            //Check for tilted roof, to see if tilt is acceptable
-            if(roofTilt != null){
-                acceptableMeasurements = FrontController.allowedMeasurements.get("tagHældning").between(roofTilt);
-            }
-            //Check if shed is choosen and that boolean isnt false already from the rooftilt check
-            if(acceptableMeasurements == true && request.getParameter("chooseshed").equals("ja")){
-                //Check if the shed dimensions is okay
-                if(FrontController.allowedMeasurements.get("redskabsskurLængde").between(shedLength) && FrontController.allowedMeasurements.get("redskabsskurBredde").between(shedWidth)){
-                    acceptableMeasurements = true;
-                }
-                else{
-                    acceptableMeasurements = false;
-                }
-            }
-        }
-        if(acceptableMeasurements == false){
+        if(carport.acceptableMeasurements() == false){
             request.setAttribute("status", "One or more entered measurements is not accepted!");
             return "addstandardcarportpage";
         }

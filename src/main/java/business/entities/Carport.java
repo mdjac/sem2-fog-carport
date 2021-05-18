@@ -138,4 +138,28 @@ private Integer standardCarportId;
             throw new UserException("Failed when trying to find Roof Material as RoofType doesn't exist");
         }
     }
+
+    public boolean acceptableMeasurements(){
+        //Check if the carports dimensions is okay
+        boolean acceptableMeasurements = false;
+        if(FrontController.allowedMeasurements.get("carportLængde").between(this.getCarportLength()) && FrontController.allowedMeasurements.get("carportBredde").between(this.getCarportWidth()) && FrontController.allowedMeasurements.get("carportHøjde").between(this.getCarportHeight())){
+            //Carport dimensions is okay
+            acceptableMeasurements = true;
+            //Check for tilted roof, to see if tilt is acceptable
+            if(this.getRoofTilt() != null){
+                acceptableMeasurements = FrontController.allowedMeasurements.get("tagHældning").between(this.getRoofTilt());
+            }
+            //Check if shed is choosen and that boolean isnt false already from the rooftilt check
+            if(acceptableMeasurements == true && this.getShedMaterial() != null){
+                //Check if the shed dimensions is okay
+                if(FrontController.allowedMeasurements.get("redskabsskurLængde").between(this.getShedLength()) && FrontController.allowedMeasurements.get("redskabsskurBredde").between(this.getShedWidth())){
+                    acceptableMeasurements = true;
+                }
+                else{
+                    acceptableMeasurements = false;
+                }
+            }
+        }
+        return acceptableMeasurements;
+    }
 }

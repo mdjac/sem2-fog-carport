@@ -19,7 +19,7 @@ public class SubmitOrderCommand extends CommandProtectedPage{
     }
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws UserException {
         HttpSession session = request.getSession();
         //Opret user
         User user = (User) session.getAttribute("user");
@@ -34,9 +34,39 @@ public class SubmitOrderCommand extends CommandProtectedPage{
         else if (request.getAttribute("standardCarportId") != null){
             carport =  FrontController.standardCarports.get((int)request.getAttribute("standardCarportId"));
         }
-        //Til custom carport
+        //For custom carport
         else{
-            //TODO:
+            //Fetch required variables
+            RoofType roofType = RoofType.valueOf(request.getParameter("rooftype"));
+            int roofMaterialId = Integer.parseInt(request.getParameter("roofmaterial"));
+            int carportMaterialId = Integer.parseInt(request.getParameter("carportmaterial"));
+            int carportLength = Integer.parseInt(request.getParameter("carportlength"));
+            int carportWidth = Integer.parseInt(request.getParameter("carportwidth"));
+            int carportHeight = Integer.parseInt(request.getParameter("carportheight"));
+            carport = new Carport(Carport.findCarportMaterialFromId(carportMaterialId),carportWidth,carportHeight,carportLength,roofType,Carport.findRoofMaterialFromId(roofMaterialId,roofType));
+
+            //Only tries to getParameter if the value isn't empty as not all carports have tilt
+            Integer roofTilt = null;
+            if(!request.getParameter("rooftilt").isEmpty()){
+                roofTilt = Integer.parseInt(request.getParameter("rooftilt"));
+                carport.setRoofTilt(roofTilt);
+            }
+            //Only tries to getParameters if shed is choosen
+            Integer shedMaterialId = null;
+            Integer shedLength = null;
+            Integer shedWidth = null;
+            if(request.getParameter("chooseshed").equals("ja")){
+                shedMaterialId = Integer.parseInt(request.getParameter("shedmaterial"));
+                shedLength = Integer.parseInt(request.getParameter("shedlength"));
+                shedWidth = Integer.parseInt(request.getParameter("shedwidth"));
+                carport.setShedMaterial(Carport.findShedMaterialFromId(shedMaterialId));
+                carport.setShedLength(shedLength);
+                carport.setShedWidth(shedWidth);
+            }
+            if(carport.acceptableMeasurements() == false){
+                request.setAttribute("status", "One or more entered measurements is not accepted!");
+                return "customizedcarportorderpage";
+            }
         }
 
         //Opret ordre
