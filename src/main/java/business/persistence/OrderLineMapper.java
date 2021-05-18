@@ -108,4 +108,34 @@ public class OrderLineMapper {
             throw new UserException(ex.getMessage());
         }
     }
+
+    public boolean updateOrderline (OrderLine orderLine) throws UserException{
+        try (Connection connection = database.connect()) {
+            String sql = "UPDATE `order_line` SET " +
+                    "quantity = ?," +
+                    "orders_id = ?," +
+                    "unit = ?," +
+                    "materials_variant_id = ?," +
+                    "description = ?" +
+                    "WHERE `id` = ?";
+
+            try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                ps.setInt(1,orderLine.getQuantity());
+                ps.setInt(2,orderLine.getOrdersID());
+                ps.setString(3,orderLine.getUnit());
+                ps.setInt(4,orderLine.getMaterial().getVariantId());
+                ps.setString(5,orderLine.getDescription());
+                ps.setInt(6, orderLine.getId());
+                int rowsAffected = ps.executeUpdate();
+                if (rowsAffected == 1) {
+                    return true;
+                }
+                throw new SQLException("Error while updating order_line");
+            } catch (SQLException ex) {
+                throw new UserException(ex.getMessage());
+            }
+        } catch (SQLException ex) {
+            throw new UserException(ex.getMessage());
+        }
+    }
 }
