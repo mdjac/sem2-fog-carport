@@ -22,6 +22,7 @@ public abstract class Calculator {
     //lige mange undesterns brædder per front og bagside
     //Vi antager at hvis man vælger beklædning til carporten, så er det ikke side beklædninge, men materialetype til over og understernsbrædder
     //Vi antager at skuret er det eneste på carporten som får beklædning på siderne.
+    //Vi antager at carport height er det indre mål på højden og ikke det udvendige
 
 
 
@@ -51,6 +52,18 @@ public abstract class Calculator {
 
         //Calculate redskabsrum
             //Redskabsskur beklædning
+            if (carport.getShedLength() != null) {
+                //front og bagbeklædning
+                optimalMaterialResult = getOptimalMaterial(carport.getShedMaterial().getMaterialsId(), carport.getShedWidth(), getRequiredWidthByCategory("understernsbrædder"),5, true);
+                int itemsNeededVertical = (int) Math.ceil(carport.getCarportHeight()/getRequiredWidthByCategory("understernsbrædder"));
+                int quantity = (int) Math.ceil(((optimalMaterialResult.getQuantity()*itemsNeededVertical)*2)/optimalMaterialResult.getAmountCovered());
+                bomItems.add(new OrderLine(quantity, order.getId(), "stk", optimalMaterialResult.getMaterial(), "Beklædning til skur front og bag"));
+                //Side beklædning
+                optimalMaterialResult = getOptimalMaterial(carport.getShedMaterial().getMaterialsId(), carport.getShedLength(), getRequiredWidthByCategory("understernsbrædder"),5, true);
+                int itemsNeededVerticalSide = (int) Math.ceil(carport.getCarportHeight()/getRequiredWidthByCategory("understernsbrædder"));
+                quantity = (int) Math.ceil(((optimalMaterialResult.getQuantity()*itemsNeededVerticalSide)*2)/optimalMaterialResult.getAmountCovered());
+                bomItems.add(new OrderLine(quantity, order.getId(), "stk", optimalMaterialResult.getMaterial(), "Beklædning til skur sider"));
+            }
 
 
         //Calculate Tag
@@ -156,27 +169,58 @@ public abstract class Calculator {
         int bestVariantId = 0;
         double waste = -1;
         int quantity = 1;
-        for (Material tmp: materials.values()) {
-            if (tmp.getMaterialsId() == materialId && tmp.getWidth() == requiredMaterialWidth) {
-                if (tmp.getLength() >= requiredLength ) {
-                    if((tmp.getLength()-requiredLength < waste) || waste == -1){
-                        waste = tmp.getLength()-requiredLength;
-                        bestVariantId = tmp.getVariantId();
+        int amountCovered = 1;
+        Double bestVariantLength = null;
+
+        for (Material materialTmp: materials.values()) {
+
+            if (materialTmp.getMaterialsId() == materialId && materialTmp.getWidth() == requiredMaterialWidth) {
+                int requiredLengthAddsup = (int) Math.floor(materialTmp.getLength()/requiredLength);
+
+
+                //If required length can be more than one time on the material
+                if (requiredLengthAddsup >=1 ) {
+                    System.out.println("184 "+((materialTmp.getLength()/requiredLengthAddsup) - requiredLength)*requiredLengthAddsup);
+                    if ((((materialTmp.getLength()/requiredLengthAddsup) - requiredLength)*requiredLengthAddsup <= waste) || waste == -1) {
+                        if (bestVariantLength != null && materialTmp.getLength() < bestVariantLength) {
+                            waste = ((materialTmp.getLength() / requiredLengthAddsup) - requiredLength) * requiredLengthAddsup;
+                            bestVariantId = materialTmp.getVariantId();
+                            quantity = 1;
+                            amountCovered = requiredLengthAddsup;
+                            bestVariantLength = materialTmp.getLength();
+                        } else {
+                            waste = ((materialTmp.getLength() / requiredLengthAddsup) - requiredLength) * requiredLengthAddsup;
+                            bestVariantId = materialTmp.getVariantId();
+                            quantity = 1;
+                            amountCovered = requiredLengthAddsup;
+                            bestVariantLength = materialTmp.getLength();
+                        }
+                    }
+                }
+                if (materialTmp.getLength() >= requiredLength ) {
+                    if ((materialTmp.getLength() - requiredLength <= waste) || waste == -1) {
+                        waste = materialTmp.getLength() - requiredLength;
+                        bestVariantId = materialTmp.getVariantId();
                         quantity = 1;
+                        amountCovered = 1;
+                        bestVariantLength = materialTmp.getLength();
                     }
                 } else {
                     // check if other length can be used
-                    int quantityTmp = (int) Math.ceil(requiredLength/tmp.getLength());
-                    if ((tmp.getLength()*quantityTmp)-requiredLength < waste || waste == -1 && materialSplitAllowed == true) {
-                        waste = (tmp.getLength()*quantityTmp)-requiredLength;
-                        bestVariantId = tmp.getVariantId();
+                    int quantityTmp = (int) Math.ceil(requiredLength/materialTmp.getLength());
+                    if ((materialTmp.getLength()*quantityTmp)-requiredLength < waste || waste == -1 && materialSplitAllowed == true) {
+                        waste = (materialTmp.getLength()*quantityTmp)-requiredLength;
+                        bestVariantId = materialTmp.getVariantId();
                         quantity = quantityTmp;
+                        amountCovered = 1;
+                        bestVariantLength = materialTmp.getLength();
                     }
                 }
+
             }
         }
         material = materials.get(bestVariantId);
-        return new OptimalMaterialResult(quantity, material);
+        return new OptimalMaterialResult(quantity, material, amountCovered);
     }
 
     public static OptimalMaterialResult getOptimalRoofUnits(int materialId, int carportLength, int carportWidth, RoofType roofType) {
@@ -185,6 +229,7 @@ public abstract class Calculator {
         TreeMap<Integer, Material> materials = FrontController.materialMap.get(5);
         int bestVariantId = 0;
         double waste = -1;
+        int amountCovered = 1;
         for (Material tmp: materials.values()) {
             if (tmp.getMaterialsId() == materialId) {
                 if (tmp.getLength() >= carportWidth ) {
@@ -210,7 +255,7 @@ public abstract class Calculator {
         //items needed for the length
         quantity = quantity*((int) Math.ceil(carportLength/material.getWidth()));
         System.out.println("roof quantity:" +quantity);
-        return new OptimalMaterialResult(quantity,material);
+        return new OptimalMaterialResult(quantity,material, amountCovered);
     }
 
     public static double calculateOptimalDistance(double minDist, double maxDist, double materialWidth, double totalDist, double interval){
