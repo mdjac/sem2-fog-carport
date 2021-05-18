@@ -74,6 +74,8 @@ public abstract class Calculator {
                 optimalMaterialResult = getOptimalMaterial(9, carport.getCarportLength(), getRequiredWidthByCategory("spær"), 5,false);
                 bomItems.add(new OrderLine(tværgåendeSpærAntal,order.getId(), "stk",optimalMaterialResult.getMaterial(),"Tværgående spær, monteres på spær"));
 
+                optimalMaterialResult = getOptimalMaterial(carport.getCarportMaterial().getMaterialsId(),calculateRoofSideMaterial(carport),getRequiredWidthByCategory("understernsbrædder"),5,true );
+                bomItems.add(new OrderLine(optimalMaterialResult.getQuantity(),order.getId(), "stk",optimalMaterialResult.getMaterial(),"Beklædnings brædder til gavler - Tag med rejsning"));
             }
             //Under Sternsbrædder side * 2 for vi skal have til begge sider
             optimalMaterialResult = getOptimalMaterial(carport.getCarportMaterial().getMaterialsId(), carport.getCarportLength(), getRequiredWidthByCategory("understernsbrædder"),5, true);
@@ -163,6 +165,45 @@ public abstract class Calculator {
 
     }
 
+    public static int calculateRoofSideMaterial(Carport carport) {
+        double roofTilt = carport.getRoofTilt();
+        ArrayList<Double> heights = new ArrayList<>();
+
+        Double height = 0.0;
+        double width = carport.getCarportWidth()/2;
+
+        //Material width - Later incremented with materialwidth to calculate height;
+        double widthInterval = getRequiredWidthByCategory("understernsbrædder");
+
+        //180 i en trekant
+        double topAngle = 90.0-roofTilt;
+        topAngle = Math.toRadians(topAngle);
+        Double hypo;
+        double widthRemaining = width;
+        //hypotenuseberegning
+        for (int i = 0; i < Math.ceil(width/widthInterval); i++) {
+            hypo = (widthRemaining*Math.sin(Math.toRadians(90)))/Math.sin(topAngle);
+            height = Math.cos(topAngle)*hypo;
+            System.out.println("line 181 "+height);
+            widthRemaining = widthRemaining - widthInterval;
+            heights.add(height);
+        }
+        double totalLength = 0;
+
+        //Her lægger vi det hele sammen så køberen selv kan udskære det
+        for (Double tmp:heights) {
+            totalLength = totalLength + tmp;
+        }
+        //Vi har delt taget i 2 for at få en retvinklet trekant. Nu ganger vi med 2 for at inkludere den anden side
+        totalLength = totalLength*2;
+        //Nu ganger vi med 2 for at få bagsiden med også
+        totalLength = totalLength*2;
+
+        totalLength = Math.ceil(totalLength);
+        System.out.println("Total length "+totalLength);
+        return (int) totalLength;
+    }
+
     public static OptimalMaterialResult getOptimalMaterial(int materialId, int requiredLength, double requiredMaterialWidth, int categoriId, boolean materialSplitAllowed) {
         Material material = null;
         TreeMap<Integer, Material> materials = FrontController.materialMap.get(categoriId);
@@ -180,7 +221,6 @@ public abstract class Calculator {
 
                 //If required length can be more than one time on the material
                 if (requiredLengthAddsup >=1 ) {
-                    System.out.println("184 "+((materialTmp.getLength()/requiredLengthAddsup) - requiredLength)*requiredLengthAddsup);
                     if ((((materialTmp.getLength()/requiredLengthAddsup) - requiredLength)*requiredLengthAddsup <= waste) || waste == -1) {
                         if (bestVariantLength != null && materialTmp.getLength() < bestVariantLength) {
                             waste = ((materialTmp.getLength() / requiredLengthAddsup) - requiredLength) * requiredLengthAddsup;

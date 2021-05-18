@@ -6,6 +6,7 @@ import business.persistence.Database;
 import business.services.MaterialFacade;
 import business.services.StandardCalcValuesFacade;
 import business.services.StandardCarportFacade;
+import business.utilities.Calculator;
 import web.commands.*;
 
 import java.io.IOException;
@@ -75,7 +76,8 @@ public class FrontController extends HttpServlet {
         //Used to set post distances needed in calculations, eg. max distance between posts
         setPostDistances();
 
-
+        //TODO slet senere
+        Calculator.calculateRoofSideMaterial(standardCarports.get(12));
     }
 
     protected void processRequest(

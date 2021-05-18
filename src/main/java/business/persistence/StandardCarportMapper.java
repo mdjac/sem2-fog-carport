@@ -44,7 +44,7 @@ public class StandardCarportMapper {
                     ps.setNull(6,java.sql.Types.INTEGER);
                     ps.setNull(7,java.sql.Types.INTEGER);
                 }
-                if(carport.getRoofType().equals(RoofType.Tag_Med_Rejsning)){
+                if(carport.getRoofType().equals(RoofType.Tag_Med_Rejsning.toString())){
                     ps.setInt(8,carport.getRoofTilt());
                 }else{
                     ps.setNull(8,java.sql.Types.INTEGER);
