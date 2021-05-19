@@ -40,9 +40,7 @@
 
                     <c:if test="${sessionScope.user.role.equals('customer')}">
                         <c:if test="${!orders.value.status.equals(applicationScope.status.get(0))}">
-                            //Todo Skal ramme en anden command
-                            <form class="col text-center"  action="${pageContext.request.contextPath}/fc/showorderlinecommand" method="post">
-                                <input type="hidden" name="carportid" value="${orders.value.carport.id}">
+                            <form class="col text-center"  action="${pageContext.request.contextPath}/fc/showorderpagecommand" method="post">
                                 <button type="submit" class="btn btn-primary btn-sm" name="orderid" value="${orders.key}">
                                     Vis tilbud
                                 </button>

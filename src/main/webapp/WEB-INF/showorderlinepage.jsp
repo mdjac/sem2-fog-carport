@@ -15,6 +15,7 @@
     <jsp:body>
         <form action="${pageContext.request.contextPath}/fc/editanddeleteorderlinecommand" method="POST">
             <input type="hidden" name="orderid" value="${requestScope.order.BOM.firstEntry().value.ordersID}">
+            <input type="hidden" name="status" value="${requestScope.order.status.toString()}">
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -109,6 +110,11 @@
         </div>
         <script>
             $(document).ready(function () {
+                var status = $("input[name=status]").val();
+                console.log(status);
+                if (status === "Afhentet"){
+                    $('input:not(.changed), textarea:not(.changed), select:not(.changed)').prop('disabled', true);
+                }
                 $('input, select, textarea').on('change', function () {
 
                     $(this).addClass('changed');
