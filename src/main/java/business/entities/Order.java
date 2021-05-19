@@ -15,14 +15,12 @@ public class Order {
     private int userId;
     private Carport carport;
     private TreeMap<Integer, OrderLine> BOM;
-    private double avance;
 
     public Order(Status status, int userId, Carport carport) {
         this.status = status;
         this.userId = userId;
         this.carport = carport;
         this.BOM = new TreeMap<>();
-        this.avance = FrontController.priceCalculatorValues.get("ordreAvance").getValue();
     }
 
     public void setId(int id) {
@@ -74,34 +72,22 @@ public class Order {
         for (OrderLine tmp: orderLines){
             costPrice = costPrice + tmp.getAccumulatedPrice();
         }
-        calculateTotalPrice(avance);
     }
 
-    public void calculateCostPriceByTreeMap(TreeMap<Integer, OrderLine> orderLines){
-        for (OrderLine tmp: orderLines.values()){
+    public void calculateCostPrice(){
+        for (OrderLine tmp: getBOM().values()){
             costPrice = costPrice + tmp.getAccumulatedPrice();
         }
-        calculateTotalPrice(avance);
     }
-
 
     public void calculateTotalPrice(double ordreAvance){
-        this.avance = ordreAvance;
-        this.totalPrice = costPrice * (100+avance)/100;
+        this.totalPrice = costPrice * (100+ordreAvance)/100;
     }
 
-    public void calculateAvance(){
-        //(Salgspris - indkøbspris) / indkøbspris * 100
-        this.avance = (totalPrice-costPrice)/costPrice*100;
-    }
-
-    public double getAvance() {
-        return Math.round(avance * 100.0) / 100.0;
-    }
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
-        calculateAvance();
+
     }
 
 

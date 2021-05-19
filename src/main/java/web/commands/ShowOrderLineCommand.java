@@ -22,27 +22,20 @@ public class ShowOrderLineCommand extends CommandProtectedPage{
 
         //Get required attributes
         int orderId = Integer.parseInt(request.getParameter("orderid"));
-        Order order;
-        //Used to check if the request is redirected from CalculateOrderPriceCommand, if not, collects from DB.
-        if(request.getAttribute("orderFromCalculate") != null){
-            order = (Order) request.getAttribute("orderFromCalculate");
-        }else{
-            order = orderFacade.getOrderByOrderId(orderId);
-        }
 
+        Order order = orderFacade.getOrderByOrderId(orderId);
 
         //Create map for displaying && fetch from DB
         TreeMap<Integer, OrderLine> BOM = orderLineFacade.getOrderLinesByOrderId(orderId);
-
 
         //Set BOM at order object
         order.setBOM(BOM);
 
         //Set in request scope
         //Calculate values for display
-        order.calculateCostPriceByTreeMap(BOM);
-        //order.calculateAvance();
-        order.calculateTotalPrice(order.getAvance());
+        order.calculateCostPrice();
+
+        //Beregn avance
         request.setAttribute("order",order);
         return pageToShow;
     }

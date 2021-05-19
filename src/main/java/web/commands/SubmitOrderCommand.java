@@ -102,7 +102,8 @@ public class SubmitOrderCommand extends CommandProtectedPage{
 
         //Beregn ordreprisen udfra styklisten
         order.calculateCostPriceByArrayList(bom);
-        order.calculateTotalPrice(order.getAvance());
+        double avance = FrontController.priceCalculatorValues.get("ordreAvance").getValue();
+        order.calculateTotalPrice(avance);
 
         //Indsæt ordreprisen i DB
         orderFacade.updateOrderTotalPrice(order.getId(),order.getTotalPrice());

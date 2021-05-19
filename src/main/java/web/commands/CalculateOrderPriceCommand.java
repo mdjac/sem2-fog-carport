@@ -23,7 +23,7 @@ public class CalculateOrderPriceCommand extends CommandProtectedPage {
             if (request.getParameter("totalPrice") != null) {
                 double totalPrice = Double.parseDouble(request.getParameter("totalPrice"));
                 order.setTotalPrice(totalPrice);
-                order.calculateAvance();
+                //order.calculateAvance();
             }
             if (request.getParameter("avance") != null) {
                 double avance = Double.parseDouble(request.getParameter("avance"));
@@ -32,8 +32,6 @@ public class CalculateOrderPriceCommand extends CommandProtectedPage {
             //Write to DB
             orderFacade.updateOrderTotalPrice(orderId,order.getTotalPrice());
         }
-        request.setAttribute("orderFromCalculate", order);
-
         return new ShowOrderLineCommand(pageToShow, role).execute(request, response);
     }
 }
