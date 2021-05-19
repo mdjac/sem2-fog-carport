@@ -82,19 +82,16 @@
                     </c:if>
                     <c:if test="${sessionScope.user != null }">
                         <a class="p-2 text-light text-decoration-none"
-                           href="${pageContext.request.contextPath}/fc/profilepage">Profile</a>
+                           href="${pageContext.request.contextPath}/fc/profilepage">Profil</a>
                         <a class="p-2 text-light text-decoration-none"
-                           href="${pageContext.request.contextPath}/fc/showorders">Orders</a>
+                           href="${pageContext.request.contextPath}/fc/showorders">Ordre</a>
 
 
                         <c:if test="${sessionScope.user.role.equals('employee')}">
-                            <a class="p-2 text-light text-decoration-none" href="${pageContext.request.contextPath}/fc/employeepage">Admin</a>
+                            <a class="p-2 text-light text-decoration-none" href="${pageContext.request.contextPath}/fc/employeepage">Administrator</a>
                         </c:if>
                     </c:if>
-
-
                 </div>
-
             </nav>
         </div>
 

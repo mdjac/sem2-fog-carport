@@ -5,7 +5,7 @@
 <t:genericpage>
 
     <jsp:attribute name="header">
-         Admin Orders page
+         Ordre side
     </jsp:attribute>
 
     <jsp:attribute name="footer">
@@ -30,10 +30,10 @@
                         <div class="col-lg-10 collapsed align-items-center text-decoration-none">
                             <div class="row">
                                 <div class="col-sm-2">Order ID: ${orders.value.id}</div>
-                                <div class="col-sm-4">Timestamp: ${orders.value.time}</div>
+                                <div class="col-sm-4">Tid: ${orders.value.time}</div>
                                 <div class="col-sm-2">Status: ${orders.value.status.toString()}</div>
-                                <div class="col-sm-2">User Id: ${orders.value.userId}</div>
-                                <div class="col-sm-2">Total Price: ${orders.value.totalPrice}</div>
+                                <div class="col-sm-2">Bruger Id: ${orders.value.userId}</div>
+                                <div class="col-sm-2">Total pris: ${orders.value.totalPrice}</div>
                             </div>
 
                         </div>

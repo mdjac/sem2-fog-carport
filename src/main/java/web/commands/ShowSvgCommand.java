@@ -118,7 +118,8 @@ public class ShowSvgCommand extends CommandUnprotectedPage {
         svg.addLine(100,510,138,510); // 1 meter inde
         svg.addLine(145,510,257,510); // afstand mellem første stolpe on 2.
         svg.addLine(266,510,300,510); // afstand mellem 2. stolpe og skur
-        svg.addLine(308,510,,510); // skur længde
+        //TODO: 100 tilføjet til x2 skur længde pga compiler fejl ellers - Mikkel
+        svg.addLine(308,510,100,510); // skur længde
         svg.addText(30,450,300); // <-- hent width fra db
         svg.addText(250,535,300); // <-- hent carport length fra db
         //sideview
