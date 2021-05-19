@@ -22,11 +22,9 @@ public class SVG {
 
     private final String rectTemplate = "<rect x=\"%d\" y=\"%d\" height=\"%f\" width=\"%f\" style=\"stroke:#000000; fill: #ffffff\" />";
     private final String lineTemplate = "<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" style=\"stroke:#000000; fill: #ffffff\" />";
-    private final String textTemplate = "<text x=\"%d\" y=\"%d\" style=\"text-anchor: middle; ;stroke: #000000;\">\"%d\"</text>";
+    private final String textTemplate = "<text x=\"%d\" y=\"%d\" style=\"text-anchor: middle; ;stroke: #000000; font-size: 1rem\">\"%d\"</text>";
     private final String shedLineTemplate = "<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" style=\"stroke:#000000; stroke-width:3; fill: #ffffff\" />";
     private final String dottedLineTemplate = "<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" style=\"stroke:#000000; stroke-dasharray:5,5; fill: #ffffff\" />";
-
-
 
     public SVG(int x, int y, String viewBox, int width, int height)
     {
@@ -61,7 +59,6 @@ public class SVG {
     public void addText(int x, int y,int input){
         svg.append(String.format(textTemplate,x,y,input));
     }
-
 
 
     public void addSvg(SVG innerSVG)
