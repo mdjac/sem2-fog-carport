@@ -37,12 +37,26 @@
                             </div>
 
                         </div>
-                    <form class="col text-center"  action="${pageContext.request.contextPath}/fc/showorderlinecommand" method="post">
-                        <input type="hidden" name="carportid" value="${orders.value.carport.id}">
-                        <button type="submit" class="btn btn-primary btn-sm" name="orderid" value="${orders.key}">
-                            Vis stykliste
-                        </button>
-                    </form>
+
+                    <c:if test="${sessionScope.user.role.equals('customer')}">
+                        <c:if test="${!orders.value.status.equals(applicationScope.status.get(0))}">
+                            //Todo Skal ramme en anden command
+                            <form class="col text-center"  action="${pageContext.request.contextPath}/fc/showorderlinecommand" method="post">
+                                <input type="hidden" name="carportid" value="${orders.value.carport.id}">
+                                <button type="submit" class="btn btn-primary btn-sm" name="orderid" value="${orders.key}">
+                                    Vis tilbud
+                                </button>
+                            </form>
+                        </c:if>
+                    </c:if>
+                    <c:if test="${sessionScope.user.role.equals('employee')}">
+                        <form class="col text-center"  action="${pageContext.request.contextPath}/fc/showorderlinecommand" method="post">
+                            <input type="hidden" name="carportid" value="${orders.value.carport.id}">
+                            <button type="submit" class="btn btn-primary btn-sm" name="orderid" value="${orders.key}">
+                                Vis stykliste
+                            </button>
+                        </form>
+                    </c:if>
                 </h2>
 
                 </div>

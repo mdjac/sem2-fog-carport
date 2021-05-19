@@ -78,9 +78,9 @@ public class FrontController extends HttpServlet {
         setPostDistances();
         //Used for order price calculation
         setPriceCalculatorValues();
+        //Used to check status
+        getServletContext().setAttribute("status",getStatusValues());
 
-        //TODO slet senere
-        Calculator.calculateRoofSideMaterial(standardCarports.get(12));
     }
 
     protected void processRequest(
@@ -233,6 +233,14 @@ public class FrontController extends HttpServlet {
         } catch (UserException e) {
             e.printStackTrace();
         }
+    }
+
+    public ArrayList<Status> getStatusValues(){
+        ArrayList<Status> statuses = new ArrayList<>();
+        for (Status status:Status.values()) {
+            statuses.add(status);
+        }
+        return statuses;
     }
 }
 
