@@ -17,6 +17,32 @@ public class OrderMapper {
         this.database = database;
     }
 
+    public int updateOrderStatus(int orderId, Status status) throws UserException {
+        try (Connection connection = database.connect())
+        {
+            String sql = "UPDATE `orders` SET `status` = ? WHERE (`id` = ?)";
+            try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS))
+            {
+                ps.setString(1, status.toString());
+                ps.setInt(2,orderId);
+                int rowAffected = ps.executeUpdate();
+                if (rowAffected != 1) {
+                    throw new UserException("Error when updating order status");
+                }
+                return rowAffected;
+            }
+            catch (SQLException ex)
+            {
+                throw new UserException(ex.getMessage());
+            }
+        }
+        catch (SQLException ex)
+        {
+            throw new UserException(ex.getMessage());
+        }
+    }
+
+
     public int updateOrderTotalPrice(int orderId, double totalPrice) throws UserException {
         try (Connection connection = database.connect())
         {
