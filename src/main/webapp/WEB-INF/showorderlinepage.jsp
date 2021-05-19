@@ -12,10 +12,10 @@
         <c:set var="addHomeLink" value="${false}" scope="request"/>
     </jsp:attribute>
     <jsp:body>
-        <input type="hidden" name="status" value="${requestScope.order.BOM.firstEntry().value.ordersID}">
+
         <form action="${pageContext.request.contextPath}/fc/editanddeleteorderlinecommand" method="POST">
             <input type="hidden" name="orderid" value="${requestScope.order.BOM.firstEntry().value.ordersID}">
-            <input type="hidden" name="status" value="${requestScope.order.status.toString()}">
+            <input type="hidden" name="ordrestatus" value="${requestScope.order.status.toString()}">
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -116,10 +116,11 @@
         </div>
         <script>
             $(document).ready(function () {
-                var status = $("input[name=status]").val();
-                console.log(status);
+                var status = $("input[name=ordrestatus]").val();
+                console.log("status "+status);
                 if (status === "Afhentet"){
                     $('input:not(.changed), textarea:not(.changed), select:not(.changed)').prop('disabled', true);
+                    $('button[name=status]').prop('disabled', true);
                 }
                 $('input, select, textarea').on('change', function () {
 
