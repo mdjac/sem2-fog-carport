@@ -59,9 +59,7 @@ public class EditAndDeleteOrderLineCommand extends CommandProtectedPage{
 
 
 
-
         //Edit part
-
 
         return new ShowOrderLineCommand("showorderlinepage","employee").execute(request,response);
     }

@@ -41,7 +41,7 @@ public abstract class Command
         commands.put("editanddeleteorderlinecommand",new EditAndDeleteOrderLineCommand("showorderlinepage","employee"));
         commands.put("profilepage", new CommandUnprotectedPage("profilepage"));
         commands.put("editprofile", new EditProfileCommand("profilepage"));
-
+        commands.put("calculateorderpricecommand", new CalculateOrderPriceCommand("showorderlinepage","employee"));
     }
 
     public static Command fromPath(

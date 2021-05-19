@@ -28,4 +28,8 @@ public class StandardCalcValuesFacade {
     public TreeMap<String, MinMax> getPostDistances() throws UserException {
         return standardCalcValuesMapper.getPostDistances();
     }
+
+    public TreeMap<String, MinMax> getPriceCalculatorValues() throws UserException {
+        return standardCalcValuesMapper.getPriceCalculatorValues();
+    }
 }

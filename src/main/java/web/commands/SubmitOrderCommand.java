@@ -70,7 +70,7 @@ public class SubmitOrderCommand extends CommandProtectedPage{
         }
 
         //Opret ordre
-        Order order = new Order(Status.Request,20.0, user.getId(), carport);
+        Order order = new Order(Status.Request, user.getId(), carport);
 
 
         //Skriv ordre til DB
@@ -85,12 +85,13 @@ public class SubmitOrderCommand extends CommandProtectedPage{
             return pageToShow;
         }
 
-        //TODO:Beregn stykliste
+        //Skriv ordre linje til DB
         OrderLineFacade orderLineFacade = new OrderLineFacade(database);
+        //Beregn stykliste
         ArrayList<OrderLine> bom = Calculator.calculateBOM(carport,order);
         bom.forEach(x -> {
             try {
-                //TODO: Skriv til order_line
+                //Skriv til order_line DB
                 orderLineFacade.insertOrderLine(x);
             } catch (UserException e) {
                 e.printStackTrace();
@@ -98,6 +99,13 @@ public class SubmitOrderCommand extends CommandProtectedPage{
                 throwables.printStackTrace();
             }
         });
+
+        //Beregn ordreprisen udfra styklisten
+        order.calculateCostPriceByArrayList(bom);
+        order.calculateTotalPrice(order.getAvance());
+
+        //Indsæt ordreprisen i DB
+        orderFacade.updateOrderTotalPrice(order.getId(),order.getTotalPrice());
 
         return pageToShow;
     }

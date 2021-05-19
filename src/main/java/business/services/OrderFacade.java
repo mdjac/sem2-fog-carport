@@ -23,4 +23,12 @@ public class OrderFacade {
     public TreeMap<Integer,Order> getOrders(User user) throws UserException {
         return orderMapper.getOrders(user);
     }
+
+    public Order getOrderByOrderId(int inputOrderId) throws UserException {
+        return orderMapper.getOrderByOrderId(inputOrderId);
+    }
+
+    public int updateOrderTotalPrice(int orderId, double totalPrice) throws UserException {
+        return orderMapper.updateOrderTotalPrice(orderId,totalPrice);
+    }
 }

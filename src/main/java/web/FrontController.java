@@ -36,6 +36,7 @@ public class FrontController extends HttpServlet {
     public static TreeMap<String,MinMax> calculatorRequiredMaterialWidth = new TreeMap<>();
     public static TreeMap<String, MinMax> raftersDistance = new TreeMap<>();
     public static TreeMap<String,MinMax> postDistances = new TreeMap<>();
+    public static TreeMap<String,MinMax> priceCalculatorValues = new TreeMap<>();
 
     StandardCalcValuesFacade standardCalcValuesFacade;
     MaterialFacade materialFacade;
@@ -75,6 +76,8 @@ public class FrontController extends HttpServlet {
         setRaftersDistance();
         //Used to set post distances needed in calculations, eg. max distance between posts
         setPostDistances();
+        //Used for order price calculation
+        setPriceCalculatorValues();
 
         //TODO slet senere
         Calculator.calculateRoofSideMaterial(standardCarports.get(12));
@@ -222,6 +225,14 @@ public class FrontController extends HttpServlet {
             }
         }
         getServletContext().setAttribute("materialVariantMap",materialVariantMap);
+    }
+
+    public void setPriceCalculatorValues(){
+        try {
+            priceCalculatorValues = standardCalcValuesFacade.getPriceCalculatorValues();
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
     }
 }
 

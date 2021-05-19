@@ -17,6 +17,109 @@ public class OrderMapper {
         this.database = database;
     }
 
+    public int updateOrderTotalPrice(int orderId, double totalPrice) throws UserException {
+        try (Connection connection = database.connect())
+        {
+            String sql = "UPDATE `orders` SET `totalprice` = ? WHERE (`id` = ?)";
+            try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS))
+            {
+                ps.setDouble(1, totalPrice);
+                ps.setInt(2,orderId);
+                int rowAffected = ps.executeUpdate();
+                if (rowAffected != 1) {
+                    throw new UserException("Error when updating order TotalPrice");
+                }
+                return rowAffected;
+            }
+            catch (SQLException ex)
+            {
+                throw new UserException(ex.getMessage());
+            }
+        }
+        catch (SQLException ex)
+        {
+            throw new UserException(ex.getMessage());
+        }
+    }
+
+    public Order getOrderByOrderId(int inputOrderId) throws UserException {
+        try (Connection connection = database.connect())
+        {
+            String sql = "SELECT orders.id as order_id," +
+                    "status," +
+                    "totalprice," +
+                    "time," +
+                    "users_id," +
+                    "carport.id as carport_id," +
+                    "carport_material," +
+                    "carport_width," +
+                    "carport_height," +
+                    "carport_length," +
+                    "shed_material," +
+                    "shed_width," +
+                    "shed_length," +
+                    "roof_tilt," +
+                    "roof_material," +
+                    "roof_type\n" +
+                    "FROM orders\n" +
+                    "INNER JOIN carport ON orders.id = carport.orders_id WHERE orders.id = ?";
+
+            try (PreparedStatement ps = connection.prepareStatement(sql))
+            {
+                ps.setInt(1,inputOrderId);
+                ResultSet rs = ps.executeQuery();
+                Order order = null;
+                while (rs.next())
+                {
+                    Carport carport = null;
+                    int orderId = rs.getInt("order_id");
+                    Status status = Status.fromString(rs.getString("status"));
+                    double totalPrice = rs.getDouble("totalprice");
+                    Timestamp time = rs.getTimestamp("time");
+                    int userId = rs.getInt("users_id");
+                    int carportId = rs.getInt("carport_id");
+                    int carportMaterialId = rs.getInt("carport_material");
+                    int carportWidth = rs.getInt("carport_width");
+                    int carportHeight = rs.getInt("carport_height");
+                    int carportLength = rs.getInt("carport_length");
+                    int shedMaterialId = rs.getInt("shed_material");
+                    int shedWidth = rs.getInt("shed_width");
+                    int shedLength = rs.getInt("shed_length");
+                    int roofTilt = rs.getInt("roof_tilt");
+                    int roofMaterialId = rs.getInt("roof_material");
+                    RoofType roofType = RoofType.fromString(rs.getString("roof_type"));
+
+                    //Create carport
+                    carport = new Carport(Carport.findCarportMaterialFromId(carportMaterialId),carportWidth,carportHeight,carportLength,roofType,Carport.findRoofMaterialFromId(roofMaterialId,roofType));
+                    carport.setId(carportId);
+                    //Checks which fields must be ignored
+                    if(shedMaterialId != 0){
+                        carport.setShedMaterial(Carport.findShedMaterialFromId(shedMaterialId));
+                        carport.setShedWidth(shedWidth);
+                        carport.setShedLength(shedLength);
+                    }
+                    if(roofType == RoofType.Tag_Med_Rejsning){
+                        carport.setRoofTilt(roofTilt);
+                    }
+                    order = new Order(status,userId,carport);
+                    order.setTotalPrice(totalPrice);
+                    order.setId(orderId);
+                    order.setTime(time);
+                }
+                return order;
+            }
+            catch (SQLException ex)
+            {
+                throw new UserException(ex.getMessage());
+            }
+        }
+        catch (SQLException ex)
+        {
+            throw new UserException("Connection to database could not be established");
+        }
+    }
+
+
     public TreeMap<Integer,Order> getOrders(User user) throws UserException {
         TreeMap<Integer,Order> orders = new TreeMap<>();
         try (Connection connection = database.connect())
@@ -83,7 +186,8 @@ public class OrderMapper {
                     if(roofType == RoofType.Tag_Med_Rejsning){
                         carport.setRoofTilt(roofTilt);
                     }
-                    order = new Order(status,totalPrice,userId,carport);
+                    order = new Order(status,userId,carport);
+                    order.setTotalPrice(totalPrice);
                     order.setId(orderId);
                     order.setTime(time);
                     orders.put(order.getId(),order);
@@ -156,11 +260,10 @@ public class OrderMapper {
 
     public Order insertOrder(Order order, Carport carport) throws UserException {
         try (Connection connection = database.connect()) {
-            String sql = "INSERT INTO orders (status,totalprice,users_id) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO orders (status,users_id) VALUES (?, ?)";
             try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setString(1,order.getStatus().toString());
-                ps.setDouble(2,order.getTotalPrice());
-                ps.setInt(3,order.getUserId());
+                ps.setInt(2,order.getUserId());
                 ps.executeUpdate();
                 ResultSet ids = ps.getGeneratedKeys();
                 ids.next();
@@ -178,7 +281,6 @@ public class OrderMapper {
                     //deleteOrder(orderId);
                     throw new UserException(ex.getMessage());
                 }
-                //TODO: Skal indsætte orderline
                 return order;
             } catch (SQLException ex) {
                 throw new UserException(ex.getMessage());

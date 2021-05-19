@@ -16,6 +16,35 @@ public class StandardCalcValuesMapper {
         this.database = database;
     }
 
+    public TreeMap<String, MinMax> getPriceCalculatorValues() throws UserException {
+        TreeMap<String, MinMax> priceCalculatorValues = new TreeMap<>();
+        try (Connection connection = database.connect())
+        {
+            String sql = "SELECT * FROM standard_calc_values where category = 'PrisBeregner'";
+            try (PreparedStatement ps = connection.prepareStatement(sql))
+            {
+                ResultSet rs = ps.executeQuery();
+                while (rs.next())
+                {
+                    String name = rs.getString("name");
+                    Double min = rs.getDouble("min");
+                    Double max = rs.getDouble("max");
+                    priceCalculatorValues.put(name,new MinMax(min,max));
+                }
+                return priceCalculatorValues;
+            }
+            catch (SQLException ex)
+            {
+                throw new UserException(ex.getMessage());
+            }
+        }
+        catch (SQLException ex)
+        {
+            throw new UserException("Connection to database could not be established");
+        }
+    }
+
+
     public TreeMap<String, MinMax> getRaftersDistance() throws UserException {
         TreeMap<String, MinMax> raftersDistances = new TreeMap<>();
         try (Connection connection = database.connect())

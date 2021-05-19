@@ -7,6 +7,7 @@ public class OrderLine {
     private String unit;
     private Material material;
     private String description;
+    private double accumulatedPrice;
 
     public OrderLine(int quantity, int ordersID, String unit, Material material, String description) {
         this.quantity = quantity;
@@ -14,6 +15,7 @@ public class OrderLine {
         this.unit = unit;
         this.material = material;
         this.description = description;
+        this.accumulatedPrice = calculateAccumulatedPrice();
     }
 
     public void setId(int id) {
@@ -44,7 +46,13 @@ public class OrderLine {
         return description;
     }
 
-    //todo get material name from database or treemap
+    private double calculateAccumulatedPrice(){
+        return material.getPrice()*getQuantity();
+    }
+
+    public double getAccumulatedPrice() {
+        return accumulatedPrice;
+    }
 
     @Override
     public String toString() {

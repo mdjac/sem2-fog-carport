@@ -24,8 +24,6 @@
 
         <div class="accordion" id="accordionExample">
         <c:forEach var="orders" items="${requestScope.orders}">
-
-
             <div id="${orders.key}" class="accordion-item align-items-center">
                 <div class="align-items-center">
                 <h2 class="row accordion-button collapsed accordionhover" style="margin-left: 0; margin-bottom: 0;" data-bs-toggle="collapse" data-bs-target="#collapse${orders.key}" aria-expanded="false" aria-controls="collapse${orders.key}" id="heading${orders.key}">
