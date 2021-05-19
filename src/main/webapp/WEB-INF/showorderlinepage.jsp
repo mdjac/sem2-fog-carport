@@ -99,7 +99,10 @@
                        value="${requestScope.order.totalPrice}">
 
                     <label for="avance">Avance i %</label>
-                    <input type="number" step=".01" class="form-control" id="avance" name="avance" value="${requestScope.order.avance}">
+                    <input type="number" step=".01" class="form-control" id="avance" name="avance" value="${requestScope.avance}">
+                    <c:if test="${requestScope.error != null }">
+                        <p class="text-center text-danger mb-4 mt-4">${requestScope.error}</p>
+                    </c:if>
                     <input class="btn btn-primary mt-2" name="action" type="submit" value="Beregn ny pris">
                     <input type="hidden" name="orderid" value="${requestScope.order.id}">
             </form>

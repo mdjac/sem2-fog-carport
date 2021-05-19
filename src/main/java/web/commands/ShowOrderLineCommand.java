@@ -31,11 +31,15 @@ public class ShowOrderLineCommand extends CommandProtectedPage{
         //Set BOM at order object
         order.setBOM(BOM);
 
-        //Set in request scope
         //Calculate values for display
         order.calculateCostPrice();
 
         //Beregn avance
+        double avance = (order.getTotalPrice()-order.getCostPrice())/order.getCostPrice()*100;
+        //To get 2 decimals
+        avance = Math.round(avance * 10d)/10d;
+
+        request.setAttribute("avance",avance);
         request.setAttribute("order",order);
         return pageToShow;
     }
