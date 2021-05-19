@@ -12,7 +12,6 @@
         <c:set var="addHomeLink" value="${false}" scope="request"/>
     </jsp:attribute>
     <jsp:body>
-
         <form action="${pageContext.request.contextPath}/fc/editanddeleteorderlinecommand" method="POST">
             <input type="hidden" name="orderid" value="${requestScope.order.BOM.firstEntry().value.ordersID}">
             <input type="hidden" name="ordrestatus" value="${requestScope.order.status.toString()}">

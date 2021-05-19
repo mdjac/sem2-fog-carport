@@ -4,7 +4,7 @@
 
 <t:genericpage>
     <jsp:attribute name="header">
-         Admin page
+         Administrator side
     </jsp:attribute>
     <jsp:attribute name="footer">
     </jsp:attribute>
@@ -13,8 +13,7 @@
             <div class="col-lg-3"></div>
             <div class="col-lg-6">
             <div class="text-center">
-                <h1>Hello ${sessionScope.email} </h1>
-                You are now logged in as admin.
+                <h1>Velkommen ${sessionScope.user.name} </h1>
             </div>
                 <table class="table table-striped">
                     <thead>
@@ -34,6 +33,16 @@
                         <td>
                             <button type="submit" class="btn btn-primary btn-sm">Gå til</button>
                         </td>
+                        </form>
+                    </tr>
+                    <tr class="align-middle">
+                        <form class="" action="${pageContext.request.contextPath}/fc/adminchangeorderstatuspage">
+                            <td>
+                                Ændre ordre status
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-primary btn-sm">Gå til</button>
+                            </td>
                         </form>
                     </tr>
                     </tbody>

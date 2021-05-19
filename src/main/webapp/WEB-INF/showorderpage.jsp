@@ -36,6 +36,17 @@
                 <a href="${pageContext.request.contextPath}/fc/showsvg">SVG TEGNING</a>
 
 
+                <c:if test="${requestScope.order.status.equals(applicationScope.status.get(1))}">
+                    <div class="mt-4">
+                        <form action="${pageContext.request.contextPath}/fc/changeorderstatuscommand" method="POST">
+                            <input type="hidden" name="orderid" value="${requestScope.order.id}">
+                            <button type="submit" class="btn btn-success changed"
+                                    value="${applicationScope.status.get(2).toString()}" name="status">Accepter tilbud
+                            </button>
+                        </form>
+                    </div>
+                </c:if>
+
             </div>
 
         </div>
