@@ -11,8 +11,8 @@
     <jsp:attribute name="footer">
         <c:set var="addHomeLink" value="${false}" scope="request"/>
     </jsp:attribute>
-
     <jsp:body>
+        <input type="hidden" name="status" value="${requestScope.order.BOM.firstEntry().value.ordersID}">
         <form action="${pageContext.request.contextPath}/fc/editanddeleteorderlinecommand" method="POST">
             <input type="hidden" name="orderid" value="${requestScope.order.BOM.firstEntry().value.ordersID}">
             <input type="hidden" name="status" value="${requestScope.order.status.toString()}">
@@ -91,21 +91,27 @@
         </form>
         <div class="text-center mt-5">
             <form action="${pageContext.request.contextPath}/fc/calculateorderpricecommand" method="POST">
-                    <label for="costPrice" class="col-sm-2 col-form-label">Total indkøbspris for ordren</label>
-                    <input class="form-control" id="costPrice" type="number"
-                           placeholder="${requestScope.order.costPrice}" readonly>
+                <label for="costPrice" class="col-sm-2 col-form-label">Total indkøbspris for ordren</label>
+                <input class="form-control" id="costPrice" type="number"
+                       placeholder="${requestScope.order.costPrice}" readonly>
 
-                    <label for="totalPrice" class="col-sm-2 col-form-label">Total pris for ordren</label>
-                    <input class="form-control" min="0" id="totalPrice" type="number" step=".01" name="totalPrice"
+                <label for="totalPrice" class="col-sm-2 col-form-label">Total pris for ordren</label>
+                <input class="form-control" min="0" id="totalPrice" type="number" step=".01" name="totalPrice"
                        value="${requestScope.order.totalPrice}">
-
-                    <label for="avance">Avance i %</label>
-                    <input type="number" step=".01" class="form-control" id="avance" name="avance" value="${requestScope.avance}">
-                    <c:if test="${requestScope.error != null }">
-                        <p class="text-center text-danger mb-4 mt-4">${requestScope.error}</p>
-                    </c:if>
-                    <input class="btn btn-primary mt-2" name="action" type="submit" value="Beregn ny pris">
-                    <input type="hidden" name="orderid" value="${requestScope.order.id}">
+                <label for="avance">Avance i %</label>
+                <input type="number" step=".01" class="form-control" id="avance" name="avance"
+                       value="${requestScope.avance}">
+                <c:if test="${requestScope.error != null }">
+                    <p class="text-center text-danger mb-4 mt-4">${requestScope.error}</p>
+                </c:if>
+                <input class="btn btn-primary mt-2" name="action" type="submit" value="Beregn ny pris">
+                <input type="hidden" name="orderid" value="${requestScope.order.id}">
+            </form>
+        </div>
+        <div class="text-center mt-5">
+            <form action="${pageContext.request.contextPath}/fc/changeorderstatuscommand" method="POST">
+                <input type="hidden" name="orderid" value="${requestScope.order.BOM.firstEntry().value.ordersID}">
+                <button type="submit" class="btn btn-success changed" value="${applicationScope.status.get(1).toString()}" name="status">Afsend tilbud</button>
             </form>
         </div>
         <script>
@@ -137,8 +143,6 @@
                     var d = "#description_" + idSplitted;
                     $(d).addClass("changed");
                 });
-
-
                 $('form').on('submit', function () {
                     var numItems = $('.changed').length
                     if (numItems > 0) {

@@ -43,6 +43,7 @@ public abstract class Command
         commands.put("profilepage", new CommandUnprotectedPage("profilepage"));
         commands.put("editprofile", new EditProfileCommand("profilepage"));
         commands.put("calculateorderpricecommand", new CalculateOrderPriceCommand("showorderlinepage","employee"));
+        commands.put("changeorderstatuscommand", new ChangeOrderStatusCommand("orderspage"));
     }
 
     public static Command fromPath(

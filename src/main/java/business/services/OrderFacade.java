@@ -2,6 +2,7 @@ package business.services;
 
 import business.entities.Carport;
 import business.entities.Order;
+import business.entities.Status;
 import business.entities.User;
 import business.exceptions.UserException;
 import business.persistence.Database;
@@ -30,5 +31,8 @@ public class OrderFacade {
 
     public int updateOrderTotalPrice(int orderId, double totalPrice) throws UserException {
         return orderMapper.updateOrderTotalPrice(orderId,totalPrice);
+    }
+    public int updateOrderStatus(int orderId, Status status) throws UserException {
+        return orderMapper.updateOrderStatus(orderId,status);
     }
 }

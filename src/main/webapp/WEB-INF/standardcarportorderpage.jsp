@@ -63,7 +63,9 @@
                                         </div>
                                         <input type="hidden" id="standardCarportId" name="standardCarportId"
                                                value="${standardcarport.value.standardCarportId}">
-                                        <input class="btn btn-primary mt-2" type="submit" value="Send forespørgsel">
+                                        <c:if test="${!sessionScope.user.role.equals('employee')}">
+                                            <input class="btn btn-primary mt-2" type="submit" value="Send forespørgsel">
+                                        </c:if>
                                     </div>
                                 </div>
                             </form>
