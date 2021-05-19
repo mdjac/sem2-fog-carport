@@ -44,6 +44,7 @@ public abstract class Command
         commands.put("editprofile", new EditProfileCommand("profilepage"));
         commands.put("calculateorderpricecommand", new CalculateOrderPriceCommand("showorderlinepage","employee"));
         commands.put("changeorderstatuscommand", new ChangeOrderStatusCommand("orderspage"));
+        commands.put("showorderpagecommand", new ShowOrderPageCommand("showorderpage","customer"));
     }
 
     public static Command fromPath(
