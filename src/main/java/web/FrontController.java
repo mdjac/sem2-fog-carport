@@ -6,7 +6,6 @@ import business.persistence.Database;
 import business.services.MaterialFacade;
 import business.services.StandardCalcValuesFacade;
 import business.services.StandardCarportFacade;
-import business.utilities.Calculator;
 import web.commands.*;
 
 import java.io.IOException;
@@ -59,25 +58,29 @@ public class FrontController extends HttpServlet {
         standardCarportFacade = new StandardCarportFacade(database);
 
         //Used to collect all material from the database
-        setMaterialMap();
+        materialMap = getMaterialMap();
         //Used to populate the dropdown options on the form based on what FOG decides to offer in database
-        setCategoryFormOptions();
+        categoryFormOptions = getCategoryFormOptions(materialMap);
+        getServletContext().setAttribute("categoryFormOptions", categoryFormOptions);
         //Used to set the standard carports from DB for display and ordering on website
-        setStandardCarports();
+        standardCarports = getStandardCarports();
+        getServletContext().setAttribute("standardCarports", standardCarports);
         //Used to populate which roof types can be selected at form
-        setRoofTypes();
-        //Used to make it possible for fog employee to modify BOM which other variants from the same materialID
-        setMaterialVariantMap();
+        getServletContext().setAttribute("roofTypes", getRoofTypes());
+        //Used to make it possible for fog employee to modify BOM with other variants from the same materialID
+        materialVariantMap = getMaterialVariantMap(materialMap);
+        getServletContext().setAttribute("materialVariantMap",materialVariantMap);
         //Used to set which dimensions we allow for creation of new carports. eg. max length of the carport.
-        setAllowedMeasurements();
+        allowedMeasurements = getAllowedMeasurements();
+        getServletContext().setAttribute("allowedMeasurements",allowedMeasurements);
         //Used to set which width we require for specific materials (used in calculations of BOM) eg. we want a post to be a specific width as it cant be to slim
-        setCalculatorRequiredMaterialWidth();
+        calculatorRequiredMaterialWidth = getCalculatorRequiredMaterialWidth();
         //Used to set which min and max distance we allow for rafters (different for flat roof and roof with tilt).
-        setRaftersDistance();
+        raftersDistance = getRaftersDistance();
         //Used to set post distances needed in calculations, eg. max distance between posts
-        setPostDistances();
+        postDistances = getPostDistances();
         //Used for order price calculation
-        setPriceCalculatorValues();
+        priceCalculatorValues = getPriceCalculatorValues();
         //Used to check status
         getServletContext().setAttribute("status",getStatusValues());
 
@@ -134,50 +137,60 @@ public class FrontController extends HttpServlet {
         return "FrontController for application";
     }
 
-    public void setAllowedMeasurements(){
+    public TreeMap<String, MinMax> getAllowedMeasurements(){
+        TreeMap<String, MinMax> allowedMeasurements = new TreeMap<>();
         try {
             allowedMeasurements = standardCalcValuesFacade.getAllowedMeasurements();
         } catch (UserException e) {
             e.printStackTrace();
         }
-        getServletContext().setAttribute("allowedMeasurements",allowedMeasurements);
+        return allowedMeasurements;
     }
 
-    public void setCalculatorRequiredMaterialWidth(){
+    public TreeMap<String,MinMax> getCalculatorRequiredMaterialWidth(){
+        TreeMap<String,MinMax> calculatorRequiredMaterialWidth = new TreeMap<>();
         try {
             calculatorRequiredMaterialWidth = standardCalcValuesFacade.getCalculatorRequiredMaterialWidth();
         } catch (UserException e) {
             e.printStackTrace();
         }
+        return calculatorRequiredMaterialWidth;
     }
 
-    public void setRaftersDistance(){
+    public TreeMap<String, MinMax> getRaftersDistance(){
+        TreeMap<String, MinMax> raftersDistance = new TreeMap<>();
         try {
             raftersDistance = standardCalcValuesFacade.getRaftersDistance();
         } catch (UserException e) {
             e.printStackTrace();
         }
+        return raftersDistance;
     }
 
-    public void setPostDistances(){
+    public TreeMap<String,MinMax> getPostDistances(){
+        TreeMap<String,MinMax> postDistances = new TreeMap<>();
         try {
             postDistances = standardCalcValuesFacade.getPostDistances();
         } catch (UserException e) {
             e.printStackTrace();
         }
+        return postDistances;
     }
 
-    public void setMaterialMap(){
+    public TreeMap<Integer, TreeMap<Integer, Material>> getMaterialMap(){
+        TreeMap<Integer, TreeMap<Integer, Material>> materialMap = new TreeMap<>();
         try {
             materialMap = materialFacade.getAllMaterials();
         } catch (UserException e) {
             e.printStackTrace();
         }
+        return materialMap;
     }
 
-    public void setCategoryFormOptions(){
+    public TreeMap<Integer, TreeMap<Integer, Material>> getCategoryFormOptions(TreeMap<Integer, TreeMap<Integer, Material>> inputTreeMap){
+        TreeMap<Integer, TreeMap<Integer, Material>> categoryFormOptions = new TreeMap<>();
         TreeMap<Integer, Material> formOption;
-        for (Map.Entry<Integer, TreeMap<Integer, Material>> tmp : materialMap.entrySet()) {
+        for (Map.Entry<Integer, TreeMap<Integer, Material>> tmp : inputTreeMap.entrySet()) {
             for (Material tmp1 : tmp.getValue().values()) {
                 if (!categoryFormOptions.containsKey(tmp.getKey())) {
                     formOption = new TreeMap<>();
@@ -194,45 +207,49 @@ public class FrontController extends HttpServlet {
                 }
             }
         }
-        getServletContext().setAttribute("categoryFormOptions", categoryFormOptions);
+        return categoryFormOptions;
     }
 
-    public void setStandardCarports(){
+    public TreeMap<Integer, Carport> getStandardCarports(){
+        TreeMap<Integer, Carport> standardCarports = new TreeMap<>();
         //Get standard carports
         try {
             standardCarports = standardCarportFacade.getStandardCarports();
         } catch (UserException e) {
             e.printStackTrace();
         }
-        //Add standard carports to app scope
-        getServletContext().setAttribute("standardCarports", standardCarports);
+        return standardCarports;
+
     }
 
-    public void setRoofTypes(){
+    public ArrayList<RoofType> getRoofTypes(){
         //Roof types
         ArrayList<RoofType> roofTypes = new ArrayList<>();
         for (RoofType type : RoofType.values()) {
             roofTypes.add(type);
         }
-        getServletContext().setAttribute("roofTypes", roofTypes);
+        return roofTypes;
     }
 
-    public void setMaterialVariantMap(){
-        for (Map.Entry<Integer,Material> tmp: materialMap.get(5).entrySet()) {
+    public TreeMap<Integer, TreeMap<Integer, Material>> getMaterialVariantMap(TreeMap<Integer, TreeMap<Integer, Material>> inputMap){
+        TreeMap<Integer, TreeMap<Integer, Material>> materialVariantMap = new TreeMap<>();
+        for (Map.Entry<Integer,Material> tmp: inputMap.get(5).entrySet()) {
             int materialId = tmp.getValue().getMaterialsId();
             if(!materialVariantMap.containsKey(materialId)){
                 materialVariantMap.put(materialId,Material.getMaterialVariantsFromMaterialId(materialId));
             }
         }
-        getServletContext().setAttribute("materialVariantMap",materialVariantMap);
+        return materialVariantMap;
     }
 
-    public void setPriceCalculatorValues(){
+    public TreeMap<String,MinMax> getPriceCalculatorValues(){
+        TreeMap<String,MinMax> priceCalculatorValues = new TreeMap<>();
         try {
             priceCalculatorValues = standardCalcValuesFacade.getPriceCalculatorValues();
         } catch (UserException e) {
             e.printStackTrace();
         }
+        return priceCalculatorValues;
     }
 
     public ArrayList<Status> getStatusValues(){
