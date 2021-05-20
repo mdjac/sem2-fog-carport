@@ -58,29 +58,67 @@ public class FrontController extends HttpServlet {
         standardCarportFacade = new StandardCarportFacade(database);
 
         //Used to collect all material from the database
-        materialMap = getMaterialMap();
+        try {
+            materialMap = materialFacade.getAllMaterials();
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
+
         //Used to populate the dropdown options on the form based on what FOG decides to offer in database
         categoryFormOptions = getCategoryFormOptions(materialMap);
         getServletContext().setAttribute("categoryFormOptions", categoryFormOptions);
+
         //Used to set the standard carports from DB for display and ordering on website
-        standardCarports = getStandardCarports();
+        try {
+            standardCarports = standardCarportFacade.getStandardCarports();
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
         getServletContext().setAttribute("standardCarports", standardCarports);
+
         //Used to populate which roof types can be selected at form
         getServletContext().setAttribute("roofTypes", getRoofTypes());
+
         //Used to make it possible for fog employee to modify BOM with other variants from the same materialID
         materialVariantMap = getMaterialVariantMap(materialMap);
         getServletContext().setAttribute("materialVariantMap",materialVariantMap);
+
         //Used to set which dimensions we allow for creation of new carports. eg. max length of the carport.
-        allowedMeasurements = getAllowedMeasurements();
+        try {
+            allowedMeasurements = standardCalcValuesFacade.getAllowedMeasurements();
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
         getServletContext().setAttribute("allowedMeasurements",allowedMeasurements);
+
         //Used to set which width we require for specific materials (used in calculations of BOM) eg. we want a post to be a specific width as it cant be to slim
-        calculatorRequiredMaterialWidth = getCalculatorRequiredMaterialWidth();
+        try {
+            calculatorRequiredMaterialWidth = standardCalcValuesFacade.getCalculatorRequiredMaterialWidth();
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
+
         //Used to set which min and max distance we allow for rafters (different for flat roof and roof with tilt).
-        raftersDistance = getRaftersDistance();
+        try {
+            raftersDistance = standardCalcValuesFacade.getRaftersDistance();
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
+
         //Used to set post distances needed in calculations, eg. max distance between posts
-        postDistances = getPostDistances();
+        try {
+            postDistances = standardCalcValuesFacade.getPostDistances();
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
+
         //Used for order price calculation
-        priceCalculatorValues = getPriceCalculatorValues();
+        try {
+            priceCalculatorValues = standardCalcValuesFacade.getPriceCalculatorValues();
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
+
         //Used to check status
         getServletContext().setAttribute("status",getStatusValues());
 
@@ -136,57 +174,7 @@ public class FrontController extends HttpServlet {
     public String getServletInfo() {
         return "FrontController for application";
     }
-
-    public TreeMap<String, MinMax> getAllowedMeasurements(){
-        TreeMap<String, MinMax> allowedMeasurements = new TreeMap<>();
-        try {
-            allowedMeasurements = standardCalcValuesFacade.getAllowedMeasurements();
-        } catch (UserException e) {
-            e.printStackTrace();
-        }
-        return allowedMeasurements;
-    }
-
-    public TreeMap<String,MinMax> getCalculatorRequiredMaterialWidth(){
-        TreeMap<String,MinMax> calculatorRequiredMaterialWidth = new TreeMap<>();
-        try {
-            calculatorRequiredMaterialWidth = standardCalcValuesFacade.getCalculatorRequiredMaterialWidth();
-        } catch (UserException e) {
-            e.printStackTrace();
-        }
-        return calculatorRequiredMaterialWidth;
-    }
-
-    public TreeMap<String, MinMax> getRaftersDistance(){
-        TreeMap<String, MinMax> raftersDistance = new TreeMap<>();
-        try {
-            raftersDistance = standardCalcValuesFacade.getRaftersDistance();
-        } catch (UserException e) {
-            e.printStackTrace();
-        }
-        return raftersDistance;
-    }
-
-    public TreeMap<String,MinMax> getPostDistances(){
-        TreeMap<String,MinMax> postDistances = new TreeMap<>();
-        try {
-            postDistances = standardCalcValuesFacade.getPostDistances();
-        } catch (UserException e) {
-            e.printStackTrace();
-        }
-        return postDistances;
-    }
-
-    public TreeMap<Integer, TreeMap<Integer, Material>> getMaterialMap(){
-        TreeMap<Integer, TreeMap<Integer, Material>> materialMap = new TreeMap<>();
-        try {
-            materialMap = materialFacade.getAllMaterials();
-        } catch (UserException e) {
-            e.printStackTrace();
-        }
-        return materialMap;
-    }
-
+    
     public TreeMap<Integer, TreeMap<Integer, Material>> getCategoryFormOptions(TreeMap<Integer, TreeMap<Integer, Material>> inputTreeMap){
         TreeMap<Integer, TreeMap<Integer, Material>> categoryFormOptions = new TreeMap<>();
         TreeMap<Integer, Material> formOption;
@@ -210,18 +198,6 @@ public class FrontController extends HttpServlet {
         return categoryFormOptions;
     }
 
-    public TreeMap<Integer, Carport> getStandardCarports(){
-        TreeMap<Integer, Carport> standardCarports = new TreeMap<>();
-        //Get standard carports
-        try {
-            standardCarports = standardCarportFacade.getStandardCarports();
-        } catch (UserException e) {
-            e.printStackTrace();
-        }
-        return standardCarports;
-
-    }
-
     public ArrayList<RoofType> getRoofTypes(){
         //Roof types
         ArrayList<RoofType> roofTypes = new ArrayList<>();
@@ -240,16 +216,6 @@ public class FrontController extends HttpServlet {
             }
         }
         return materialVariantMap;
-    }
-
-    public TreeMap<String,MinMax> getPriceCalculatorValues(){
-        TreeMap<String,MinMax> priceCalculatorValues = new TreeMap<>();
-        try {
-            priceCalculatorValues = standardCalcValuesFacade.getPriceCalculatorValues();
-        } catch (UserException e) {
-            e.printStackTrace();
-        }
-        return priceCalculatorValues;
     }
 
     public ArrayList<Status> getStatusValues(){
