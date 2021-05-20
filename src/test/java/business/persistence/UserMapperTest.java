@@ -22,6 +22,7 @@ public class UserMapperTest {
     private static Database database;
     private static UserMapper userMapper;
 
+
     @BeforeAll
     public static void setUpClass() {
         try {
