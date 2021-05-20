@@ -174,7 +174,7 @@ public class FrontController extends HttpServlet {
     public String getServletInfo() {
         return "FrontController for application";
     }
-    
+
     public TreeMap<Integer, TreeMap<Integer, Material>> getCategoryFormOptions(TreeMap<Integer, TreeMap<Integer, Material>> inputTreeMap){
         TreeMap<Integer, TreeMap<Integer, Material>> categoryFormOptions = new TreeMap<>();
         TreeMap<Integer, Material> formOption;

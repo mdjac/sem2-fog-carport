@@ -8,7 +8,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import web.FrontController;
 
+import javax.servlet.ServletException;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -68,8 +70,6 @@ class OrderMapperTest {
         } catch (SQLException ex) {
             System.out.println( "Could not open connection to database: " + ex.getMessage() );
         }
-
-
     }
 
     @Test
@@ -85,7 +85,7 @@ class OrderMapperTest {
     @Test
     void getOrderByOrderId() {
         Order order = null;
-        /*try {
+       /* try {
            order = orderMapper.getOrderByOrderId(1);
         } catch (UserException e) {
             e.printStackTrace();
@@ -96,6 +96,7 @@ class OrderMapperTest {
         //assertEquals(1,order.getId());
         //Check that the order contains a carport with correct ID
         //assertEquals(1,order.getCarport().getId());
+
     }
 
     @Test
