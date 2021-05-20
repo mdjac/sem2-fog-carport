@@ -37,7 +37,9 @@ public class UserMapperTest {
     public void setUp() {
             // reset test database
             try ( Statement stmt = database.connect().createStatement() ) {
+                stmt.execute("SET FOREIGN_KEY_CHECKS=0");
                 stmt.execute("drop table if exists users" );
+                stmt.execute("SET FOREIGN_KEY_CHECKS=1");
                 stmt.execute("create table " + TESTDATABASE + ".users LIKE " + DATABASE + ".users;" );
                 stmt.execute(
                     "insert into users values " +
