@@ -4,8 +4,11 @@ import business.entities.Order;
 import business.entities.OrderLine;
 import business.entities.Status;
 import business.exceptions.UserException;
+import business.services.ConstructSVG;
 import business.services.OrderFacade;
 import business.services.OrderLineFacade;
+import business.utilities.Calculator;
+import web.FrontController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,6 +35,13 @@ public class ShowOrderPageCommand extends CommandProtectedPage{
             //Set BOM at order object
             order.setBOM(BOM);
         }
+        if (!FrontController.svgValuesTreeMap.containsKey(order.getCarport().getId())){
+            Calculator.calculateBOM(order.getCarport(),order);
+        }
+        String svgTopView = ConstructSVG.constructTopView(order.getCarport().getId());
+        String svgSideView = ConstructSVG.constructSideView(order.getCarport().getId());
+        request.setAttribute("svgdrawing",svgTopView);
+        request.setAttribute("svgdrawingside",svgSideView);
         request.setAttribute("order", order);
         return pageToShow;
     }

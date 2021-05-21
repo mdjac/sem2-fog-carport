@@ -37,6 +37,8 @@ public class FrontController extends HttpServlet {
     public static TreeMap<String, MinMax> raftersDistance = new TreeMap<>();
     public static TreeMap<String,MinMax> postDistances = new TreeMap<>();
     public static TreeMap<String,MinMax> priceCalculatorValues = new TreeMap<>();
+    //Used to get SVG Values by carportId
+    public static TreeMap<Integer, SvgValues> svgValuesTreeMap = new TreeMap<>();
 
     StandardCalcValuesFacade standardCalcValuesFacade;
     MaterialFacade materialFacade;
@@ -157,6 +159,10 @@ public class FrontController extends HttpServlet {
         } catch (UserException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void setSvgValuebyCarporId(Integer carportId, SvgValues svgValues){
+         svgValuesTreeMap.put(carportId, svgValues);
     }
 
     public void setPostDistances(){
