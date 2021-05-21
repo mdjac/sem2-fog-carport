@@ -21,6 +21,8 @@ public class StaticValues {
     public static TreeMap<String, MinMax> raftersDistance = new TreeMap<>();
     public static TreeMap<String,MinMax> postDistances = new TreeMap<>();
     public static TreeMap<String,MinMax> priceCalculatorValues = new TreeMap<>();
+    //Used to get SVG Values by carportId
+    public static TreeMap<Integer, SvgValues> svgValuesTreeMap = new TreeMap<>();
 
     public StandardCalcValuesFacade standardCalcValuesFacade;
     public MaterialFacade materialFacade;
@@ -123,5 +125,8 @@ public class StaticValues {
         return materialVariantMap;
     }
 
+    public static void setSvgValuebyCarporId(Integer carportId, SvgValues svgValues){
+        svgValuesTreeMap.put(carportId, svgValues);
+    }
 
 }

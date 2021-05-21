@@ -3,9 +3,14 @@ import business.entities.User;
 import business.exceptions.UserException;
 import business.services.OrderFacade;
 import business.services.SVG;
+import sun.reflect.generics.tree.Tree;
+import web.FrontController;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.TreeMap;
 
 
 public class ShowSvgCommand extends CommandUnprotectedPage {
@@ -26,22 +31,26 @@ public class ShowSvgCommand extends CommandUnprotectedPage {
         User user = (User)session.getAttribute("user");
         OrderFacade orderFacade = new OrderFacade(database);
 
-
         int carportWidth = 300;
-        int carportLenght = 500;
+        int carportLenght = 480;
         int margin = 30;
         int ref = 75;
-        double spærAfstand = 50.0;
+
         double spærBredde = 3.0;
-        int spærAntal = 11;
+        int spærAntal = 9;
+        double spærAfstand = carportLenght/spærAntal;
         int remAfstandFraSider = 10;
         int remBredde = 5;
         int stolpeAfstandFront = 100;
         int stolpeAfstandBag = 20;
+        double stolpeAfstand = 100;
         int stolpeBredde = 9;
-        int stolpeAntal = 8;
+
+        int stolpeAntalSkur = 4;
+        int stolpeAntal = 4;
         int måleStregAfstand = margin/3;
-        SVG svg = new SVG(75, 10, "0 0 "+(carportLenght+100)+" "+carportWidth, 900, 600 );
+
+        SVG svg = new SVG(0, 0, "0 0 "+(carportLenght+ref)+" "+(carportWidth+(margin*2)), 100, 100 );
 
         //Carport sider
         svg.addRect(ref,margin,carportWidth,carportLenght);
@@ -52,6 +61,15 @@ public class ShowSvgCommand extends CommandUnprotectedPage {
 
         svg.addRect(ref+carportLenght-stolpeAfstandBag,margin+remAfstandFraSider-(remBredde/2),stolpeBredde,stolpeBredde); // øverst til højre
         svg.addRect(ref+carportLenght-stolpeAfstandBag,margin+carportWidth-remAfstandFraSider-remBredde-(remBredde/2),stolpeBredde,stolpeBredde); // nederst til højre
+
+        //Vi tjekker om den er større end 2 fordi vi allerede har de 2 forreste stolper
+        if (true && stolpeAntal > 2){
+            for (int i = 1; i <=(stolpeAntal-2)/2 ; i++) {
+                int refX = (int) (ref+stolpeAfstandFront+(stolpeAfstand*i));
+                svg.addRect(refX,margin+remAfstandFraSider-(remBredde/2),stolpeBredde,stolpeBredde);
+                svg.addRect(refX,margin+carportWidth-remAfstandFraSider-remBredde-(remBredde/2),stolpeBredde,stolpeBredde);
+            }
+        }
 
         //Mål venstre side
         svg.addLine(ref-måleStregAfstand, margin, ref-måleStregAfstand, margin+carportWidth);
@@ -67,25 +85,29 @@ public class ShowSvgCommand extends CommandUnprotectedPage {
 
         //Any shed?
         if (true){
-            int stolpeAfstandSkurLængde = 100;
+            int stolpeAfstandSkurLængde = 75;
             int stolpeAfstandSkurBredde = carportWidth/2-(remAfstandFraSider*1)-(stolpeBredde/2);
             //inklusiv de 2 hjørne stolper
-            int skurStolpeAntal = 3;
-            int skurStolpeAntalLængde = 2;
-
+            int skurStolpeAntalLængde = 3;
+            int skurLængde = (skurStolpeAntalLængde-1)*stolpeAfstandSkurLængde;
 
             for (int i = 0; i < skurStolpeAntalLængde; i++) {
-                for (int j = 0; j < skurStolpeAntal; j++) {
-                    //Tilføjer stolper fra med referance til venstre bund
-                    //top
-                    svg.addRect(ref+carportLenght-stolpeAfstandBag-((stolpeAfstandSkurLængde-stolpeBredde)*i),margin+carportWidth-remAfstandFraSider-remBredde-(remBredde/2)-(stolpeAfstandSkurBredde*j),stolpeBredde,stolpeBredde);
-                    //bund
-                    svg.addRect(ref+carportLenght-stolpeAfstandBag-((stolpeAfstandSkurLængde-stolpeBredde)*i),margin+carportWidth-remAfstandFraSider-remBredde-(remBredde/2),stolpeBredde,stolpeBredde);
-
-                }
+                //Tilføjer stolper sider
+                //top
+                svg.addRect(ref+carportLenght-stolpeAfstandBag-((stolpeAfstandSkurLængde-stolpeBredde)*i),margin+remAfstandFraSider-(remBredde/2),stolpeBredde,stolpeBredde);
+                //bund
+                svg.addRect(ref+carportLenght-stolpeAfstandBag-((stolpeAfstandSkurLængde-stolpeBredde)*i),margin+carportWidth-remAfstandFraSider-remBredde-(remBredde/2),stolpeBredde,stolpeBredde);
 
             }
-            int skurLængde = (skurStolpeAntalLængde-1)*stolpeAfstandSkurLængde;
+            for (int j = 1; j <= 1; j++) {
+                //Tilføjer stolper bredde
+                //venstre
+                svg.addRect(ref+carportLenght-stolpeAfstandBag-(skurLængde-stolpeBredde),margin+carportWidth-remAfstandFraSider-remBredde-(remBredde/2)-(stolpeAfstandSkurBredde*j),stolpeBredde,stolpeBredde);
+                //højre
+                svg.addRect(ref+carportLenght-stolpeAfstandBag,margin+carportWidth-remAfstandFraSider-remBredde-(remBredde/2)-(stolpeAfstandSkurBredde*j),stolpeBredde,stolpeBredde);
+
+            }
+
             int temp = (int) Math.ceil((skurLængde+stolpeAfstandBag)/spærAfstand);
             //Hulbånd
             svg.addDottedLine((int) (ref+spærAfstand),margin+remAfstandFraSider, (int) (ref+carportLenght-(temp*spærAfstand)),margin+carportWidth-remAfstandFraSider);
@@ -106,17 +128,18 @@ public class ShowSvgCommand extends CommandUnprotectedPage {
         //spær
         for (int x = 0; x < spærAntal; x++)
         {
+            int xRef = (int) (ref + (x * spærAfstand));
+
             //Måle Linjer
-            if (x < spærAntal -1) {
-                int xRef = (int) (ref + (x * spærAfstand));
+            if (x < spærAntal) {
                 svg.addLine(xRef, margin - måleStregAfstand, (int) (xRef + spærAfstand), margin - måleStregAfstand);
                 svg.addLine(xRef, margin - måleStregAfstand+3, xRef, margin - måleStregAfstand -3);
                 svg.addLine((int) (xRef + spærAfstand), margin - måleStregAfstand-3, (int) (xRef + spærAfstand), margin - måleStregAfstand+3);
                 svg.addText((int) (xRef+(spærAfstand/2)),10, spærAfstand);
             }
-
-            svg.addRect((int) (ref + (x*spærAfstand)), margin, carportWidth, spærBredde); // x == spaerDistanceInbetween, height = carportBredde
+            svg.addRect(xRef, margin, carportWidth, spærBredde); // x == spaerDistanceInbetween, height = carportBredde
         }
+        svg.addRect((int) (ref+carportLenght-spærBredde), margin, carportWidth, spærBredde);
 
 
         /*// optegning af ramme med text
@@ -224,7 +247,7 @@ public class ShowSvgCommand extends CommandUnprotectedPage {
         svg.addRect(375,400,100,4.5);
 */
 
-        SVG svg1 = new SVG(0, 0, "0 0 855 690", 1000, 700 );
+        SVG svg1 = new SVG(0, 0, "0 0 1500 1000", 100, 100 );
         svg1.addSvg(svg);
         System.out.println(svg.toString());
         request.setAttribute("svgdrawing", svg1.toString());

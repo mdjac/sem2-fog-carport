@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 
 public abstract class Calculator {
+    private static SvgValues svgValues = new SvgValues();
     //Assumptions:
     //Alle mål er i centimeter
     //Remme kan laves i uendelige længder
@@ -28,6 +29,15 @@ public abstract class Calculator {
 
 
     public static ArrayList<OrderLine> calculateBOM(Carport carport, Order order){
+
+        svgValues.setCarportId(carport.getId());
+        svgValues.setCarportHeight(carport.getCarportHeight());
+        svgValues.setCarportWidth(carport.getCarportWidth());
+        svgValues.setCarportLenght(carport.getCarportLength());
+
+
+
+
         //The string in the treemap has to be category fx. Carport bygge materialer, Tag materialer
         ArrayList<OrderLine> bomItems = new ArrayList<>();
         OptimalMaterialResult optimalMaterialResult;
@@ -49,7 +59,7 @@ public abstract class Calculator {
             //TODO If time permits e can change materialSplit to be allowed. This has to be in sync with stolpe afstanden
             optimalMaterialResult = getOptimalMaterial(9,carport.getCarportLength(), getRequiredWidthByCategory("remme"), 5, false);
             bomItems.add(new OrderLine(2, order.getId(), "stk", optimalMaterialResult.getMaterial(), "Remme i sider, sadles ned i stolper"));
-
+            svgValues.setRemMaterialeBredde(getRequiredWidthByCategory("remme"));
 
         //Calculate redskabsrum
             //Redskabsskur beklædning
@@ -162,6 +172,7 @@ public abstract class Calculator {
                 material = getMaterialByMaterialVariantId(25);
                 bomItems.add(new OrderLine(32, order.getId(), "stk", material, "Til montering af løsholter i skur"));
             }
+        StaticValues.setSvgValuebyCarporId(carport.getId(),svgValues);
         return bomItems;
 
     }
@@ -327,7 +338,7 @@ public abstract class Calculator {
 
 
         double spærBredde = getRequiredWidthByCategory("spær");
-
+        svgValues.setSpærMaterialeBredde(spærBredde);
         boolean fladtTag;
 
         if (carport.getRoofType() == "Fladt tag"){
@@ -338,23 +349,29 @@ public abstract class Calculator {
         double carportLength = carport.getCarportLength();
         double carportwidth = carport.getCarportWidth();
         double spærMellemrum;
-
+        int spærAntal;
         if (fladtTag == true) {
             spærMellemrum = calculateOptimalDistance(spærMinAfstandFladtTag, spærMaxAfstandFladtTag, spærBredde, carportLength, 0.1);
+            spærAntal = (int) ((carportLength-(spærBredde*2))/spærMellemrum);
 
         } else {
             if (tværgåendeSpær == false) {
                 spærMellemrum = calculateOptimalDistance(spærMinAfstandTagMedRejsning, spærMaxAfstandTagMedRejsning, spærBredde, carportLength, 0.1);
+                spærAntal = (int) ((carportLength-(spærBredde*2))/spærMellemrum);
             } else {
                 spærMellemrum = calculateOptimalDistance(tværgåendeSpærMinAfstandTagMedRejsning, tværgåendeSpærMaxAfstandTagMedRejsning, spærBredde, carportwidth, 0.1);
+                spærAntal = (int) ((carportLength-(spærBredde*2))/spærMellemrum);
+                //+1 fordi vi har regnet antal afstande ud og derfor lige skal plus 1 for at få antal spær
+                spærAntal += 1;
+                svgValues.setSpærAntalTværgående(spærAntal);
+                svgValues.setSpærMellemrumTværgående(spærMellemrum);
             }
         }
-        int spærAntal = (int) ((carportLength-(spærBredde*2))/spærMellemrum);
-
         //+1 fordi vi har regnet antal afstande ud og derfor lige skal plus 1 for at få antal spær
         spærAntal += 1;
-        System.out.println("linje 76 "+ spærAntal);
-        System.out.println(("bregning" + carportLength/spærMellemrum ));
+        svgValues.setSpærAntal(spærAntal);
+        svgValues.setSpærMellemrum(spærMellemrum);
+
         return spærAntal;
     }
 
@@ -364,58 +381,73 @@ public abstract class Calculator {
         double forresteStolpeAfstandFraFront = (Double) getPostDistancsByCategory("forresteStolpeAfstandFraFront");
         double bagersteStolpeAfstandFraBag = (Double) getPostDistancsByCategory("bagersteStolpeAfstandFraBag");
         MinMax afstandMellemStolper = (MinMax) getPostDistancsByCategory("afstandMellemStolper");
-
         double stolpeBredde = getRequiredWidthByCategory("stolper");
         double redskabsskurLængde = 0;
+        svgValues.setStolpeAfstandFront(forresteStolpeAfstandFraFront);
+        svgValues.setStolpeAfstandBag(bagersteStolpeAfstandFraBag);
+        svgValues.setStolpeMaterialeBredde(stolpeBredde);
 
         int carportLængde = carport.getCarportLength();
         if (carport.getShedLength() != null) {
             redskabsskurLængde = carport.getShedLength();
             int redskabsskurBredde = carport.getShedWidth();
-            double skurResultatDistanceSider = calculateOptimalDistance(afstandMellemStolper.getMin()-(stolpeBredde*2), afstandMellemStolper.getMax(), stolpeBredde, redskabsskurLængde, 1);
-            int redskabsskurStolpeAntalSider = (int) ((redskabsskurLængde - (stolpeBredde*2))/skurResultatDistanceSider);
-            double skurResultatDistanceFrontBag = calculateOptimalDistance(afstandMellemStolper.getMin()-(stolpeBredde*2), afstandMellemStolper.getMax(), stolpeBredde, redskabsskurBredde,1);
-            int redskabsskurStolpeAntalFrontBag = (int) ((redskabsskurBredde - (stolpeBredde*2))/skurResultatDistanceFrontBag);
+            int redskabsskurStolpeAntalSider = (int)Math.floor(redskabsskurLængde/afstandMellemStolper.getMax());
+            double skurResultatDistanceSider = redskabsskurLængde/(redskabsskurStolpeAntalSider+1);
+            int redskabsskurStolpeAntalFrontBag = (int)Math.floor(redskabsskurBredde/afstandMellemStolper.getMax());
+            double skurResultatDistanceFrontBag = redskabsskurBredde/(redskabsskurStolpeAntalFrontBag+1);
+//            double skurResultatDistanceSider = calculateOptimalDistance(afstandMellemStolper.getMin()-(stolpeBredde*2), afstandMellemStolper.getMax(), stolpeBredde, redskabsskurLængde, 1);
+//            int redskabsskurStolpeAntalSider = (int) ((redskabsskurLængde - (stolpeBredde*2))/skurResultatDistanceSider);
+//            double skurResultatDistanceFrontBag = calculateOptimalDistance(afstandMellemStolper.getMin()-(stolpeBredde*2), afstandMellemStolper.getMax(), stolpeBredde, redskabsskurBredde,1);
+//            int redskabsskurStolpeAntalFrontBag = (int) ((redskabsskurBredde - (stolpeBredde*2))/skurResultatDistanceFrontBag);
 
-            System.out.println("linje 231 " +redskabsskurStolpeAntalSider);
-            System.out.println("linje 232 " +redskabsskurStolpeAntalFrontBag);
-
+            System.out.println("Redskabskur mellemrum sider"+skurResultatDistanceSider);
             //vi har indtil videre kun regnet afstande så vi plusser 1 for at få antal stolper
-            redskabsskurStolpeAntalFrontBag += 1;
-            redskabsskurStolpeAntalSider += 1;
-
+            redskabsskurStolpeAntalFrontBag += 2;
+            redskabsskurStolpeAntalSider += 2;
+            svgValues.setSkurStolpeAntalFrontBag(redskabsskurStolpeAntalFrontBag);
+            svgValues.setSkurStolpeAntalSider(redskabsskurStolpeAntalSider);
+            svgValues.setStolpeAfstandSkurSider(skurResultatDistanceSider);
+            svgValues.setStolpeAfstandSkurforOgBag(skurResultatDistanceFrontBag);
+            svgValues.setSkurBredde(carport.getShedWidth());
+            svgValues.setSkurLængde(carport.getShedLength());
             //Minus med 2 fordi der allerede er en stolpe i hvert hjørne og vi omlidt skal regne front og bag ud som benytter samme hjørnestolpe
-            redskabsskurStolpeAntalSider = redskabsskurStolpeAntalSider-2;
+            //redskabsskurStolpeAntalSider = redskabsskurStolpeAntalSider-2;
             //Ganges med 2 for at få begge sider med
-            redskabsskurStolpeAntalSider = redskabsskurStolpeAntalSider*2;
+            //redskabsskurStolpeAntalSider = redskabsskurStolpeAntalSider*2;
             //Gange med 2 for at få både for og bagside med
-            redskabsskurStolpeAntalFrontBag = redskabsskurStolpeAntalFrontBag*2;
+            //redskabsskurStolpeAntalFrontBag = redskabsskurStolpeAntalFrontBag*2;
 
-            redskabsskurAntal = redskabsskurStolpeAntalFrontBag+redskabsskurStolpeAntalSider;
+            redskabsskurAntal = (redskabsskurStolpeAntalFrontBag*2)+(redskabsskurStolpeAntalSider*2)-4;
 
             //minus stolpebredde da vi tæller den med i vores optimaldistance
             redskabsskurLængde = redskabsskurLængde-stolpeBredde;
         }
-        //TODO CHECK OP PÅ AT HJØRNESTOLPER IKKE BLIVER TALT DOBBELT I LIGNINGEN EFTER REDSKABSKUR BEREGNINGEN
+
         double afstand = carportLængde-forresteStolpeAfstandFraFront-redskabsskurLængde-bagersteStolpeAfstandFraBag;
 
-        double result = calculateOptimalDistance(afstandMellemStolper.getMin(), afstandMellemStolper.getMax(), stolpeBredde, afstand, 1);
+        //double result = calculateOptimalDistance(afstandMellemStolper.getMin(), afstandMellemStolper.getMax(), stolpeBredde, afstand, 1);
+        stolpeAntal = (int)Math.floor(afstand/afstandMellemStolper.getMax());
+        double result = afstand/(stolpeAntal+1);
+        stolpeAntal += 2;
+        stolpeAntal = stolpeAntal*2;
         System.out.println("afstand " + afstand);
         System.out.println("resultat " +result);
-        stolpeAntal = (int) ((afstand- (stolpeBredde*2))/result);
+        svgValues.setStolpeAfstand(result);
+        //stolpeAntal = (int) ((afstand- (stolpeBredde*2))/result);
         //+1 fordi vi har regnet antal afstande ud og derfor lige skal plus 1 for at få antal stolper
-        stolpeAntal += 1;
+        //stolpeAntal += 1;
         //Vi ganger med 2 for at få total antal stolper fra begge sider
-        stolpeAntal = stolpeAntal*2;
+        //stolpeAntal = stolpeAntal*2;
 
         //Hvis der er et skur, skal vi minus 2 stolper, da skuret allerede har de 2 stolper inkludere
-        if (redskabsskurAntal > 0) {
+        if (redskabsskurAntal > 0 && carport.getShedWidth() == carport.getCarportWidth()) {
             stolpeAntal = stolpeAntal - 2;
         }
 
         System.out.println("stolpe antal: "+stolpeAntal);
         System.out.println("stolpe antal skur: "+redskabsskurAntal);
 
+        svgValues.setStolpeAntal(stolpeAntal + redskabsskurAntal);
         return  stolpeAntal + redskabsskurAntal;
     }
 

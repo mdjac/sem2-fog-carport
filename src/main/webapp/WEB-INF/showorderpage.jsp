@@ -48,7 +48,8 @@
                 </c:if>
 
             </div>
-
+                ${requestScope.svgdrawing}
+                ${requestScope.svgdrawingside}
         </div>
     </jsp:body>
 </t:genericpage>
