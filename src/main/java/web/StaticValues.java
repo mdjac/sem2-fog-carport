@@ -125,8 +125,6 @@ public class StaticValues {
         return materialVariantMap;
     }
 
-    public static void setSvgValuebyCarporId(Integer carportId, SvgValues svgValues){
-        svgValuesTreeMap.put(carportId, svgValues);
-    }
+
 
 }

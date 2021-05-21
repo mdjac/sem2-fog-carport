@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 
 public abstract class Calculator {
-    private static SvgValues svgValues = new SvgValues();
+    private static SvgValues svgValues;
     //Assumptions:
     //Alle mål er i centimeter
     //Remme kan laves i uendelige længder
@@ -29,8 +29,9 @@ public abstract class Calculator {
 
 
     public static ArrayList<OrderLine> calculateBOM(Carport carport, Order order){
+        svgValues = new SvgValues();
 
-        svgValues.setCarportId(carport.getId());
+        svgValues.setCarportId(order.getCarport().getId());
         svgValues.setCarportHeight(carport.getCarportHeight());
         svgValues.setCarportWidth(carport.getCarportWidth());
         svgValues.setCarportLenght(carport.getCarportLength());
@@ -172,7 +173,7 @@ public abstract class Calculator {
                 material = getMaterialByMaterialVariantId(25);
                 bomItems.add(new OrderLine(32, order.getId(), "stk", material, "Til montering af løsholter i skur"));
             }
-        StaticValues.setSvgValuebyCarporId(carport.getId(),svgValues);
+            StaticValues.svgValuesTreeMap.put(carport.getId(),svgValues);
         return bomItems;
 
     }
@@ -353,25 +354,27 @@ public abstract class Calculator {
         if (fladtTag == true) {
             spærMellemrum = calculateOptimalDistance(spærMinAfstandFladtTag, spærMaxAfstandFladtTag, spærBredde, carportLength, 0.1);
             spærAntal = (int) ((carportLength-(spærBredde*2))/spærMellemrum);
+            spærAntal += 1;
+            svgValues.setSpærAntal(spærAntal);
+            svgValues.setSpærMellemrum(spærMellemrum);
 
         } else {
             if (tværgåendeSpær == false) {
                 spærMellemrum = calculateOptimalDistance(spærMinAfstandTagMedRejsning, spærMaxAfstandTagMedRejsning, spærBredde, carportLength, 0.1);
                 spærAntal = (int) ((carportLength-(spærBredde*2))/spærMellemrum);
+                //+1 fordi vi har regnet antal afstande ud og derfor lige skal plus 1 for at få antal spær
+                spærAntal += 1;
+                svgValues.setSpærAntal(spærAntal);
+                svgValues.setSpærMellemrum(spærMellemrum);
             } else {
                 spærMellemrum = calculateOptimalDistance(tværgåendeSpærMinAfstandTagMedRejsning, tværgåendeSpærMaxAfstandTagMedRejsning, spærBredde, carportwidth, 0.1);
-                spærAntal = (int) ((carportLength-(spærBredde*2))/spærMellemrum);
+                spærAntal = (int) ((carportwidth-(spærBredde*2))/spærMellemrum);
                 //+1 fordi vi har regnet antal afstande ud og derfor lige skal plus 1 for at få antal spær
                 spærAntal += 1;
                 svgValues.setSpærAntalTværgående(spærAntal);
                 svgValues.setSpærMellemrumTværgående(spærMellemrum);
             }
         }
-        //+1 fordi vi har regnet antal afstande ud og derfor lige skal plus 1 for at få antal spær
-        spærAntal += 1;
-        svgValues.setSpærAntal(spærAntal);
-        svgValues.setSpærMellemrum(spærMellemrum);
-
         return spærAntal;
     }
 

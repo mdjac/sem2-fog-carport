@@ -30,6 +30,7 @@ public class ShowOrderPageCommand extends CommandProtectedPage{
 
         Order order = orderFacade.getOrderByOrderId(orderId);
 
+
         if (order.getStatus().equals(Status.PickedUp)) {
             //Create map for displaying && fetch from DB
             TreeMap<Integer, OrderLine> BOM = orderLineFacade.getOrderLinesByOrderId(orderId);
@@ -39,6 +40,7 @@ public class ShowOrderPageCommand extends CommandProtectedPage{
         if (!StaticValues.svgValuesTreeMap.containsKey(order.getCarport().getId())){
             Calculator.calculateBOM(order.getCarport(),order);
         }
+        System.out.println("Show order page command carport id "+order.getCarport().getId());
         String svgTopView = ConstructSVG.constructTopView(order.getCarport().getId());
         String svgSideView = ConstructSVG.constructSideView(order.getCarport().getId());
         request.setAttribute("svgdrawing",svgTopView);
