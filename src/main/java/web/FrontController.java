@@ -110,7 +110,7 @@ public class FrontController extends HttpServlet {
     public String getServletInfo() {
         return "FrontController for application";
     }
-    
+
     public ArrayList<Status> getStatusValues() {
         ArrayList<Status> statuses = new ArrayList<>();
         for (Status status : Status.values()) {

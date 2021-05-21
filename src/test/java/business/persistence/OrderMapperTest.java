@@ -1,9 +1,8 @@
 package business.persistence;
 
-import business.entities.Order;
-import business.entities.RoofType;
-import business.entities.Status;
+import business.entities.*;
 import business.exceptions.UserException;
+import com.sun.org.apache.xpath.internal.operations.Or;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +13,7 @@ import web.StaticValues;
 import javax.servlet.ServletException;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.TreeMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -59,7 +59,7 @@ class OrderMapperTest {
                     "insert into orders values " +
                             "(1,'"+Status.Request+"',1000,default,1), " +
                             "(2,'"+Status.Request+"',1000,default,1), " +
-                            "(3,'"+Status.Request+"',1000,default,1)");
+                            "(3,'"+Status.Request+"',1000,default,2)");
 
             //Create carports needed for mappers
             stmt.execute("drop table if exists carport");
@@ -75,12 +75,35 @@ class OrderMapperTest {
     }
 
     @Test
-    void updateOrderStatus() {
-        assertEquals(true,true);
+    void updateOrderStatus() throws UserException {
+        //Fetches order, check that start status is something, then try to changes status and then fetches again and validates new status
+        Order order;
+        order = orderMapper.getOrderByOrderId(1);
+        Status expected = Status.Request;
+        assertEquals(expected,order.getStatus());
+
+
+        orderMapper.updateOrderStatus(order.getId(),Status.OfferSent);
+
+        order = orderMapper.getOrderByOrderId(order.getId());
+        expected = Status.OfferSent;
+        assertEquals(expected,order.getStatus());
     }
 
     @Test
-    void updateOrderTotalPrice() {
+    void updateOrderTotalPrice() throws UserException {
+        //Fetches order, check that start totalprice is something, then try to changes totalprice and then fetches again and validates new totalprice
+        Order order;
+        order = orderMapper.getOrderByOrderId(1);
+        double expected = 1000;
+        assertEquals(expected,order.getTotalPrice());
+
+
+        orderMapper.updateOrderTotalPrice(order.getId(),100);
+
+        order = orderMapper.getOrderByOrderId(order.getId());
+        expected = 100;
+        assertEquals(expected,order.getTotalPrice());
     }
 
 
@@ -95,21 +118,62 @@ class OrderMapperTest {
         //Check that order is received from DB
         assertEquals(true,order != null);
         //Check that ID is correct at the received order
-        //assertEquals(1,order.getId());
+        assertEquals(1,order.getId());
         //Check that the order contains a carport with correct ID
-        //assertEquals(1,order.getCarport().getId());
+        assertEquals(1,order.getCarport().getId());
 
     }
 
     @Test
-    void getOrders() {
+    void getOrdersEmployee() throws UserException {
+        TreeMap<Integer,Order> orders = new TreeMap<>();
+        //Creates employee user
+        User user = new User("test","employee","testvej","10101010",2500,"valby","test person");
+        user.setId(3);
+        orders = orderMapper.getOrders(user);
+        //Employee should receive all orders, so it should be 3 orders
+        assertEquals(3,orders.size());
     }
 
     @Test
-    void insertCarport() {
+    void getOrdersCustomer() throws UserException {
+        TreeMap<Integer,Order> orders = new TreeMap<>();
+        //Creates Customer user
+        User user = new User("test","customer","testvej","10101010",2500,"valby","test person");
+        user.setId(1);
+        orders = orderMapper.getOrders(user);
+        //Customer should only receive his own orders, so it should be 2
+        assertEquals(2,orders.size());
     }
 
     @Test
-    void insertOrder() {
+    void insertCarport() throws SQLException, UserException {
+        //Creates an order without a carport on it, then creates a carport and check that the carport gets created correctly - normally we call the insertCarport from insertOrder so have to do it this way.
+        Statement stmt = database.connect().createStatement();
+        String sql = "INSERT INTO orders VALUES (10,'"+Status.Request+"',1000,default,1);";
+        stmt.execute(sql);
+        Carport carport = new Carport(Carport.findCarportMaterialFromId(1),350,250,500,RoofType.Fladt_Tag,Carport.findRoofMaterialFromId(3,RoofType.Fladt_Tag));
+        orderMapper.insertCarport(carport,10);
+
+        //Validates the order with correct carport associated
+        Order order = orderMapper.getOrderByOrderId(10);
+        assertEquals(10,order.getId());
+        assertEquals(carport.getCarportHeight(),order.getCarport().getCarportHeight());
+        assertEquals(carport.getCarportLength(),order.getCarport().getCarportLength());
+        assertEquals(carport.getCarportWidth(),order.getCarport().getCarportWidth());
+    }
+
+    @Test
+    void insertOrder() throws UserException {
+        //Creates and order and checks that orderID is correct and that the correct carport is associated
+        Carport carport = new Carport(Carport.findCarportMaterialFromId(1),350,250,500,RoofType.Fladt_Tag,Carport.findRoofMaterialFromId(3,RoofType.Fladt_Tag));
+        Order order = new Order(Status.Request,1,carport);
+        order = orderMapper.insertOrder(order,carport);
+
+        assertEquals(false,order == null);
+        assertEquals(4,order.getId());
+        assertEquals(carport.getCarportHeight(),order.getCarport().getCarportHeight());
+        assertEquals(carport.getCarportLength(),order.getCarport().getCarportLength());
+        assertEquals(carport.getCarportWidth(),order.getCarport().getCarportWidth());
     }
 }
