@@ -248,8 +248,13 @@ public class ConstructSVG {
         svg.addRect(ref,margin,tagHøjde,carportLenght);
 
         //Stolper
-        svg.addRect(ref+stolpeAfstandFront,margin+tagHøjde,carportHeight,stolpeBredde); // øverst til venstre
-        svg.addRect(ref+carportLenght-stolpeAfstandBag,margin+tagHøjde,carportHeight,stolpeBredde); // nederst til højre
+        svg.addRect(ref+stolpeAfstandFront,margin+tagHøjde,carportHeight,stolpeBredde); // venstre
+        svg.addLine(ref, (int)Math.round(margin+carportHeight+tagHøjde+måleStregAfstand), (int) (ref+stolpeAfstandFront), (int)Math.round(margin+carportHeight+tagHøjde+måleStregAfstand));
+        svg.addLine(ref, (int)Math.round(margin+carportHeight+tagHøjde+måleStregAfstand)+3, ref, (int)Math.round(margin+carportHeight+tagHøjde+måleStregAfstand)-3);
+        svg.addLine((int) (ref+stolpeAfstandFront), (int)Math.round(margin+carportHeight+tagHøjde+måleStregAfstand)-3, (int) (ref+stolpeAfstandFront), (int)Math.round(margin+carportHeight+tagHøjde+måleStregAfstand)+3);
+        svg.addText((int)Math.round(ref+(stolpeAfstandFront/2)),(int)Math.round(margin+carportHeight+tagHøjde+måleStregAfstand)+13, stolpeAfstandFront);
+
+        svg.addRect(ref+carportLenght-stolpeAfstandBag,margin+tagHøjde,carportHeight,stolpeBredde); //  højre
 
        //Vi tjekker om den er større end 2 fordi vi allerede har de 2 forreste stolper
         if (svgValue.getSkurBredde() != null){
@@ -261,12 +266,12 @@ public class ConstructSVG {
                     if (i>0) {
                         svg.addRect(ref + stolpeAfstandFront + (stolpeAfstand * i), margin+tagHøjde, carportHeight, stolpeBredde); // øverst til højre
                     }
-                    /*int xRef = (int) (ref+stolpeAfstandFront+(stolpeBredde/2) + (stolpeAfstand * i));
-                    svg.addLine(xRef, margin+carportWidth+måleStregAfstand, (int) (xRef+stolpeAfstand), margin+carportWidth+måleStregAfstand);
-                    svg.addLine(xRef, margin+carportWidth+måleStregAfstand+3, xRef, margin+carportWidth+måleStregAfstand-3);
-                    svg.addLine((int) (xRef+stolpeAfstand), margin+carportWidth+måleStregAfstand-3, (int) (xRef+stolpeAfstand), margin+carportWidth+måleStregAfstand+3);
+                    int xRef = (int) (ref+stolpeAfstandFront + (stolpeAfstand * i));
+                    svg.addLine(xRef, (int)Math.round(margin+carportHeight+tagHøjde+måleStregAfstand), (int) (xRef+stolpeAfstand), (int)Math.round(margin+carportHeight+tagHøjde+måleStregAfstand));
+                    svg.addLine(xRef, (int)Math.round(margin+carportHeight+tagHøjde+måleStregAfstand)+3, xRef, (int)Math.round(margin+carportHeight+tagHøjde+måleStregAfstand)-3);
+                    svg.addLine((int) (xRef+stolpeAfstand), (int)Math.round(margin+carportHeight+tagHøjde+måleStregAfstand)-3, (int) (xRef+stolpeAfstand), (int)Math.round(margin+carportHeight+tagHøjde+måleStregAfstand)+3);
                     //tekst
-                    svg.addText((int) (xRef+(stolpeAfstand/2)+stolpeBredde),margin + carportWidth + måleStregAfstand+13, stolpeAfstand);*/
+                    svg.addText((int) (xRef+(stolpeAfstand/2)+stolpeBredde),(int)Math.round(margin+carportHeight+tagHøjde+måleStregAfstand)+13, stolpeAfstand);
                 }
             }
 
@@ -310,18 +315,20 @@ public class ConstructSVG {
         //Any shed?
         if (svgValue.getSkurBredde() != null){
 
-            int skurBredde = svgValue.getSkurBredde();
+            int skurLængde = svgValue.getSkurLængde();
             int beklædningBredde = 20;
-            int antalBeklædning=skurBredde/beklædningBredde;
+            int antalBeklædning=skurLængde/beklædningBredde;
 
             for (int i = 0; i < antalBeklædning; i++) {
 
-
+                svg.addRect(ref +carportLenght-stolpeAfstandBag - skurLængde +(beklædningBredde*i)+stolpeBredde, margin+tagHøjde, carportHeight, beklædningBredde); // øverst til højre
 
 
             }
-
-            //int temp = (int) Math.ceil((skurLængde+stolpeAfstandBag)/spærMellemrum);
+            svg.addLine((int) Math.round(ref +carportLenght-stolpeAfstandBag - skurLængde+stolpeBredde), (int)Math.round(margin+carportHeight+tagHøjde+måleStregAfstand), (int)Math.round(ref+carportLenght-stolpeAfstandBag+stolpeBredde), (int)Math.round(margin+carportHeight+tagHøjde+måleStregAfstand));
+            svg.addLine((int) Math.round(ref +carportLenght-stolpeAfstandBag - skurLængde+stolpeBredde), (int)Math.round(margin+carportHeight+tagHøjde+måleStregAfstand)-3, (int) Math.round(ref +carportLenght-stolpeAfstandBag - skurLængde+stolpeBredde), (int)Math.round(margin+carportHeight+tagHøjde+måleStregAfstand)+3);
+            svg.addLine((int)Math.round(ref+carportLenght-stolpeAfstandBag+stolpeBredde), (int)Math.round(margin+carportHeight+tagHøjde+måleStregAfstand)-3, (int)Math.round(ref+carportLenght-stolpeAfstandBag+stolpeBredde), (int)Math.round(margin+carportHeight+tagHøjde+måleStregAfstand)+3);
+            svg.addText((int) Math.round(ref +carportLenght-stolpeAfstandBag - (skurLængde/2)+stolpeBredde),(int)Math.round(margin+carportHeight+tagHøjde+måleStregAfstand)+15, skurLængde);
 
         }
 
