@@ -46,7 +46,7 @@ public class OrderLine {
         return description;
     }
 
-    private double calculateAccumulatedPrice(){
+    public double calculateAccumulatedPrice(){
         return material.getPrice()*getQuantity();
     }
 

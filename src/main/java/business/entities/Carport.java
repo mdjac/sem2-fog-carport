@@ -163,4 +163,16 @@ private Integer standardCarportId;
         }
         return acceptableMeasurements;
     }
+
+    public void setCarportWidth(int carportWidth) {
+        this.carportWidth = carportWidth;
+    }
+
+    public void setCarportHeight(int carportHeight) {
+        this.carportHeight = carportHeight;
+    }
+
+    public void setCarportLength(int carportLength) {
+        this.carportLength = carportLength;
+    }
 }
