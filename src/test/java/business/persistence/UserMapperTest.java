@@ -22,6 +22,7 @@ public class UserMapperTest {
     private static Database database;
     private static UserMapper userMapper;
 
+
     @BeforeAll
     public static void setUpClass() {
         try {
@@ -34,16 +35,17 @@ public class UserMapperTest {
 
     @BeforeEach
     public void setUp() {
-
             // reset test database
             try ( Statement stmt = database.connect().createStatement() ) {
+                stmt.execute("SET FOREIGN_KEY_CHECKS=0");
                 stmt.execute("drop table if exists users" );
+                stmt.execute("SET FOREIGN_KEY_CHECKS=1");
                 stmt.execute("create table " + TESTDATABASE + ".users LIKE " + DATABASE + ".users;" );
                 stmt.execute(
                     "insert into users values " +
-                    "(1,'jens@somewhere.com','jensen','customer'), " +
-                    "(2,'ken@somewhere.com','kensen','customer'), " +
-                    "(3,'robin@somewhere.com','batman','employee')");
+                    "(1,'jens@somewhere.com','jensen','customer','testvej 1','10101010','2500','Valby','Jens Jensen'), " +
+                    "(2,'ken@somewhere.com','kensen','customer','testvej 2','80808080','2100','København Ø','Ken Kensen'), " +
+                    "(3,'robin@somewhere.com','batman','employee','testvej 3','20202020','2200','København N','Robin Batman')");
             } catch (SQLException ex) {
             System.out.println( "Could not open connection to database: " + ex.getMessage() );
         }
@@ -82,11 +84,12 @@ public class UserMapperTest {
     public void testCreateUser01() throws UserException {
         // Can we create a new user - Notice, if login fails, this will fail
         // but so would login01, so this is OK
-        /*User original = new User( "king@kong.com","konge" );
+        User original = new User( "king@kong.com","employee","KingKongVej 2","88888888",2500,"Valby","King Kong");
         String password = "uhahvorhemmeligt";
         userMapper.createUser(original,password);
         User retrieved = userMapper.login( "king@kong.com", "uhahvorhemmeligt" );
-        assertEquals( "konge", retrieved.getRole() );*/
+        assertEquals( "employee", retrieved.getRole());
+        assertEquals("KingKongVej 2",retrieved.getAddress());
     }
 
 
@@ -95,11 +98,12 @@ public class UserMapperTest {
         // Can we create a new user - Notice, if login fails, this will fail
         // but so would login01, so this is OK
         //With encryption
-        /*User original = new User( "king@kong.com","konge" );
+        User original = new User( "king@kong.com","employee","KingKongVej 2","88888888",2500,"Valby","King Kong");
         String password = "uhahvorhemmeligt";
         String encryptedPassword = Encryption.encryptThisString(password);
         userMapper.createUser(original,encryptedPassword);
         User retrieved = userMapper.login( "king@kong.com", Encryption.encryptThisString(password));
-        assertEquals( "konge", retrieved.getRole());*/
+        assertEquals( "employee", retrieved.getRole());
+        assertEquals("KingKongVej 2",retrieved.getAddress());
     }
 }
