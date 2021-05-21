@@ -1,6 +1,7 @@
 package business.entities;
 
 import web.FrontController;
+import web.StaticValues;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -105,7 +106,7 @@ public class Material {
 
     public static TreeMap<Integer,Material> getMaterialVariantsFromMaterialId(int materialId){
         TreeMap<Integer, Material> materialVariantMap = new TreeMap<>();
-        for (Map.Entry<Integer,Material> tmp: FrontController.materialMap.get(5).entrySet()) {
+        for (Map.Entry<Integer,Material> tmp: StaticValues.materialMap.get(5).entrySet()) {
             if(tmp.getValue().getMaterialsId() == materialId){
                 materialVariantMap.put(tmp.getValue().getVariantId(),tmp.getValue());
             }

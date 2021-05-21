@@ -2,6 +2,7 @@ package business.utilities;
 
 import business.entities.*;
 import web.FrontController;
+import web.StaticValues;
 
 import java.util.ArrayList;
 import java.util.TreeMap;
@@ -206,7 +207,7 @@ public abstract class Calculator {
 
     public static OptimalMaterialResult getOptimalMaterial(int materialId, int requiredLength, double requiredMaterialWidth, int categoriId, boolean materialSplitAllowed) {
         Material material = null;
-        TreeMap<Integer, Material> materials = FrontController.materialMap.get(categoriId);
+        TreeMap<Integer, Material> materials = StaticValues.materialMap.get(categoriId);
         int bestVariantId = 0;
         double waste = -1;
         int quantity = 1;
@@ -266,7 +267,7 @@ public abstract class Calculator {
     public static OptimalMaterialResult getOptimalRoofUnits(int materialId, int carportLength, int carportWidth, RoofType roofType) {
         Material material = null;
         int quantity = 0;
-        TreeMap<Integer, Material> materials = FrontController.materialMap.get(5);
+        TreeMap<Integer, Material> materials = StaticValues.materialMap.get(5);
         int bestVariantId = 0;
         double waste = -1;
         int amountCovered = 1;
@@ -419,24 +420,24 @@ public abstract class Calculator {
     }
 
     public static Material getMaterialByMaterialVariantId(int variantId){
-        return FrontController.materialMap.get(5).get(variantId);
+        return StaticValues.materialMap.get(5).get(variantId);
     }
 
     public static double getRequiredWidthByCategory(String category){
-        return FrontController.calculatorRequiredMaterialWidth.get(category).getValue();
+        return StaticValues.calculatorRequiredMaterialWidth.get(category).getValue();
     }
 
     public static MinMax getRaftersDistanceByRoofType(String category){
-        return FrontController.raftersDistance.get(category);
+        return StaticValues.raftersDistance.get(category);
     }
 
     public static Object getPostDistancsByCategory(String category){
-        MinMax minMax = FrontController.postDistances.get(category);
+        MinMax minMax = StaticValues.postDistances.get(category);
         if(minMax.getValue() != null){
             return minMax.getValue();
         }
         else{
-        return FrontController.postDistances.get(category);
+        return StaticValues.postDistances.get(category);
         }
     }
 }

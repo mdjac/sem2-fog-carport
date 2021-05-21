@@ -8,6 +8,7 @@ import business.services.OrderLineFacade;
 import business.services.StandardCarportFacade;
 import business.utilities.Calculator;
 import web.FrontController;
+import web.StaticValues;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -65,13 +66,13 @@ public class AddStandardCarportCommand extends CommandProtectedPage{
 
         //Add to std carport list
         try {
-            FrontController.standardCarports = standardCarportFacade.getStandardCarports();
+            StaticValues.standardCarports = standardCarportFacade.getStandardCarports();
         } catch (UserException e) {
             e.printStackTrace();
         }
 
         //Update app scope
-        request.getServletContext().setAttribute("standardCarports", FrontController.standardCarports);
+        request.getServletContext().setAttribute("standardCarports", StaticValues.standardCarports);
 
         return pageToShow;
     }

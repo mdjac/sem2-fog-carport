@@ -6,6 +6,7 @@ import business.services.OrderFacade;
 import business.services.OrderLineFacade;
 import business.utilities.Calculator;
 import web.FrontController;
+import web.StaticValues;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,11 +29,11 @@ public class SubmitOrderCommand extends CommandProtectedPage{
         Carport carport = null;
         //til standard carport
         if (request.getParameter("standardCarportId") != null){
-         carport =  FrontController.standardCarports.get(Integer.parseInt(request.getParameter("standardCarportId")));
+         carport =  StaticValues.standardCarports.get(Integer.parseInt(request.getParameter("standardCarportId")));
         }
         //In case the previous page was loginpage, standardCarportId is located in getAttribute instead of getParameter
         else if (request.getAttribute("standardCarportId") != null){
-            carport =  FrontController.standardCarports.get((int)request.getAttribute("standardCarportId"));
+            carport =  StaticValues.standardCarports.get((int)request.getAttribute("standardCarportId"));
         }
         //For custom carport
         else{
@@ -102,7 +103,7 @@ public class SubmitOrderCommand extends CommandProtectedPage{
 
         //Beregn ordreprisen udfra styklisten
         order.calculateCostPriceByArrayList(bom);
-        double avance = FrontController.priceCalculatorValues.get("ordreAvance").getValue();
+        double avance = StaticValues.priceCalculatorValues.get("ordreAvance").getValue();
         order.calculateTotalPrice(avance);
 
         //Indsæt ordreprisen i DB

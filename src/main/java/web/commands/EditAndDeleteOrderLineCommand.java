@@ -7,6 +7,7 @@ import business.services.OrderFacade;
 import business.services.OrderLineFacade;
 import business.utilities.Calculator;
 import web.FrontController;
+import web.StaticValues;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -62,7 +63,7 @@ public class EditAndDeleteOrderLineCommand extends CommandProtectedPage{
         Order order = orderFacade.getOrderByOrderId(orderId);
         order.setBOM(orderLineFacade.getOrderLinesByOrderId(orderId));
         order.calculateCostPrice();
-        order.calculateTotalPrice(FrontController.priceCalculatorValues.get("ordreAvance").getValue());
+        order.calculateTotalPrice(StaticValues.priceCalculatorValues.get("ordreAvance").getValue());
         //Write new calculation to DB
         orderFacade.updateOrderTotalPrice(order.getId(),order.getTotalPrice());
 

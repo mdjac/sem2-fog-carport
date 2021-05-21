@@ -35,4 +35,8 @@ public class Database
         connection = DriverManager.getConnection(URL, USER, PASSWORD);
         return connection;
     }
+
+    public String getURL() {
+        return URL;
+    }
 }

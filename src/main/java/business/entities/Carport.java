@@ -2,6 +2,7 @@ package business.entities;
 
 import business.exceptions.UserException;
 import web.FrontController;
+import web.StaticValues;
 
 public class Carport {
     //The reason for Integer at some of them, is to make them possible to be null for prettier print on site.
@@ -122,18 +123,18 @@ private Integer standardCarportId;
     }
 
     public static Material findCarportMaterialFromId(int materialId){
-        return FrontController.categoryFormOptions.get(1).get(materialId);
+        return StaticValues.categoryFormOptions.get(1).get(materialId);
     }
     public static Material findShedMaterialFromId(int materialId){
-        return FrontController.categoryFormOptions.get(3).get(materialId);
+        return StaticValues.categoryFormOptions.get(3).get(materialId);
     }
     public static Material findRoofMaterialFromId(int materialId, RoofType roofType) throws UserException {
         if (roofType == RoofType.Fladt_Tag) {
             //Fladt tag materiale category id == 2
-            return FrontController.categoryFormOptions.get(2).get(materialId);
+            return StaticValues.categoryFormOptions.get(2).get(materialId);
         } else if (roofType == RoofType.Tag_Med_Rejsning) {
             //Tag med rejsning materiale category id == 4
-            return FrontController.categoryFormOptions.get(4).get(materialId);
+            return StaticValues.categoryFormOptions.get(4).get(materialId);
         } else {
             throw new UserException("Failed when trying to find Roof Material as RoofType doesn't exist");
         }
@@ -142,17 +143,17 @@ private Integer standardCarportId;
     public boolean acceptableMeasurements(){
         //Check if the carports dimensions is okay
         boolean acceptableMeasurements = false;
-        if(FrontController.allowedMeasurements.get("carportLængde").between(this.getCarportLength()) && FrontController.allowedMeasurements.get("carportBredde").between(this.getCarportWidth()) && FrontController.allowedMeasurements.get("carportHøjde").between(this.getCarportHeight())){
+        if(StaticValues.allowedMeasurements.get("carportLængde").between(this.getCarportLength()) && StaticValues.allowedMeasurements.get("carportBredde").between(this.getCarportWidth()) && StaticValues.allowedMeasurements.get("carportHøjde").between(this.getCarportHeight())){
             //Carport dimensions is okay
             acceptableMeasurements = true;
             //Check for tilted roof, to see if tilt is acceptable
             if(this.getRoofTilt() != null){
-                acceptableMeasurements = FrontController.allowedMeasurements.get("tagHældning").between(this.getRoofTilt());
+                acceptableMeasurements = StaticValues.allowedMeasurements.get("tagHældning").between(this.getRoofTilt());
             }
             //Check if shed is choosen and that boolean isnt false already from the rooftilt check
             if(acceptableMeasurements == true && this.getShedMaterial() != null){
                 //Check if the shed dimensions is okay
-                if(FrontController.allowedMeasurements.get("redskabsskurLængde").between(this.getShedLength()) && FrontController.allowedMeasurements.get("redskabsskurBredde").between(this.getShedWidth())){
+                if(StaticValues.allowedMeasurements.get("redskabsskurLængde").between(this.getShedLength()) && StaticValues.allowedMeasurements.get("redskabsskurBredde").between(this.getShedWidth())){
                     acceptableMeasurements = true;
                 }
                 else{

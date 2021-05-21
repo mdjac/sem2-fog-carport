@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import web.FrontController;
+import web.StaticValues;
 
 import javax.servlet.ServletException;
 import java.sql.SQLException;
@@ -32,6 +33,7 @@ class OrderMapperTest {
         try {
             database = new Database(USER, PASSWORD, URL);
             orderMapper = new OrderMapper(database);
+            new StaticValues().setGlobalValues(database);
         } catch (ClassNotFoundException e) {   // kan ikke finde driveren i database klassen
             fail("Database connection failed. Missing jdbc driver");
         }
@@ -85,13 +87,13 @@ class OrderMapperTest {
     @Test
     void getOrderByOrderId() {
         Order order = null;
-       /* try {
+        try {
            order = orderMapper.getOrderByOrderId(1);
         } catch (UserException e) {
             e.printStackTrace();
-        }*/
+        }
         //Check that order is received from DB
-        //assertEquals(true,order != null);
+        assertEquals(true,order != null);
         //Check that ID is correct at the received order
         //assertEquals(1,order.getId());
         //Check that the order contains a carport with correct ID
