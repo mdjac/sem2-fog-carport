@@ -8,6 +8,7 @@ public class SvgValues {
 
     //Spær
     Double spærMaterialeBredde;
+    Double spærMaterialeHøjde;
     Double spærMellemrum;
     Integer spærAntal;
     Integer spærAntalTværgående;
@@ -15,6 +16,7 @@ public class SvgValues {
 
     //Remme
     Double remMaterialeBredde;
+    Double remMaterialeHøjde;
 
     //Stolper
     Double stolpeAfstandFront;
@@ -30,6 +32,22 @@ public class SvgValues {
     Integer skurStolpeAntalSider;  //De tæller de samme hjørner med
     Double stolpeAfstandSkurSider;
     Double stolpeAfstandSkurforOgBag;
+
+    public Double getSpærMaterialeHøjde() {
+        return spærMaterialeHøjde;
+    }
+
+    public void setSpærMaterialeHøjde(Double spærMaterialeHøjde) {
+        this.spærMaterialeHøjde = spærMaterialeHøjde;
+    }
+
+    public Double getRemMaterialeHøjde() {
+        return remMaterialeHøjde;
+    }
+
+    public void setRemMaterialeHøjde(Double remMaterialeHøjde) {
+        this.remMaterialeHøjde = remMaterialeHøjde;
+    }
 
     public Integer getSkurStolpeAntalFrontBag() {
         return skurStolpeAntalFrontBag;

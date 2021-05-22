@@ -23,8 +23,8 @@ public class SVG {
 
     private final String rectTemplate = "<rect x=\"%d\" y=\"%d\" height=\"%.1f\" width=\"%.1f\" style=\"stroke:#000000; fill: #ffffff\" />";
     private final String lineTemplate = "<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" style=\"stroke:#000000; fill: #ffffff\" />";
-    private final String textTemplate = "<text x=\"%d\" y=\"%d\" style=\"text-anchor: middle; font-size: 0.7rem\">\"%.1f\"</text>";
-    private final String textTemplateRotate = "<text style=\"text-anchor: middle; font-size: 0.7rem\" transform=\"translate(%d,%d) rotate(%d)\">\"%.1f\"</text>";
+    private final String textTemplate = "<text x=\"%d\" y=\"%d\" style=\"text-anchor: middle; font-size: 0.7rem\">%.1f cm</text>";
+    private final String textTemplateRotate = "<text style=\"text-anchor: middle; font-size: 0.7rem\" transform=\"translate(%d,%d) rotate(%d)\">%.1f cm</text>";
     private final String shedLineTemplate = "<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" style=\"stroke:#000000; stroke-width:3; fill: #ffffff\" />";
     private final String dottedLineTemplate = "<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" style=\"stroke:#000000; stroke-dasharray:5,5; fill: #ffffff\" />";
 

@@ -57,10 +57,13 @@ public abstract class Calculator {
             bomItems.add(new OrderLine(stolpeAntal, order.getId(), "stk", optimalMaterialResult.getMaterial(), "Stolper nedgraves 90 cm. i jord"));
 
             //Calculate remme
-            //TODO If time permits e can change materialSplit to be allowed. This has to be in sync with stolpe afstanden
+
             optimalMaterialResult = getOptimalMaterial(9,carport.getCarportLength(), getRequiredWidthByCategory("remme"), 5, false);
             bomItems.add(new OrderLine(2, order.getId(), "stk", optimalMaterialResult.getMaterial(), "Remme i sider, sadles ned i stolper"));
             svgValues.setRemMaterialeBredde(getRequiredWidthByCategory("remme"));
+            svgValues.setRemMaterialeHøjde(getRequiredWidthByCategory("remmeHøjde"));
+            System.out.println("test "+svgValues.getRemMaterialeHøjde());
+
 
         //Calculate redskabsrum
             //Redskabsskur beklædning
@@ -339,7 +342,10 @@ public abstract class Calculator {
 
 
         double spærBredde = getRequiredWidthByCategory("spær");
+        double spærHøjde = getRequiredWidthByCategory("spærHøjde");
         svgValues.setSpærMaterialeBredde(spærBredde);
+        svgValues.setSpærMaterialeHøjde(spærHøjde);
+        //TODO sæt spær højde
         boolean fladtTag;
 
         if (carport.getRoofType() == "Fladt tag"){
