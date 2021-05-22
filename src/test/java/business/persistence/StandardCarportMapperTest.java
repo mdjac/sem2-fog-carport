@@ -24,7 +24,6 @@ class StandardCarportMapperTest {
     private final static String URL = "jdbc:mysql://167.172.176.18:3306/" + TESTDATABASE + "?serverTimezone=CET&useSSL=false";
 
     private static Database database;
-    private static MaterialMapper materialMapper;
     private static StandardCarportMapper standardCarportMapper;
 
 
@@ -32,7 +31,6 @@ class StandardCarportMapperTest {
     public static void setUpClass() {
         try {
             database = new Database(USER, PASSWORD, URL);
-            materialMapper = new MaterialMapper(database);
             standardCarportMapper = new StandardCarportMapper(database);
             new StaticValues().setGlobalValues(database);
         } catch (ClassNotFoundException e) {   // kan ikke finde driveren i database klassen
@@ -47,33 +45,36 @@ class StandardCarportMapperTest {
 
             stmt.execute("drop table if exists carport" );
             stmt.execute("create table " + TESTDATABASE + ".carport LIKE " + DATABASE + ".carport;" );
-            stmt.execute(
-                    "insert into carport values " +
-                            "(1,'1','300','200','400','1','100','100','0','3','Fladt tag','200','1')");
+            stmt.execute("insert into carport values " +
+                            "(1,1,300,200,480,1,100,100,null,3,'"+RoofType.Fladt_Tag+"',null,1), " +
+                            "(2,1,300,200,480,null,null,null,null,3,'"+RoofType.Fladt_Tag+"',null,2), " +
+                            "(3,1,300,200,480,1,100,100,5,4,'"+RoofType.Tag_Med_Rejsning+"',null,3)");
 
         } catch (SQLException ex) {
             System.out.println( "Could not open connection to database: " + ex.getMessage() );
         }
     }
 
-
-
     @Test
     void insertStandardCarport() throws UserException {
+        //Checks that standardCarport size is 3 before insert
+        TreeMap<Integer, Carport> standardCarports = standardCarportMapper.getStandardCarports();
+        assertEquals(3,standardCarports.size());
 
+        //Creates carport and inserts, then checks if size is 4 afterwards.
         Carport carport = new Carport(Carport.findCarportMaterialFromId(1),300,250,500,RoofType.Fladt_Tag,Carport.findRoofMaterialFromId(3,RoofType.Fladt_Tag));
-        carport.setStandardCarportId(2);
-        standardCarportMapper.insertStandardCarport(carport);
-        System.out.println(carport);
+        carport.setStandardCarportId(4);
 
-        assertEquals(2,carport.getStandardCarportId());
+        standardCarportMapper.insertStandardCarport(carport);
+
+        standardCarports = standardCarportMapper.getStandardCarports();
+        assertEquals(4,standardCarports.size());
     }
 
     @Test
     void getStandardCarports() throws UserException {
-        Carport carport = new Carport(Carport.findCarportMaterialFromId(1),400,300,500,RoofType.Fladt_Tag,Carport.findRoofMaterialFromId(3,RoofType.Fladt_Tag));
-        carport.setStandardCarportId(3);
-        standardCarportMapper.getStandardCarports();
-        assertEquals(3,carport.getStandardCarportId());
+        TreeMap<Integer, Carport> standardCarports = standardCarportMapper.getStandardCarports();
+        assertEquals(3,standardCarports.size());
+        assertEquals(1,standardCarports.get(1).getStandardCarportId());
     }
 }
