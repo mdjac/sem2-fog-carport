@@ -26,7 +26,7 @@ class StandardCarportMapperTest {
     private static Database database;
     private static MaterialMapper materialMapper;
     private static StandardCarportMapper standardCarportMapper;
-    private static OrderMapper orderMapper;
+
 
     @BeforeAll
     public static void setUpClass() {
@@ -61,11 +61,19 @@ class StandardCarportMapperTest {
     @Test
     void insertStandardCarport() throws UserException {
 
-        Carport carport = new Carport(Carport.findCarportMaterialFromId(1),300,250,600,RoofType.Fladt_Tag,Carport.findRoofMaterialFromId(3,RoofType.Fladt_Tag));
-        carport.setId(4);
+        Carport carport = new Carport(Carport.findCarportMaterialFromId(1),300,250,500,RoofType.Fladt_Tag,Carport.findRoofMaterialFromId(3,RoofType.Fladt_Tag));
+        carport.setStandardCarportId(2);
         standardCarportMapper.insertStandardCarport(carport);
         System.out.println(carport);
 
-        assertEquals(4,carport.getId());
+        assertEquals(2,carport.getStandardCarportId());
+    }
+
+    @Test
+    void getStandardCarports() throws UserException {
+        Carport carport = new Carport(Carport.findCarportMaterialFromId(1),400,300,500,RoofType.Fladt_Tag,Carport.findRoofMaterialFromId(3,RoofType.Fladt_Tag));
+        carport.setStandardCarportId(3);
+        standardCarportMapper.getStandardCarports();
+        assertEquals(3,carport.getStandardCarportId());
     }
 }
