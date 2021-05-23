@@ -4,7 +4,7 @@
 
 <t:genericpage>
     <jsp:attribute name="header">
-         Home
+         Special bygget carport
     </jsp:attribute>
 
     <jsp:attribute name="footer">
