@@ -42,14 +42,12 @@ class StandardCarportMapperTest {
     public void setUp() {
         // reset test database
         try ( Statement stmt = database.connect().createStatement() ) {
-
             stmt.execute("drop table if exists carport" );
             stmt.execute("create table " + TESTDATABASE + ".carport LIKE " + DATABASE + ".carport;" );
             stmt.execute("insert into carport values " +
                             "(1,1,300,200,480,1,100,100,null,3,'"+RoofType.Fladt_Tag+"',null,1), " +
                             "(2,1,300,200,480,null,null,null,null,3,'"+RoofType.Fladt_Tag+"',null,2), " +
                             "(3,1,300,200,480,1,100,100,5,4,'"+RoofType.Tag_Med_Rejsning+"',null,3)");
-
         } catch (SQLException ex) {
             System.out.println( "Could not open connection to database: " + ex.getMessage() );
         }
@@ -73,6 +71,7 @@ class StandardCarportMapperTest {
 
     @Test
     void getStandardCarports() throws UserException {
+        //Check that standardCarports size is 3 and standardCarportID is set.
         TreeMap<Integer, Carport> standardCarports = standardCarportMapper.getStandardCarports();
         assertEquals(3,standardCarports.size());
         assertEquals(1,standardCarports.get(1).getStandardCarportId());

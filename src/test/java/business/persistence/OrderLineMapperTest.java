@@ -13,6 +13,8 @@ import web.StaticValues;
 
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -90,33 +92,60 @@ class OrderLineMapperTest {
 
 
     @Test
-    void deleteOrderLine() {
-        /*//Constructor calls CalculateAccumulatedPrice
-        int deleteOrder = orderLine1.getId();
-        orderLineMapper.deleteOrderLine(deleteOrder);
-        assertEquals(0,orderLine1.getId());*/
+    void deleteOrderLine() throws UserException {
+        //Fetches orderLines and check that size is as expected, then delete one and check size is new expectation
+        TreeMap<Integer, OrderLine> orderLineTreeMap = new TreeMap<>();
+        int orderId = 1;
+        orderLineTreeMap = orderLineMapper.getOrderLinesByOrderId(orderId);
+        assertEquals(3,orderLineTreeMap.size());
+
+        List<Integer> deleteIds = new ArrayList<>();
+        deleteIds.add(1);
+        deleteIds.add(2);
+
+        orderLineMapper.deleteOrderLine(deleteIds);
+        orderLineTreeMap = orderLineMapper.getOrderLinesByOrderId(orderId);
+        assertEquals(1,orderLineTreeMap.size());
     }
 
     @Test
-    void getOrderLinesByOrderId() {
+    void getOrderLinesByOrderId() throws UserException {
+        //Check that the orderlineTreemap size is the same size as we insert in beforeEach and that the orderLines got correct OrderID
         TreeMap<Integer, OrderLine> orderLineTreeMap = new TreeMap<>();
-        //Constructor calls CalculateAccumulatedPrice
-        assertEquals(1,orderLine1.getOrdersID());
+        int orderId = 1;
+        orderLineTreeMap = orderLineMapper.getOrderLinesByOrderId(orderId);
+        assertEquals(3,orderLineTreeMap.size());
+        assertEquals(orderId,orderLineTreeMap.get(1).getOrdersID());
     }
 
     @Test
     void insertOrderLine() throws UserException {
-
-        OrderLine orderLine = new OrderLine(5,3,"stk",material1,"stor orderline");
-        //orderLineMapper.insertOrderLine(orderLine);
-
-        assertEquals(3,orderLine.getOrdersID());
+    //Check that the orderlineTreemap size is the same size as we insert in beforeEach and then we insert another one and check size is 1 more
+        TreeMap<Integer, OrderLine> orderLineTreeMap = new TreeMap<>();
+        int orderId = 1;
+        orderLineTreeMap = orderLineMapper.getOrderLinesByOrderId(orderId);
+        assertEquals(3,orderLineTreeMap.size());
+        orderLineMapper.insertOrderLine(orderLine1);
+        orderLineTreeMap = orderLineMapper.getOrderLinesByOrderId(orderId);
+        assertEquals(4,orderLineTreeMap.size());
     }
 
     @Test
     void updateOrderline() throws UserException {
-        orderLine1.setId(3);
-        //orderLineMapper.updateOrderline(orderLine1);
-        assertEquals(3,orderLine1.getId());
+        //Fetches orderLine from DB and check that quantity is correct, updates quantity to 100 and sets object to null, fetches object again and checks that quantity is now 100.
+        TreeMap<Integer, OrderLine> orderLineTreeMap = new TreeMap<>();
+        int orderId = 1;
+        orderLineTreeMap = orderLineMapper.getOrderLinesByOrderId(orderId);
+        OrderLine orderLineTest = orderLineTreeMap.get(1);
+        assertEquals(10,orderLineTest.getQuantity());
+
+        orderLineTest.setQuantity(100);
+        orderLineMapper.updateOrderline(orderLineTest);
+        orderLineTest = null;
+        assertEquals(null, orderLineTest);
+
+        orderLineTreeMap = orderLineMapper.getOrderLinesByOrderId(orderId);
+        orderLineTest = orderLineTreeMap.get(1);
+        assertEquals(100,orderLineTest.getQuantity());
     }
 }
