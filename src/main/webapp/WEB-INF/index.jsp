@@ -12,8 +12,6 @@
     </jsp:attribute>
 
     <jsp:body>
-        <!-- skal slettes !!!!!!!!!!!!!!!!!!!!!!!!!!!-->
-        <a href="${pageContext.request.contextPath}/fc/showsvg">SVG TEGNING</a>
         <div class="container">
             <div class="row justify-content-center">
 
