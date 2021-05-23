@@ -4,6 +4,7 @@ import business.persistence.Database;
 import business.persistence.UserMapper;
 import com.sun.org.apache.xpath.internal.operations.Or;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -30,6 +31,9 @@ class OrderTest {
         orderLine2 = new OrderLine(1,1,"stk",material2,"test");
         orderLine3 = new OrderLine(1,1,"stk",material3,"test");
         carport = new Carport(material1,400,400,600,RoofType.Fladt_Tag,material1);
+    }
+    @BeforeEach
+    void setUp() {
         order = new Order(Status.Request,1,carport);
     }
 
