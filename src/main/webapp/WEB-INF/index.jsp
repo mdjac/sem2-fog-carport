@@ -18,7 +18,7 @@
                 <div class="text-center">
                     <h2>Køb din nye carport hos Fog! </h2>
                     <p>
-                        Vælg mellem vores standard modeller eller byg-selv model og lad os give dig et konkret tilbud på en carport i nøjagtig de mål du ønsker!
+                        Vælg mellem vores standard modeller eller en model efter dine egne ønsker og lad os give dig et tilbud!
                     </p>
                 </div>
 
@@ -35,7 +35,7 @@
                                         <p class="card-text">
                                             Leveres som byg-selv sæt<br>
                                             Byggevejledning medfølger<br>
-                                            Levering inden for 10 hverdage<br>
+                                            Tilbud fremsendes indenfor 3 hverdage<br>
                                         </p>
 
                                     </div>
