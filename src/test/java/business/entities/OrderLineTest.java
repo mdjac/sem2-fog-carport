@@ -20,6 +20,6 @@ class OrderLineTest {
     @Test
     void testCalculateAccumulatedPrice() {
         //Constructor calls CalculateAccumulatedPrice
-        assertEquals(100,orderLine1.getAccumulatedPrice());
+    assertEquals(100,orderLine1.getAccumulatedPrice());
     }
 }

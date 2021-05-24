@@ -155,10 +155,15 @@ private Integer standardCarportId;
                 //Check if the shed dimensions is okay
                 if(StaticValues.allowedMeasurements.get("redskabsskurLængde").between(this.getShedLength()) && StaticValues.allowedMeasurements.get("redskabsskurBredde").between(this.getShedWidth())){
                     acceptableMeasurements = true;
+                    //Check if shed is bigger than carport
+                    if(carportLength < shedLength || carportWidth < shedWidth){
+                        acceptableMeasurements = false;
+                    }
                 }
                 else{
                     acceptableMeasurements = false;
                 }
+
             }
         }
         return acceptableMeasurements;

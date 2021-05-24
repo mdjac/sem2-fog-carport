@@ -56,6 +56,7 @@ class CarportTest {
         carport.setShedWidth(99);
         assertEquals(false,carport.acceptableMeasurements());
         carport.setShedWidth(399);
+        carport.setCarportWidth(400);
         assertEquals(true,carport.acceptableMeasurements());
         carport.setShedWidth(400);
         assertEquals(true,carport.acceptableMeasurements());
@@ -73,6 +74,20 @@ class CarportTest {
         carport.setRoofTilt(11);
         assertEquals(false,carport.acceptableMeasurements());
         carport.setRoofTilt(10);
+        assertEquals(true,carport.acceptableMeasurements());
+    }
+
+    @Test
+    void acceptableMeasurementsShedBiggerThanCarport() throws UserException {
+        //Checking that we get false if Shed is bigger than carport
+        Carport carport = new Carport(Carport.findCarportMaterialFromId(1),350,250,480,RoofType.Fladt_Tag,Carport.findRoofMaterialFromId(3,RoofType.Fladt_Tag));
+        carport.setShedMaterial(Carport.findShedMaterialFromId(1));
+        carport.setShedLength(200);
+        carport.setShedWidth(349);
+        assertEquals(true,carport.acceptableMeasurements());
+        carport.setShedWidth(351);
+        assertEquals(false,carport.acceptableMeasurements());
+        carport.setShedWidth(350);
         assertEquals(true,carport.acceptableMeasurements());
     }
 }
