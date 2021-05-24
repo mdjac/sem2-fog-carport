@@ -25,7 +25,6 @@ public class LoginCommand extends CommandUnprotectedPage
     {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-
         try {
         User user = userFacade.login(email, password);
 

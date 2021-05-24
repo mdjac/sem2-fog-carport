@@ -1,0 +1,57 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor forbruger
+boundary customizedcarportorderpage.jsp
+boundary receiptpage.jsp
+control FrontController
+database carport
+
+
+
+forbruger -> customizedcarportorderpage.jsp: Start
+customizedcarportorderpage.jsp -> FrontController: doPost()
+FrontController -> FrontController: processRequest()
+FrontController -> Command: fromPath()
+Command --> FrontController: :SubmitOrderCommand
+FrontController -> SubmitOrderCommand: execute()
+SubmitOrderCommand -> OrderFacade: insertOrder()
+OrderFacade -> OrderMapper: insertOrder()
+OrderMapper -> carport: executeUpdate()
+carport --> OrderMapper: ResultSet
+OrderMapper -> OrderMapper: validate resultset
+OrderMapper -> OrderMapper: insertCarport()
+OrderMapper -> carport: executeUpdate()
+carport --> OrderMapper: ResultSet
+OrderMapper --> SubmitOrderCommand: Order
+SubmitOrderCommand -> Calculator: calculateBOM()
+Calculator -> Calculator: calculateSpær()
+Calculator -> Calculator: calculateOptimalDistance()
+Calculator -> Calculator: calculateStolper()
+Calculator -> Calculator: getOptimalMaterial()
+Calculator -> Calculator: getOptimalRoofUnits()
+Calculator -> Calculator: calculateRoofSideMaterial()
+Calculator -> Calculator: getMaterialByMaterialVariantId()
+Calculator --> SubmitOrderCommand: BOM
+SubmitOrderCommand -> OrderLineFacade: insertOrderLine()
+OrderLineFacade -> OrderLineMapper: insertOrderLine()
+OrderLineMapper -> carport: executeUpdate()
+OrderLineMapper --> SubmitOrderCommand: OK
+SubmitOrderCommand -> Order: calculateCostPriceByArrayList()
+Order --> SubmitOrderCommand: OK
+SubmitOrderCommand -> Order: calculateTotalPrice()
+Order --> SubmitOrderCommand: OK
+SubmitOrderCommand -> OrderFacade: updateOrderTotalPrice()
+OrderFacade -> OrderMapper: updateOrderTotalPrice()
+OrderMapper -> carport: executeUpdate()
+carport --> OrderMapper: OK
+OrderMapper --> OrderFacade: OK
+OrderFacade --> SubmitOrderCommand: OK
+SubmitOrderCommand --> FrontController: receiptpage
+FrontController --> receiptpage.jsp: forward()
+
+
+
+@enduml

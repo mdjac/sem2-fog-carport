@@ -1,0 +1,38 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor forbruger
+boundary index.jsp
+boundary loginpage.jsp
+control FrontController
+
+
+
+forbruger -> index.jsp: Start
+index.jsp -> FrontController: doPost()
+FrontController -> FrontController: processRequest()
+FrontController -> Command: fromPath()
+Command --> FrontController: LoginPageCommand
+FrontController -> LoginPageCommand: execute()
+LoginPageCommand --> FrontController: loginpage
+FrontController -> loginpage.jsp: forward()
+loginpage.jsp -> FrontController: doPost()
+FrontController -> FrontController: processRequest()
+FrontController -> Command: fromPath()
+Command --> FrontController: LoginCommand
+FrontController -> LoginCommand: execute()
+LoginCommand -> UserFacade: login()
+UserFacade -> Encryption: encryptThisString()
+Encryption --> UserFacade: encrypted string
+UserFacade -> UserMapper: login()
+database carport
+UserMapper -> carport: executeQuery()
+carport --> UserMapper: resultset
+UserMapper -> UserMapper: validate resultset
+UserMapper --> UserFacade: user
+UserFacade --> LoginCommand: user
+LoginCommand --> FrontController: index
+FrontController --> index.jsp: forward()
+@enduml
