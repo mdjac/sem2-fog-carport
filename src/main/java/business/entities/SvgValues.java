@@ -18,6 +18,9 @@ public class SvgValues {
     Double remMaterialeBredde;
     Double remMaterialeHøjde;
 
+    //Tag
+    Double tagMedRejsningHøjde;
+
     //Stolper
     Double stolpeAfstandFront;
     Double stolpeAfstandBag;
@@ -32,6 +35,14 @@ public class SvgValues {
     Integer skurStolpeAntalSider;  //De tæller de samme hjørner med
     Double stolpeAfstandSkurSider;
     Double stolpeAfstandSkurforOgBag;
+
+    public Double getTagMedRejsningHøjde() {
+        return tagMedRejsningHøjde;
+    }
+
+    public void setTagMedRejsningHøjde(Double tagMedRejsningHøjde) {
+        this.tagMedRejsningHøjde = tagMedRejsningHøjde;
+    }
 
     public Double getSpærMaterialeHøjde() {
         return spærMaterialeHøjde;
