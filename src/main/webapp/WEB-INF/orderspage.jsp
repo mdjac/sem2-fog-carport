@@ -33,7 +33,10 @@
                                 <div class="col-sm-4">Tid: ${orders.value.time}</div>
                                 <div class="col-sm-2">Status: ${orders.value.status.toString()}</div>
                                 <div class="col-sm-2">Bruger Id: ${orders.value.userId}</div>
-                                <div class="col-sm-2">Total pris: ${orders.value.totalPrice}</div>
+
+                                <c:if test="${!orders.value.status.equals(applicationScope.status.get(0)) || sessionScope.user.role.equals('employee')}">
+                                    <div class="col-sm-2">Total pris: ${orders.value.totalPrice}</div>
+                                </c:if>
                             </div>
 
                         </div>

@@ -31,7 +31,8 @@ public class ShowOrderPageCommand extends CommandProtectedPage{
         Order order = orderFacade.getOrderByOrderId(orderId);
 
 
-        if (order.getStatus().equals(Status.PickedUp)) {
+
+        if (order.getStatus().equals(Status.OfferAccepted) || order.getStatus().equals(Status.PickedUp)  ) {
             //Create map for displaying && fetch from DB
             TreeMap<Integer, OrderLine> BOM = orderLineFacade.getOrderLinesByOrderId(orderId);
             //Set BOM at order object

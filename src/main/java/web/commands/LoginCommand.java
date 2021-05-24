@@ -1,5 +1,6 @@
 package web.commands;
 
+import business.entities.Carport;
 import business.entities.User;
 import business.services.UserFacade;
 import business.exceptions.UserException;
@@ -36,13 +37,23 @@ public class LoginCommand extends CommandUnprotectedPage
 
 
             //Made  to ensure the flow continues from shoppingcart to paymentpage
-            if (session.getAttribute("link") != null && session.getAttribute("link").equals("/fc/loginpage") && user.getRole().equals("customer") && session.getAttribute("standardCarportId") != null) {
-                    int standardCarportId = (int)session.getAttribute("standardCarportId");
-                    request.setAttribute("standardCarportId",standardCarportId);
+            if (session.getAttribute("link") != null && session.getAttribute("link").equals("/fc/loginpage") && user.getRole().equals("customer")) {
+                if (session.getAttribute("standardCarportId") != null) {
+                    int standardCarportId = (int) session.getAttribute("standardCarportId");
+                    request.setAttribute("standardCarportId", standardCarportId);
 
                     //Redirects user to submitorderCommand as we need want to submit the order
-                    SubmitOrderCommand submitOrderCommand = new SubmitOrderCommand("receiptpage","customer");
-                    return submitOrderCommand.execute(request,response);
+                    SubmitOrderCommand submitOrderCommand = new SubmitOrderCommand("receiptpage", "customer");
+                    return submitOrderCommand.execute(request, response);
+                }
+                if (session.getAttribute("customCarport") != null) {
+                    Carport carport = (Carport) session.getAttribute("customCarport");
+                    request.setAttribute("customCarport", carport);
+
+                    //Redirects user to submitorderCommand as we need want to submit the order
+                    SubmitOrderCommand submitOrderCommand = new SubmitOrderCommand("receiptpage", "customer");
+                    return submitOrderCommand.execute(request, response);
+                }
             }
         //String pageToShow =  user.getRole() + "page";
             String pageToShow = "index";
