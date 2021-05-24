@@ -11,8 +11,15 @@
         <c:set var="addHomeLink" value="${false}" scope="request"/>
     </jsp:attribute>
 
+
     <jsp:body>
-        <form action="${pageContext.request.contextPath}/fc/submitorder" method="post">
+        <c:if test="${sessionScope.role == 'customer' }">
+            <c:set var="link" scope="session" value="/fc/submitorder"/>
+        </c:if>
+        <c:if test="${empty sessionScope.role}">
+            <c:set var="link" scope="session" value="/fc/loginpage"/>
+        </c:if>
+        <form action="${pageContext.request.contextPath}${link}" method="post">
             <div class="row">
                 <div class="col-lg-2"></div>
                 <div class="col-lg-8">

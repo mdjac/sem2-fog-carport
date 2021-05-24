@@ -32,10 +32,6 @@
                     <p>Carport skur beklædning: ${requestScope.order.carport.shedMaterial.materialName}</p>
                 </c:if>
 
-                <!-- skal slettes !!!!!!!!!!!!!!!!!!!!!!!!!!!-->
-                <a href="${pageContext.request.contextPath}/fc/showsvg">SVG TEGNING</a>
-
-
                 <c:if test="${requestScope.order.status.equals(applicationScope.status.get(1))}">
                     <div class="mt-4">
                         <form action="${pageContext.request.contextPath}/fc/changeorderstatuscommand" method="POST">
@@ -48,8 +44,41 @@
                 </c:if>
 
             </div>
-                ${requestScope.svgdrawing}
-                ${requestScope.svgdrawingside}
+           <div>
+               ${requestScope.svgdrawing}
+               ${requestScope.svgdrawingside}
+           </div>
+
+            <table class="table table-striped mt-3">
+                <thead>
+                <tr>
+                    <th scope="col">Materiale (LxBxH)</th>
+                    <th scope="col">Antal</th>
+                    <th scope="col">Enhed</th>
+                    <th scope="col">Beskrivelse</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach var="orderline" items="${requestScope.order.BOM}">
+
+                    <tr>
+
+                        <td>
+                                ${orderline.value.material.toString()}
+                        </td>
+                        <td>
+                                ${orderline.value.quantity}
+                        </td>
+                        <td>
+                                ${orderline.value.unit}
+                        </td>
+                        <td>
+                                ${orderline.value.description}
+                        </td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
         </div>
     </jsp:body>
 </t:genericpage>

@@ -37,7 +37,7 @@ public abstract class Command
         commands.put("showorderlinecommand", new ShowOrderLineCommand("showorderlinepage","employee"));
         commands.put("showorderpagecommand", new ShowOrderPageCommand("showorderpage","customer"));
 
-        commands.put("showsvg", new ShowSvgCommand("svgpage"));
+
 
         commands.put("editanddeleteorderlinecommand",new EditAndDeleteOrderLineCommand("showorderlinepage","employee"));
         commands.put("profilepage", new CommandUnprotectedPage("profilepage"));

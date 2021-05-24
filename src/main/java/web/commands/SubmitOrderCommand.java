@@ -36,6 +36,10 @@ public class SubmitOrderCommand extends CommandProtectedPage{
             carport =  StaticValues.standardCarports.get((int)request.getAttribute("standardCarportId"));
         }
         //For custom carport
+        else if (request.getAttribute("customCarport") != null){
+
+            carport = (Carport) request.getAttribute("customCarport");
+        }
         else{
             //Fetch required variables
             RoofType roofType = RoofType.valueOf(request.getParameter("rooftype"));
