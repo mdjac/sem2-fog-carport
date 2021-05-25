@@ -7,6 +7,14 @@ actor forbruger
 boundary customizedcarportorderpage.jsp
 boundary receiptpage.jsp
 control FrontController
+participant Command
+participant SubmitOrderCommand
+participant OrderFacade
+participant OrderMapper
+participant OrderLineFacade
+participant OrderLineMapper
+participant Order
+participant Calculator
 database carport
 
 
@@ -25,7 +33,9 @@ OrderMapper -> OrderMapper: validate resultset
 OrderMapper -> OrderMapper: insertCarport()
 OrderMapper -> carport: executeUpdate()
 carport --> OrderMapper: ResultSet
-OrderMapper --> SubmitOrderCommand: Order
+OrderMapper -> OrderMapper: validate Resultset
+OrderMapper --> OrderFacade: Order
+OrderFacade --> SubmitOrderCommand: Order
 SubmitOrderCommand -> Calculator: calculateBOM()
 Calculator -> Calculator: calculateSpær()
 Calculator -> Calculator: calculateOptimalDistance()
@@ -38,7 +48,9 @@ Calculator --> SubmitOrderCommand: BOM
 SubmitOrderCommand -> OrderLineFacade: insertOrderLine()
 OrderLineFacade -> OrderLineMapper: insertOrderLine()
 OrderLineMapper -> carport: executeUpdate()
-OrderLineMapper --> SubmitOrderCommand: OK
+carport --> OrderLineMapper: OK
+OrderLineMapper --> OrderLineFacade: OK
+OrderLineFacade --> SubmitOrderCommand: OK
 SubmitOrderCommand -> Order: calculateCostPriceByArrayList()
 Order --> SubmitOrderCommand: OK
 SubmitOrderCommand -> Order: calculateTotalPrice()

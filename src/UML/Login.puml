@@ -7,6 +7,13 @@ actor forbruger
 boundary index.jsp
 boundary loginpage.jsp
 control FrontController
+participant Command
+participant LoginPageCommand
+participant LoginCommand
+participant UserFacade
+participant Encryption
+participant UserMapper
+database carport
 
 
 
@@ -27,7 +34,6 @@ LoginCommand -> UserFacade: login()
 UserFacade -> Encryption: encryptThisString()
 Encryption --> UserFacade: encrypted string
 UserFacade -> UserMapper: login()
-database carport
 UserMapper -> carport: executeQuery()
 carport --> UserMapper: resultset
 UserMapper -> UserMapper: validate resultset
