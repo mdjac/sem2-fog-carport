@@ -54,11 +54,13 @@ class CalculatorTest {
 
         //Used for carport without shed calculations and flat roof
         carportWithOutShed = new Carport(carportMaterial,300,250,500, RoofType.Fladt_Tag,flatRoofMaterial);
+        carportWithOutShed.setId(1);
         orderWithOutShed = new Order(Status.Request,1,carportWithOutShed);
 
 
         //Used for carport with shed calculations
         carportWithShed = new Carport(carportMaterial,300,250,500, RoofType.Fladt_Tag,flatRoofMaterial);
+        carportWithShed.setId(2);
         carportWithShed.setShedMaterial(shedMaterial);
         carportWithShed.setShedWidth(150);
         carportWithShed.setShedLength(150);
@@ -66,7 +68,9 @@ class CalculatorTest {
 
         //Used for carport with rooftilt calculations
         carportWithRoofTilt = new Carport(carportMaterial,300,250,500,RoofType.Tag_Med_Rejsning,roofTiltMaterial);
+        carportWithRoofTilt.setId(3);
         carportWithRoofTilt.setRoofTilt(5);
+        orderWithRoofTilt = new Order(Status.Request,1,carportWithRoofTilt);
     }
 
 
@@ -86,7 +90,7 @@ class CalculatorTest {
         //Check that we only receive 1 post back as we didnt allow for split of materials
         assertEquals(1,optimalMaterialResult.getQuantity());
         //Check that we receive the post in length 300 as it's closest to 290 that is longer
-        assertEquals(300,optimalMaterialResult.getMaterial().getLength());
+        assertEquals(310,optimalMaterialResult.getMaterial().getLength());
     }
 
     @Test
@@ -118,15 +122,56 @@ class CalculatorTest {
         double minDist = 50;
         double maxDist = 60;
         double materialWidth = 10;
-        double totalDist = 300;
+        double totalDist = 420;
         double interval = 0.1;
 
         double result = Calculator.calculateOptimalDistance(minDist,maxDist,materialWidth,totalDist,interval);
-
+        assertEquals(50.0,result);
+        materialWidth = 5;
+        result = Calculator.calculateOptimalDistance(minDist,maxDist,materialWidth,totalDist,interval);
+        assertNotEquals(50.0,result);
+        minDist = 56;
+        materialWidth = 0;
+        totalDist = 600;
+        result = Calculator.calculateOptimalDistance(minDist,maxDist,materialWidth,totalDist,interval);
+        assertEquals(60.0,result);
     }
 
     @Test
-    void calculateSpær() {
+    void calculateSpærWithFlatRoof() {
+        //Is only called to make sure SVG values is not null to allow our tests to run
+        Calculator.calculateBOM(carportWithOutShed,orderWithOutShed);
+        //carportWithOutShed is 500 length. 500-2xSpærBredde(9 total) = 491 to make sure there is 1 spær at each end, then calculates rest of spærs inbetween
+        //54.5 is the calculated distance between Spær as materialWidth is 4.5 for spær, so 491/54.5 is = 9.009 which means 9 distances between spær, which is 10 spær
+        boolean tværGåendeSpær = false;
+        int actualSpærAntal = Calculator.calculateSpær(carportWithOutShed,tværGåendeSpær);
+        assertEquals(10,actualSpærAntal);
+        carportWithOutShed.setCarportLength(600);
+        actualSpærAntal = Calculator.calculateSpær(carportWithOutShed,tværGåendeSpær);
+        assertEquals(12,actualSpærAntal);
+    }
+
+    @Test
+    void calculateSpærWithRoofTilt() {
+        //Is only called to make sure SVG values is not null to allow our tests to run
+        Calculator.calculateBOM(carportWithRoofTilt,orderWithRoofTilt);
+        //carportWithRoofTilt - CarportLength is 500
+        boolean tværGåendeSpær = false;
+        int normalSpær = Calculator.calculateSpær(carportWithRoofTilt,tværGåendeSpær);
+        assertEquals(7,normalSpær);
+        carportWithRoofTilt.setCarportLength(709);
+        normalSpær = Calculator.calculateSpær(carportWithRoofTilt,tværGåendeSpær);
+        assertEquals(8,normalSpær);
+        carportWithRoofTilt.setCarportLength(500);
+
+        //TværgåendeSpær beregning
+        //carportWidth is 300
+        tværGåendeSpær = true;
+        int tværgående = Calculator.calculateSpær(carportWithRoofTilt,tværGåendeSpær);
+        assertEquals(7,tværgående);
+        carportWithRoofTilt.setCarportWidth(500);
+        tværgående = Calculator.calculateSpær(carportWithRoofTilt,tværGåendeSpær);
+        assertEquals(10,tværgående);
     }
 
     @Test

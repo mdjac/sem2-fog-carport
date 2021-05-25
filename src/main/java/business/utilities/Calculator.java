@@ -4,6 +4,7 @@ import business.entities.*;
 import web.FrontController;
 import web.StaticValues;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
@@ -318,9 +319,15 @@ public abstract class Calculator {
     }
 
     public static double calculateOptimalDistance(double minDist, double maxDist, double materialWidth, double totalDist, double interval){
+        DecimalFormat df = new DecimalFormat("0.0");
         double result = 0;
         double bestRemainder = 1000;
         for (double i = minDist; i <= maxDist; i += interval) {
+            //Used to make sure i is only 1 decimal
+            //i = Math.round(i*10)/10;
+            String rounder = df.format(i);
+            rounder = rounder.replace(",",".");
+            i = Double.parseDouble(rounder);
             double remainder = (totalDist-(materialWidth*2))%i;
             if (remainder <= bestRemainder){
                 bestRemainder = remainder;
