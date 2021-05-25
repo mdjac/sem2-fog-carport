@@ -62,7 +62,7 @@ class StandardCalcValuesMapperTest {
     void getCalculatorRequiredMaterialWidth() throws UserException {
         TreeMap<String, MinMax> calculatorRequiredMaterialWidth = new TreeMap<>();
         calculatorRequiredMaterialWidth = standardCalcValuesMapper.getCalculatorRequiredMaterialWidth();
-        assertEquals(6,calculatorRequiredMaterialWidth.size());
+        assertEquals(8,calculatorRequiredMaterialWidth.size());
         assertNotNull(calculatorRequiredMaterialWidth.get("spær").getValue());
     }
 
