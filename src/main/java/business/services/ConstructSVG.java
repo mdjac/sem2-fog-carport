@@ -250,7 +250,7 @@ public class ConstructSVG {
 
 
 
-        SVG svg1 = new SVG(0, 0, "0 0 1500 1500", 100, 100 );
+        SVG svg1 = new SVG(0, 0, "0 0 1000 1000", 100, 100 );
         svg1.addSvg(svg);
 
         return svg1.toString();
@@ -424,7 +424,7 @@ public class ConstructSVG {
 
 
 
-        SVG svg1 = new SVG(0, 0, "0 0 1500 1500", 100, 100 );
+        SVG svg1 = new SVG(0, 0, "0 0 1000 1000", 100, 100 );
         svg1.addSvg(svg);
 
         return svg1.toString();

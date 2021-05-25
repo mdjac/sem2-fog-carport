@@ -4,7 +4,7 @@
 
 <t:genericpage>
     <jsp:attribute name="header">
-         Special bygget carport
+         Special byg din carport
     </jsp:attribute>
 
     <jsp:attribute name="footer">
@@ -23,8 +23,8 @@
             <div class="row">
                 <div class="col-lg-2"></div>
                 <div class="col-lg-8">
-                    <c:if test="${requestScope.status != null }">
-                        <h3 class="text-center text-success mb-4">${requestScope.status}</h3>
+                    <c:if test="${requestScope.error != null }">
+                        <h3 class="text-center text-danger mb-4">${requestScope.error}</h3>
                     </c:if>
                     <div class="row">
                         <div class="col-lg-6 mt-2">

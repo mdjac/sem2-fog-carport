@@ -4,7 +4,7 @@
 
 <t:genericpage>
     <jsp:attribute name="header">
-         Home
+         Standard Carports
     </jsp:attribute>
 
     <jsp:attribute name="footer">
@@ -18,14 +18,12 @@
         <c:if test="${empty sessionScope.role}">
             <c:set var="link" scope="session" value="/fc/loginpage"/>
         </c:if>
-        <div class="row">
-            <div class="col-lg-2"></div>
-            <div class="col-lg-8">
-                <div class="row">
+
+                <div class="row justify-content-center">
                     <c:forEach var="standardcarport" items="${applicationScope.standardCarports}">
-                        <div class="col-lg-4 mt-2">
-                            <form class="" action="${pageContext.request.contextPath}${link}" method="post">
-                                <div class="card text-center" style="width: 18rem;">
+                        <div class="col-sm-auto card">
+                            <form class="d-flex align-items-end flex-column bd-highlight mb-3" style="height: 100%" action="${pageContext.request.contextPath}${link}" method="post">
+                                <div class="text-center p-2 bd-highlight" style="width: 18rem;">
                                     <c:set var="picture" value="/images/carport-std-fladtTag.png"></c:set>
                                     <c:if test="${not empty standardcarport.value.roofTilt}">
                                         <c:set var="picture" value="/images/carport-std-rejsning.png"></c:set>
@@ -33,7 +31,7 @@
                                     <img class="card-img-top"
                                          src="${pageContext.request.contextPath}${picture}"
                                          alt="Card image cap">
-                                    <div class="card-body">
+                                    <div class="card-body p-2 bd-highlight">
                                         <h5 class="card-title">Standard carport
                                             #${standardcarport.value.standardCarportId} </h5>
                                         <div class="card-text">
@@ -63,17 +61,19 @@
                                         </div>
                                         <input type="hidden" id="standardCarportId" name="standardCarportId"
                                                value="${standardcarport.value.standardCarportId}">
-                                        <c:if test="${!sessionScope.user.role.equals('employee')}">
-                                            <input class="btn btn-primary mt-2" type="submit" value="Send forespørgsel">
-                                        </c:if>
+
+
                                     </div>
                                 </div>
+                                <c:if test="${!sessionScope.user.role.equals('employee')}">
+                                    <div class="mt-auto p-2 bd-highlight align-items-end" style="width: 100%;">
+                                        <input class="button" type="submit" value="Send forespørgsel">
+                                    </div>
+                                </c:if>
                             </form>
                         </div>
                     </c:forEach>
                 </div>
-            </div>
-            <div class="col-lg-2"></div>
-        </div>
+
     </jsp:body>
 </t:genericpage>

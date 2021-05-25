@@ -46,7 +46,7 @@ public class LoginPageCommand extends CommandUnprotectedPage{
                 carport.setShedWidth(shedWidth);
             }
             if(carport.acceptableMeasurements() == false){
-                request.setAttribute("status", "One or more entered measurements is not accepted!");
+                request.setAttribute("error", "One or more entered measurements is not accepted!");
                 return "customizedcarportorderpage";
             }
             System.out.println("carport linje 52: "+carport);

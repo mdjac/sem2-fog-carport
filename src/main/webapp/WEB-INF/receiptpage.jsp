@@ -4,7 +4,7 @@
 
 <t:genericpage>
     <jsp:attribute name="header">
-         Home
+         Kvittering
     </jsp:attribute>
 
     <jsp:attribute name="footer">
