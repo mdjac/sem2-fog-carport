@@ -200,7 +200,6 @@ public abstract class Calculator {
             hypo = (widthRemaining*Math.sin(Math.toRadians(90)))/Math.sin(topAngle);
             height = Math.cos(topAngle)*hypo;
             height = height + getRequiredWidthByCategory("spærHøjde");
-            System.out.println("line 181 "+height);
             widthRemaining = widthRemaining - widthInterval;
             heights.add(height);
             if (i == 0){
@@ -466,7 +465,8 @@ public abstract class Calculator {
         System.out.println("stolpe antal skur: "+redskabsskurAntal);
 
         svgValues.setStolpeAntal(stolpeAntal + redskabsskurAntal);
-        return  stolpeAntal + redskabsskurAntal;
+        stolpeAntal = stolpeAntal + redskabsskurAntal;
+        return stolpeAntal;
     }
 
     public static Material getMaterialByMaterialVariantId(int variantId){

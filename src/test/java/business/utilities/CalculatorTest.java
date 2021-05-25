@@ -71,7 +71,7 @@ class CalculatorTest {
         //Used for carport with rooftilt calculations
         carportWithRoofTilt = new Carport(carportMaterial,300,250,500,RoofType.Tag_Med_Rejsning,roofTiltMaterial);
         carportWithRoofTilt.setId(3);
-        carportWithRoofTilt.setRoofTilt(5);
+        carportWithRoofTilt.setRoofTilt(10);
         orderWithRoofTilt = new Order(Status.Request,1,carportWithRoofTilt);
     }
 
@@ -85,6 +85,17 @@ class CalculatorTest {
 
     @Test
     void calculateRoofSideMaterial() {
+        //Is only called to make sure SVG values is not null to allow our tests to run
+        Calculator.calculateBOM(carportWithRoofTilt,orderWithRoofTilt);
+        int expected = 1076;
+        int actual = Calculator.calculateRoofSideMaterial(carportWithRoofTilt);
+        assertEquals(expected,actual);
+
+        carportWithRoofTilt.setRoofTilt(5);
+        expected = 848;
+        actual = Calculator.calculateRoofSideMaterial(carportWithRoofTilt);
+        assertEquals(expected,actual);
+        carportWithRoofTilt.setRoofTilt(10);
     }
 
     @Test
@@ -119,7 +130,28 @@ class CalculatorTest {
     }
 
     @Test
-    void getOptimalRoofUnits() {
+    void getOptimalRoofUnitsFlatRoof() {
+        //carportWithOutShed; width 300, length 500;
+        Material material = Calculator.getMaterialByMaterialVariantId(34);
+        OptimalMaterialResult expected = new OptimalMaterialResult(5,material,1);
+        OptimalMaterialResult actual = Calculator.getOptimalRoofUnits(carportWithOutShed.getRoofMaterial().getMaterialsId(),carportWithOutShed.getCarportLength(),carportWithOutShed.getCarportWidth(),RoofType.fromString(carportWithOutShed.getRoofType()));
+        assertEquals(expected,actual);
+
+        carportWithOutShed.setCarportWidth(470);
+        material = Calculator.getMaterialByMaterialVariantId(32);
+        expected = new OptimalMaterialResult(5,material,1);
+        actual = Calculator.getOptimalRoofUnits(carportWithOutShed.getRoofMaterial().getMaterialsId(),carportWithOutShed.getCarportLength(),carportWithOutShed.getCarportWidth(),RoofType.fromString(carportWithOutShed.getRoofType()));
+        assertEquals(expected,actual);
+        carportWithOutShed.setCarportWidth(300);
+    }
+
+    @Test
+    void getOptimalRoofUnitsRoofWithTilt() {
+        //carportWithRoofTilt (carportMaterial,300,250,500,RoofType.Tag_Med_Rejsning,roofTiltMaterial);
+        Material material = Calculator.getMaterialByMaterialVariantId(6);
+        OptimalMaterialResult expected = new OptimalMaterialResult(168,material,1);
+        OptimalMaterialResult actual = Calculator.getOptimalRoofUnits(carportWithRoofTilt.getRoofMaterial().getMaterialsId(),carportWithRoofTilt.getCarportLength(),carportWithRoofTilt.getCarportWidth(),RoofType.fromString(carportWithRoofTilt.getRoofType()));
+        assertEquals(expected,actual);
     }
 
     @Test
@@ -180,7 +212,39 @@ class CalculatorTest {
     }
 
     @Test
-    void calculateStolper() {
+    void calculateStolperWithoutShed() {
+        //Is only called to make sure SVG values is not null to allow our tests to run
+        Calculator.calculateBOM(carportWithOutShed,orderWithOutShed);
+        //carportWithOutShed - length = 500;
+        int expected = 6;
+        int actual = Calculator.calculateStolper(carportWithOutShed);
+        assertEquals(expected,actual);
+
+        carportWithOutShed.setCarportLength(780);
+        expected = 8;
+        actual = Calculator.calculateStolper(carportWithOutShed);
+        assertEquals(expected,actual);
+        //Revert carport length to std as they are initialized in beforeAll
+        carportWithOutShed.setCarportLength(500);
+    }
+
+    @Test
+    void calculateStolperWithShed() {
+        //Is only called to make sure SVG values is not null to allow our tests to run
+        Calculator.calculateBOM(carportWithShed,orderWithShed);
+        //carportWithShed - length = 500, carportWidth = 300, shedWidth = 150;
+        int expected = 8;
+        int actual = Calculator.calculateStolper(carportWithShed);
+        assertEquals(expected,actual);
+
+        //Changed so shed is same width as carport, so we can utilize posts in side instead of having extras for shed in center.
+        carportWithShed.setShedWidth(carportWithShed.getCarportWidth());
+        expected = 6;
+        actual = Calculator.calculateStolper(carportWithShed);
+        assertEquals(expected,actual);
+
+        //Revert the changed width
+        carportWithShed.setShedWidth(150);
     }
 
     @Test
