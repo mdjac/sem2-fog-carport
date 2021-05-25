@@ -8,6 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import web.StaticValues;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class CalculatorTest {
@@ -76,6 +78,9 @@ class CalculatorTest {
 
     @Test
     void calculateBOM() {
+        ArrayList<OrderLine> bomItems = Calculator.calculateBOM(carportWithShed,orderWithShed);
+        assertNotNull(bomItems);
+        assertNotEquals(0,bomItems.size());
     }
 
     @Test

@@ -178,7 +178,6 @@ public abstract class Calculator {
             }
             StaticValues.svgValuesTreeMap.put(carport.getId(),svgValues);
         return bomItems;
-
     }
 
     public static int calculateRoofSideMaterial(Carport carport) {
