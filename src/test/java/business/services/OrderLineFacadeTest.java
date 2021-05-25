@@ -1,11 +1,12 @@
-package business.persistence;
+package business.services;
 
 import business.entities.Material;
 import business.entities.OrderLine;
 import business.entities.RoofType;
 import business.entities.Status;
 import business.exceptions.UserException;
-import org.junit.jupiter.api.AfterEach;
+import business.persistence.Database;
+import business.persistence.OrderLineMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,8 +20,7 @@ import java.util.TreeMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
-class OrderLineMapperTest {
+class OrderLineFacadeTest {
     private final static String DATABASE = "carport";  // Change this to your own database
     private final static String TESTDATABASE = DATABASE + "_test";
     private final static String USER = "dev";
@@ -28,7 +28,7 @@ class OrderLineMapperTest {
     private final static String URL = "jdbc:mysql://64.227.113.104:3306/" + TESTDATABASE + "?serverTimezone=CET&useSSL=false";
 
     private static Database database;
-    private static OrderLineMapper orderLineMapper;
+    private static OrderLineFacade orderLineFacade;
     public static Material material1;
     public static OrderLine orderLine1;
 
@@ -36,7 +36,7 @@ class OrderLineMapperTest {
     public static void setUpClass() {
         try {
             database = new Database(USER, PASSWORD, URL);
-            orderLineMapper = new OrderLineMapper(database);
+            orderLineFacade = new OrderLineFacade(database);
             new StaticValues().setGlobalValues(database);
             material1 = new Material("test","test",1,1,1,1,10);
             orderLine1 = new OrderLine(10,1,"stk",material1,"test");
@@ -96,15 +96,15 @@ class OrderLineMapperTest {
         //Fetches orderLines and check that size is as expected, then delete one and check size is new expectation
         TreeMap<Integer, OrderLine> orderLineTreeMap = new TreeMap<>();
         int orderId = 1;
-        orderLineTreeMap = orderLineMapper.getOrderLinesByOrderId(orderId);
+        orderLineTreeMap = orderLineFacade.getOrderLinesByOrderId(orderId);
         assertEquals(3,orderLineTreeMap.size());
 
         List<Integer> deleteIds = new ArrayList<>();
         deleteIds.add(1);
         deleteIds.add(2);
 
-        orderLineMapper.deleteOrderLine(deleteIds);
-        orderLineTreeMap = orderLineMapper.getOrderLinesByOrderId(orderId);
+        orderLineFacade.deleteOrderLine(deleteIds);
+        orderLineTreeMap = orderLineFacade.getOrderLinesByOrderId(orderId);
         assertEquals(1,orderLineTreeMap.size());
     }
 
@@ -113,20 +113,20 @@ class OrderLineMapperTest {
         //Check that the orderlineTreemap size is the same size as we insert in beforeEach and that the orderLines got correct OrderID
         TreeMap<Integer, OrderLine> orderLineTreeMap = new TreeMap<>();
         int orderId = 1;
-        orderLineTreeMap = orderLineMapper.getOrderLinesByOrderId(orderId);
+        orderLineTreeMap = orderLineFacade.getOrderLinesByOrderId(orderId);
         assertEquals(3,orderLineTreeMap.size());
         assertEquals(orderId,orderLineTreeMap.get(1).getOrdersID());
     }
 
     @Test
-    void insertOrderLine() throws UserException {
-    //Check that the orderlineTreemap size is the same size as we insert in beforeEach and then we insert another one and check size is 1 more
+    void insertOrderLine() throws UserException, SQLException {
+        //Check that the orderlineTreemap size is the same size as we insert in beforeEach and then we insert another one and check size is 1 more
         TreeMap<Integer, OrderLine> orderLineTreeMap = new TreeMap<>();
         int orderId = 1;
-        orderLineTreeMap = orderLineMapper.getOrderLinesByOrderId(orderId);
+        orderLineTreeMap = orderLineFacade.getOrderLinesByOrderId(orderId);
         assertEquals(3,orderLineTreeMap.size());
-        orderLineMapper.insertOrderLine(orderLine1);
-        orderLineTreeMap = orderLineMapper.getOrderLinesByOrderId(orderId);
+        orderLineFacade.insertOrderLine(orderLine1);
+        orderLineTreeMap = orderLineFacade.getOrderLinesByOrderId(orderId);
         assertEquals(4,orderLineTreeMap.size());
     }
 
@@ -135,17 +135,18 @@ class OrderLineMapperTest {
         //Fetches orderLine from DB and check that quantity is correct, updates quantity to 100 and sets object to null, fetches object again and checks that quantity is now 100.
         TreeMap<Integer, OrderLine> orderLineTreeMap = new TreeMap<>();
         int orderId = 1;
-        orderLineTreeMap = orderLineMapper.getOrderLinesByOrderId(orderId);
+        orderLineTreeMap = orderLineFacade.getOrderLinesByOrderId(orderId);
         OrderLine orderLineTest = orderLineTreeMap.get(1);
         assertEquals(10,orderLineTest.getQuantity());
 
         orderLineTest.setQuantity(100);
-        orderLineMapper.updateOrderline(orderLineTest);
+        orderLineFacade.updateOrderline(orderLineTest);
         orderLineTest = null;
         assertEquals(null, orderLineTest);
 
-        orderLineTreeMap = orderLineMapper.getOrderLinesByOrderId(orderId);
+        orderLineTreeMap = orderLineFacade.getOrderLinesByOrderId(orderId);
         orderLineTest = orderLineTreeMap.get(1);
         assertEquals(100,orderLineTest.getQuantity());
     }
+
 }
