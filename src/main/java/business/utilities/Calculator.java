@@ -57,7 +57,6 @@ public abstract class Calculator {
             bomItems.add(new OrderLine(stolpeAntal, order.getId(), "stk", optimalMaterialResult.getMaterial(), "Stolper nedgraves 90 cm. i jord"));
 
             //Calculate remme
-
             optimalMaterialResult = getOptimalMaterial(9,carport.getCarportLength(), getRequiredWidthByCategory("remme"), 5, false);
             bomItems.add(new OrderLine(2, order.getId(), "stk", optimalMaterialResult.getMaterial(), "Remme i sider, sadles ned i stolper"));
             svgValues.setRemMaterialeBredde(getRequiredWidthByCategory("remme"));
