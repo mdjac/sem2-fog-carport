@@ -2,8 +2,8 @@
 'https://plantuml.com/sequence-diagram
 
 autonumber
-
-actor forbruger
+title Login Flow
+actor Bruger
 boundary index.jsp
 boundary loginpage.jsp
 control FrontController
@@ -17,8 +17,8 @@ database carport
 
 
 
-forbruger -> index.jsp: Start
-index.jsp -> FrontController: doPost()
+Bruger -> index.jsp: Start
+index.jsp -> FrontController: doGet()
 FrontController -> FrontController: processRequest()
 FrontController -> Command: fromPath()
 Command --> FrontController: LoginPageCommand

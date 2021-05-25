@@ -150,7 +150,7 @@
                         <div class="col-lg-4"></div>
                         <div class="col-lg-4 text-center mt-2">
                             <c:if test="${!sessionScope.user.role.equals('employee')}">
-                                <input class="btn btn-primary mt-2" type="submit" value="Tilføj carport">
+                                <input class="btn btn-primary mt-2" type="submit" value="Send forespørgsel">
                             </c:if>
                         </div>
                         <div class="col-lg-4"></div>

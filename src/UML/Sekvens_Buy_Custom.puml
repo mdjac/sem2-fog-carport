@@ -2,7 +2,7 @@
 'https://plantuml.com/sequence-diagram
 
 autonumber
-
+title Forespørgsel af carport efter egne ønsker flow
 actor forbruger
 boundary customizedcarportorderpage.jsp
 boundary receiptpage.jsp
@@ -23,7 +23,7 @@ forbruger -> customizedcarportorderpage.jsp: Start
 customizedcarportorderpage.jsp -> FrontController: doPost()
 FrontController -> FrontController: processRequest()
 FrontController -> Command: fromPath()
-Command --> FrontController: :SubmitOrderCommand
+Command --> FrontController: SubmitOrderCommand
 FrontController -> SubmitOrderCommand: execute()
 SubmitOrderCommand -> OrderFacade: insertOrder()
 OrderFacade -> OrderMapper: insertOrder()
@@ -37,8 +37,8 @@ OrderMapper -> OrderMapper: validate Resultset
 OrderMapper --> OrderFacade: Order
 OrderFacade --> SubmitOrderCommand: Order
 SubmitOrderCommand -> Calculator: calculateBOM()
-Calculator -> Calculator: calculateSpær()
 Calculator -> Calculator: calculateOptimalDistance()
+Calculator -> Calculator: calculateSpær()
 Calculator -> Calculator: calculateStolper()
 Calculator -> Calculator: getOptimalMaterial()
 Calculator -> Calculator: getOptimalRoofUnits()
