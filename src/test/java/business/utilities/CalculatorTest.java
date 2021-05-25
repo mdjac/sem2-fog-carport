@@ -185,17 +185,33 @@ class CalculatorTest {
 
     @Test
     void getMaterialByMaterialVariantId() {
+        Material material = Calculator.getMaterialByMaterialVariantId(22);
+        assertNotNull(material);
+        assertEquals("Bræddebolt",material.getMaterialName());
     }
 
     @Test
     void getRequiredWidthByCategory() {
+        double expected = StaticValues.calculatorRequiredMaterialWidth.get("spær").getValue();
+        double actual = Calculator.getRequiredWidthByCategory("spær");
+        assertEquals(expected,actual);
     }
 
     @Test
     void getRaftersDistanceByRoofType() {
+        MinMax expected = StaticValues.raftersDistance.get("fladtTag");
+        MinMax actual = Calculator.getRaftersDistanceByRoofType("fladtTag");
+        assertEquals(expected,actual);
     }
 
     @Test
     void getPostDistancsByCategory() {
+        Object expected = StaticValues.postDistances.get("afstandMellemStolper");
+        Object actual = Calculator.getPostDistancsByCategory("afstandMellemStolper");
+        assertEquals(expected,actual);
+
+        expected = StaticValues.postDistances.get("stolpeNedgravning").getValue();
+        actual = Calculator.getPostDistancsByCategory("stolpeNedgravning");
+        assertEquals(expected,actual);
     }
 }
