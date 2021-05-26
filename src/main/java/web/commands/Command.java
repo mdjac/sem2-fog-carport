@@ -46,6 +46,7 @@ public abstract class Command
         commands.put("changeorderstatuscommand", new ChangeOrderStatusCommand("orderspage"));
         commands.put("showorderpagecommand", new ShowOrderPageCommand("showorderpage","customer"));
         commands.put("adminchangeorderstatuspage",new CommandProtectedPage("adminchangeorderstatuspage","employee"));
+        commands.put("reloadStaticValues",new ReloadStaticValuesCommand("employeepage","employee"));
     }
 
     public static Command fromPath(

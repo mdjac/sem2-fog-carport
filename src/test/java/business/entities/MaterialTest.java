@@ -1,5 +1,6 @@
 package business.entities;
 
+import business.exceptions.UserException;
 import business.persistence.Database;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ class MaterialTest {
 
 
     @BeforeAll
-    public static void setUpClass() {
+    public static void setUpClass() throws UserException {
         try {
             database = new Database(USER, PASSWORD, URL);
             new StaticValues().setGlobalValues(database);

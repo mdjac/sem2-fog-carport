@@ -15,6 +15,14 @@
             <div class="text-center">
                 <h1>Velkommen ${sessionScope.user.name} </h1>
             </div>
+                <div>
+                    <c:if test="${requestScope.status != null }">
+                        <h5 class="text-center text-success mb-4">${requestScope.status}</h5>
+                    </c:if>
+                    <c:if test="${requestScope.error != null }">
+                        <h5 class="text-center text-danger mb-4">${requestScope.error}</h5>
+                    </c:if>
+                </div>
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -42,6 +50,16 @@
                             </td>
                             <td>
                                 <button type="submit" class="btn btn-primary btn-sm">Gå til</button>
+                            </td>
+                        </form>
+                    </tr>
+                    <tr class="align-middle">
+                        <form class="" action="${pageContext.request.contextPath}/fc/reloadStaticValues">
+                            <td>
+                                Opdater globale værdier og materialer fra databasen
+                            </td>
+                            <td>
+                                <button type="submit" class="btn btn-primary btn-sm">Opdater</button>
                             </td>
                         </form>
                     </tr>

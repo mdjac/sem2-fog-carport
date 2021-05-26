@@ -28,7 +28,7 @@ class StandardCarportFacadeTest {
 
 
     @BeforeAll
-    public static void setUpClass() {
+    public static void setUpClass() throws UserException {
         try {
             database = new Database(USER, PASSWORD, URL);
             standardCarportFacade = new StandardCarportFacade(database);

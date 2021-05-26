@@ -28,7 +28,7 @@ public class StaticValues {
     public MaterialFacade materialFacade;
     public StandardCarportFacade standardCarportFacade;
 
-    public void setGlobalValues (Database database){
+    public void setGlobalValues (Database database) throws UserException {
         materialFacade = new MaterialFacade(database);
         standardCalcValuesFacade = new StandardCalcValuesFacade(database);
         standardCarportFacade = new StandardCarportFacade(database);
@@ -36,59 +36,43 @@ public class StaticValues {
         System.out.println("All static values collected from: "+database.getURL());
 
         //Used to collect all material from the database
-        try {
             materialMap = materialFacade.getAllMaterials();
-        } catch (UserException e) {
-            e.printStackTrace();
-        }
+
 
         //Used to populate the dropdown options on the form based on what FOG decides to offer in database
         categoryFormOptions = getCategoryFormOptions(materialMap);
 
         //Used to set the standard carports from DB for display and ordering on website
-        try {
+
             standardCarports = standardCarportFacade.getStandardCarports();
-        } catch (UserException e) {
-            e.printStackTrace();
-        }
+
 
         //Used to make it possible for fog employee to modify BOM with other variants from the same materialID
         materialVariantMap = getMaterialVariantMap(materialMap);
 
         //Used to set which dimensions we allow for creation of new carports. eg. max length of the carport.
-        try {
+
             allowedMeasurements = standardCalcValuesFacade.getAllowedMeasurements();
-        } catch (UserException e) {
-            e.printStackTrace();
-        }
+
 
         //Used to set which width we require for specific materials (used in calculations of BOM) eg. we want a post to be a specific width as it cant be to slim
-        try {
+
             calculatorRequiredMaterialWidth = standardCalcValuesFacade.getCalculatorRequiredMaterialWidth();
-        } catch (UserException e) {
-            e.printStackTrace();
-        }
+
 
         //Used to set which min and max distance we allow for rafters (different for flat roof and roof with tilt).
-        try {
+
             raftersDistance = standardCalcValuesFacade.getRaftersDistance();
-        } catch (UserException e) {
-            e.printStackTrace();
-        }
 
         //Used to set post distances needed in calculations, eg. max distance between posts
-        try {
+
             postDistances = standardCalcValuesFacade.getPostDistances();
-        } catch (UserException e) {
-            e.printStackTrace();
-        }
+
 
         //Used for order price calculation
-        try {
+
             priceCalculatorValues = standardCalcValuesFacade.getPriceCalculatorValues();
-        } catch (UserException e) {
-            e.printStackTrace();
-        }
+
     }
 
     public TreeMap<Integer, TreeMap<Integer, Material>> getCategoryFormOptions(TreeMap<Integer, TreeMap<Integer, Material>> inputTreeMap){

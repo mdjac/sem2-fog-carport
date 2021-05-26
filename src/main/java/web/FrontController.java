@@ -38,8 +38,11 @@ public class FrontController extends HttpServlet {
         }
 
         // Initialize whatever global datastructures needed here:
-        new StaticValues().setGlobalValues(database);
-
+        try {
+            new StaticValues().setGlobalValues(database);
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
         //Used to populate the dropdown options on the form based on what FOG decides to offer in database
         getServletContext().setAttribute("categoryFormOptions", StaticValues.categoryFormOptions);
 
