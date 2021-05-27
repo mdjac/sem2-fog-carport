@@ -54,7 +54,7 @@ public class AddStandardCarportCommand extends CommandProtectedPage{
         }
 
         if(carport.acceptableMeasurements() == false){
-            request.setAttribute("status", "One or more entered measurements is not accepted!");
+            request.setAttribute("error", "One or more entered measurements is not accepted!");
             return "addstandardcarportpage";
         }
         try {

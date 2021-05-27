@@ -17,7 +17,10 @@
                 <div class="col-lg-2"></div>
                 <div class="col-lg-8">
                     <c:if test="${requestScope.status != null }">
-                        <h5 class="text-center text-danger mb-4">${requestScope.status}</h5>
+                        <h5 class="text-center text-success mb-4">${requestScope.status}</h5>
+                    </c:if>
+                    <c:if test="${requestScope.error != null }">
+                        <h5 class="text-center text-danger mb-4">${requestScope.error}</h5>
                     </c:if>
                     <div class="row">
                         <div class="col-lg-6 mt-2">

@@ -59,7 +59,7 @@
                         <input id="telephone" class="form-control" type="text" name="telephone" placeholder="Indtast dit telefonnummer" required>
                     </div>
                 </div>
-                <input class="btn btn-primary" type="submit" type="submit" value="Submit">
+                <input class="btn btn-primary" type="submit" type="submit" value="Opret bruger">
             </form>
 
             <c:if test="${requestScope.error != null }">

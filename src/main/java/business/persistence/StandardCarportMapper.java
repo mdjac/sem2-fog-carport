@@ -9,7 +9,7 @@ import java.util.TreeMap;
 
 public class StandardCarportMapper {
     private Database database;
-    public static Integer nextStandardCarportId = 0;
+    public static Integer nextStandardCarportId = 1;
 
     public StandardCarportMapper(Database database){
         this.database = database;
