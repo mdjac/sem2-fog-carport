@@ -16,13 +16,9 @@ public abstract class Calculator {
     //Max afstand mellem stolper er 310cm
     //Max carport bredde 750cm
     //Max carport længde 780cm
-    //Afstanden mellem spær skal måles fra midten af spærrets bredde
-    //Afstanden mellem stolpe skal måles fra midten af stolpens bredde
     //Afstand fra Front til første stolpe er 100cm
     //Afstand fra bagerste stolpe fra bag er 20cm
     //lige mange overstern og undesterns brædder per carportside
-    //oversterns brædder kun på forsiden
-    //lige mange undesterns brædder per front og bagside
     //Vi antager at hvis man vælger beklædning til carporten, så er det ikke side beklædninge, men materialetype til over og understernsbrædder
     //Vi antager at skuret er det eneste på carporten som får beklædning på siderne.
     //Vi antager at carport height er det indre mål på højden og ikke det udvendige
@@ -222,7 +218,13 @@ public abstract class Calculator {
         return (int) totalLength;
     }
 
-    public static OptimalMaterialResult getOptimalMaterial(int materialId, int requiredLength, double requiredMaterialWidth, int categoriId, boolean materialSplitAllowed) {
+    public static OptimalMaterialResult getOptimalMaterial(
+            int materialId,
+            int requiredLength,
+            double requiredMaterialWidth,
+            int categoriId,
+            boolean materialSplitAllowed) {
+
         Material material = null;
         TreeMap<Integer, Material> materials = StaticValues.materialMap.get(categoriId);
         int bestVariantId = 0;
@@ -232,11 +234,8 @@ public abstract class Calculator {
         Double bestVariantLength = null;
 
         for (Material materialTmp: materials.values()) {
-
             if (materialTmp.getMaterialsId() == materialId && materialTmp.getWidth() == requiredMaterialWidth) {
                 int requiredLengthAddsup = (int) Math.floor(materialTmp.getLength()/requiredLength);
-
-
                 //If required length can be more than one time on the material
                 if (requiredLengthAddsup >=1 ) {
                     if ((((materialTmp.getLength()/requiredLengthAddsup) - requiredLength)*requiredLengthAddsup <= waste) || waste == -1) {
@@ -274,7 +273,6 @@ public abstract class Calculator {
                         bestVariantLength = materialTmp.getLength();
                     }
                 }
-
             }
         }
         material = materials.get(bestVariantId);
