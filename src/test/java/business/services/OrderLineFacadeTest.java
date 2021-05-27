@@ -33,7 +33,7 @@ class OrderLineFacadeTest {
     public static OrderLine orderLine1;
 
     @BeforeAll
-    public static void setUpClass() {
+    public static void setUpClass() throws UserException {
         try {
             database = new Database(USER, PASSWORD, URL);
             orderLineFacade = new OrderLineFacade(database);

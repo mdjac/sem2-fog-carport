@@ -26,7 +26,7 @@ class OrderFacadeTest {
     private static OrderFacade orderFacade;
 
     @BeforeAll
-    public static void setUpClass() {
+    public static void setUpClass() throws UserException {
         try {
             database = new Database(USER, PASSWORD, URL);
             orderFacade = new OrderFacade(database);
